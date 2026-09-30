@@ -1,0 +1,53 @@
+/* Shared "back to main page" bar — used on every page except index.html.
+   Sticky at the top so the way home is always one tap away. */
+.home-bar {
+    position: sticky;
+    top: 0;
+    z-index: 90;                 /* under the fixed language toggle (100) */
+    display: flex;
+    align-items: center;
+    min-height: 52px;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    background: #ffffff;
+    border-bottom: 1px solid #e8e8e8;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.home-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border: 2px solid #e8611a;
+    border-radius: 2px;
+    color: #e8611a;
+    font-family: 'Outfit', 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.home-link:hover,
+.home-link:focus-visible {
+    background: #e8611a;
+    color: #ffffff;
+}
+
+.home-link .home-arrow {
+    font-size: 16px;
+    line-height: 1;
+}
+
+@media (max-width: 600px) {
+    .home-bar { min-height: 46px; padding: 6px 10px; }
+    .home-link { font-size: 12px; padding: 6px 12px; }
+}
+
+@media print {
+    .home-bar { display: none !important; }
+}

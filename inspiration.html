@@ -330,8 +330,17 @@
             .header-inner { flex-direction: column; align-items: flex-start; }
         }
     </style>
+    <link rel="stylesheet" href="home-link.css">
 </head>
 <body>
+
+<!-- Back to main page (shared across pages, see home-link.css) -->
+<nav class="home-bar">
+    <a href="index.html" class="home-link" aria-label="Back to the main page / Volver a la página principal">
+        <span class="home-arrow" aria-hidden="true">←</span>
+        <span>Main Page · Página Principal</span>
+    </a>
+</nav>
 
 <header>
     <div class="header-inner">
@@ -339,7 +348,6 @@
             <h1>💡 Get Inspired</h1>
             <p class="subtitle">Capri Science Fair 2026-27 — "Science in Life!"</p>
         </div>
-        <a href="index.html" class="back-link">← Back to Sign-Up</a>
     </div>
 </header>
 
@@ -352,15 +360,15 @@
 
     <!-- VIDEO INSPIRATION -->
     <div class="section">
-        <h2>🎬 Watch Past Finalists</h2>
-        <p class="section-sub">Real students sharing real projects — from official program channels</p>
+        <h2>🎬 Watch &amp; Get Ideas</h2>
+        <p class="section-sub">Real students and real scientists — from official program channels</p>
         <div class="video-grid">
 
             <div class="video-card">
                 <div class="video-wrap">
                     <iframe
-                        src="https://www.youtube.com/embed/videoseries?list=PL4MSk7K3IfZBM4Olua_yHzaCOBKgvAXTl"
-                        title="3M Young Scientist Challenge — Past Finalists"
+                        src="https://www.youtube-nocookie.com/embed/videoseries?list=PLobAGami2cOq4O0fdjykWCto1T278fFyb"
+                        title="3M Young Scientist Challenge — 2025 Finalist Vlogs"
                         allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen
                         loading="lazy"
@@ -368,15 +376,15 @@
                 </div>
                 <div class="video-meta">
                     <h3>3M Young Scientist Challenge</h3>
-                    <p>Official playlist of past student finalists and winners</p>
+                    <p>Follow real student finalists as they build their inventions</p>
                 </div>
             </div>
 
             <div class="video-card">
                 <div class="video-wrap">
                     <iframe
-                        src="https://www.youtube.com/embed/videoseries?list=PLiuUQ9asub3RCO2-sEDaHe_4DQa6jAcUk"
-                        title="Science Buddies — Project Ideas"
+                        src="https://www.youtube-nocookie.com/embed/Yno_XALw9uw"
+                        title="Science Buddies — 20 Great Science Project Ideas"
                         allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen
                         loading="lazy"
@@ -384,23 +392,23 @@
                 </div>
                 <div class="video-meta">
                     <h3>Science Buddies</h3>
-                    <p>Step-by-step project tutorials for elementary students</p>
+                    <p>20 great project ideas, each with instructions</p>
                 </div>
             </div>
 
             <div class="video-card">
                 <div class="video-wrap">
                     <iframe
-                        src="https://www.youtube.com/embed/videoseries?list=PLiuUQ9asub3SDlgmm8E2vgxqRX31Aw3-J"
-                        title="NASA STEM @ Home"
+                        src="https://www.youtube-nocookie.com/embed/videoseries?list=PL9TFrgFq7557fqKgcetH7AbEJTfbMjs2B"
+                        title="NASA JPL — How to Do a Science Fair Project"
                         allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen
                         loading="lazy"
                         referrerpolicy="strict-origin-when-cross-origin"></iframe>
                 </div>
                 <div class="video-meta">
-                    <h3>NASA STEM @ Home</h3>
-                    <p>Hands-on space-themed activities you can do at home</p>
+                    <h3>NASA JPL: How to Do a Science Fair Project</h3>
+                    <p>Six short videos from NASA scientists, from idea to results</p>
                 </div>
             </div>
 
@@ -441,7 +449,7 @@
                 <span class="arrow">Try an experiment →</span>
             </a>
 
-            <a href="https://www.cssef.org/" target="_blank" rel="noopener" class="resource-card">
+            <a href="https://csef.usc.edu/" target="_blank" rel="noopener" class="resource-card">
                 <span class="badge local">California</span>
                 <h3>California Science & Engineering Fair</h3>
                 <p>State-level fair with elementary divisions. Past project archives show winning ideas from across California.</p>
@@ -469,7 +477,7 @@
                 <span class="arrow">Try an activity →</span>
             </a>
 
-            <a href="https://www.societyforscience.org/regeneron-isef/" target="_blank" rel="noopener" class="resource-card">
+            <a href="https://www.societyforscience.org/isef/" target="_blank" rel="noopener" class="resource-card">
                 <span class="badge global">Global</span>
                 <h3>Regeneron ISEF</h3>
                 <p>The world's largest international science fair (high school). Worth a peek to see where science fair journeys can lead — and the amazing projects students invent.</p>
@@ -572,7 +580,7 @@
 
 <footer>
     <p>📚 All resources are free and from official sources. Capri Elementary PTA does not endorse any specific program — these are starting points for your own exploration.</p>
-    <p style="margin-top:8px;"><a href="index.html">← Back to Sign-Up</a> · <a href="guide.html">Quick Start Guide</a></p>
+    <p style="margin-top:8px;"><a href="index.html">← Main Page · Página Principal</a> · <a href="guide.html">Quick Start Guide</a></p>
 </footer>
 
 <script>

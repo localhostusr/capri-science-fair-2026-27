@@ -209,7 +209,7 @@
 
         /* ===== Main Content ===== */
         .guide-container {
-            max-width: 820px;
+            max-width: 1120px;       /* was 820px; wider boxes = less scrolling */
             margin: 0 auto;
             padding: 0 24px 80px;
         }
@@ -700,8 +700,17 @@
             a[href]::after { content: none; }
         }
     </style>
+    <link rel="stylesheet" href="home-link.css">
 </head>
 <body>
+
+<!-- Back to main page (shared across pages, see home-link.css) -->
+<nav class="home-bar">
+    <a href="index.html" class="home-link" aria-label="Back to the main page / Volver a la página principal">
+        <span class="home-arrow" aria-hidden="true">←</span>
+        <span data-en="Main Page" data-es="Página Principal">Main Page</span>
+    </a>
+</nav>
 
 <!-- Language Toggle -->
 <div class="lang-toggle">
@@ -730,7 +739,7 @@
     </button>
     <a href="index.html" class="toolbar-btn primary-btn">
         <span>&#9998;</span>
-        <span data-en="Sign Up for Science Fair" data-es="Inscribirse en la Feria de Ciencias">Sign Up for Science Fair</span>
+        <span data-en="Enter the Science Fair" data-es="Participa en la Feria de Ciencias">Enter the Science Fair</span>
     </a>
 </div>
 
@@ -1031,8 +1040,8 @@
                 <li>
                     <span class="resource-icon">&#127758;</span>
                     <div>
-                        <a href="https://www.googlesciencefair.com/" target="_blank" rel="noopener">Google Science Fair</a>
-                        <span class="resource-desc" data-en="Browse examples of science fair projects from students around the world" data-es="Explora ejemplos de proyectos de ferias de ciencias de estudiantes de todo el mundo">Browse examples of science fair projects from students around the world</span>
+                        <a href="https://gsdsef.org/" target="_blank" rel="noopener">Greater San Diego Science &amp; Engineering Fair</a>
+                        <span class="resource-desc" data-en="Our regional fair — browse past projects from local students, many from nearby schools" data-es="Nuestra feria regional — explora proyectos anteriores de estudiantes locales, muchos de escuelas cercanas">Our regional fair — browse past projects from local students, many from nearby schools</span>
                     </div>
                 </li>
                 <li>
@@ -1051,7 +1060,7 @@
         <h2 data-en="Ready to Sign Up?" data-es="Listo para Inscribirte?">Ready to Sign Up?</h2>
         <p data-en="Head to the sign-up page to register your project for the Capri Science Fair 2026-27."
            data-es="Ve a la pagina de inscripcion para registrar tu proyecto en la Feria de Ciencias de Capri 2026-27.">Head to the sign-up page to register your project for the Capri Science Fair 2026-27.</p>
-        <a href="index.html" class="cta-btn" data-en="Sign Up Now" data-es="Inscribete Ahora">Sign Up Now</a>
+        <a href="index.html" class="cta-btn" data-en="Enter Now" data-es="Participa Ahora">Enter Now</a>
     </section>
 
 </div>
