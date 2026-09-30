@@ -1,6 +1,6 @@
 # Capri Science Fair 2027, project notes
 
-**Status.** Freshly scaffolded on 2026.09.30, seeded from the 2026 archive. All year-specific values (dates, deadline, spreadsheet, deployment URL, PTA team) are still 2026 values and need to be updated for 2027 before any deployment.
+**Status (2026.09.30).** This is the 2026-27 school-year fair: **Thu Nov 19, 2026, 5–7 PM, MPR**, theme "Science in Life!". Key dates: first approval Oct 15, final approval and sign-up close Nov 5 at 23:55. Coordinator: Kris Thomson (krisdthomson@gmail.com). Repo `localhostusr/capri-science-fair-2026-27`, live at https://localhostusr.github.io/capri-science-fair-2026-27/. The QR code (`qr-code.png`) encodes that URL, so never rename the repo. Content sweep is done. **Backend still pending:** `CONFIG.BACKEND_LIVE` is false and `APPS_SCRIPT_URL` is blank in script.js, dashboard, inspiration, and organizer, so the form shows "opening soon". Wire up a new Sheet and Apps Script, then flip the flag. Schedule details and the poster owner are waiting on Kris.
 
 ## What was decided at scaffold time
 
