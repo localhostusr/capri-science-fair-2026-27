@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capri Science Fair 2026-27</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Oswald:wght@700&family=Bangers&family=Anton&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Language Toggle -->
+<div class="lang-toggle">
+    <button id="btn-en" class="lang-btn active" onclick="setLang('en')">English</button>
+    <button id="btn-es" class="lang-btn" onclick="setLang('es')">Español</button>
+</div>
+
+<!-- Hero Section -->
+<header class="hero">
+    <!-- Explosion flash -->
+    <div class="hero-flash" id="hero-flash" aria-hidden="true"></div>
+    <!-- Explosion sparks -->
+    <div class="sparks-container" id="sparks-container" aria-hidden="true"></div>
+
+    <div class="hero-content">
+        <div class="hero-layout">
+            <a href="https://capri.eusd.net/" target="_blank" rel="noopener" class="hero-logo-link hero-anim hero-anim-logo-left">
+                <img src="logo.png" alt="Capri Elementary Stingrays" class="hero-logo">
+            </a>
+            <div class="hero-text">
+                <div class="hero-badge hero-anim hero-anim-badge">
+                    <span data-en="Capri Elementary" data-es="Escuela Primaria Capri">Capri Elementary</span>
+                </div>
+                <h1 class="hero-anim hero-anim-title" data-en="Science Fair 2026-27" data-es="Feria de Ciencias 2026-27">Science Fair 2026-27</h1>
+                <p class="theme hero-anim hero-anim-theme" data-en="&ldquo;Science in Life!&rdquo;" data-es="&ldquo;&iexcl;La Ciencia en la Vida!&rdquo;">&ldquo;Science in Life!&rdquo;</p>
+                <div class="event-details">
+                    <div class="detail hero-anim hero-anim-detail-1">
+                        <span class="detail-icon">📅</span>
+                        <span data-en="Thursday, November 19, 2026" data-es="Jueves, 19 de noviembre de 2026">Thursday, November 19, 2026</span>
+                    </div>
+                    <div class="detail hero-anim hero-anim-detail-2">
+                        <span class="detail-icon">🕐</span>
+                        <span data-en="5:00 PM – 7:00 PM" data-es="5:00 PM – 7:00 PM">5:00 PM – 7:00 PM</span>
+                    </div>
+                    <a href="https://www.google.com/maps/place/33.075319,-117.288282" target="_blank" rel="noopener" class="detail detail-link hero-anim hero-anim-detail-3">
+                        <span class="detail-icon">📍</span>
+                        <span data-en="Capri MPR" data-es="MPR de Capri">Capri MPR</span>
+                    </a>
+                </div>
+            </div>
+            <a href="https://www.capripta.org/" target="_blank" rel="noopener" class="hero-logo-link hero-logo-right hero-anim hero-anim-logo-right">
+                <div class="pta-logo-wrap">
+                    <img src="logo.png" alt="Capri PTA" class="hero-logo pta-logo-img">
+                    <div class="pta-overlay">
+                        <div class="pta-stack">
+                            <span class="pta-w1">Parent</span>
+                            <span class="pta-w2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 4 148 66" class="pta-svg">
+                                    <defs><style>@import url('https://fonts.googleapis.com/css2?family=Bangers&amp;display=swap');</style></defs>
+                                    <g transform="translate(16,4)"><path fill-rule="evenodd" fill="#1a1a1a" d="M 3,12 L 48,12 C 78,12 78,42 48,42 L 15,42 L 15,64 L 3,64 Z M 15,22 L 44,22 C 62,22 62,32 44,32 L 15,32 Z"/></g>
+                                    <g transform="translate(14,2)"><path fill-rule="evenodd" fill="#0088aa" d="M 3,12 L 48,12 C 78,12 78,42 48,42 L 15,42 L 15,64 L 3,64 Z M 15,22 L 44,22 C 62,22 62,32 44,32 L 15,32 Z"/></g>
+                                    <g transform="translate(12,0)"><path fill-rule="evenodd" fill="#00e5ff" d="M 3,12 L 48,12 C 78,12 78,42 48,42 L 15,42 L 15,64 L 3,64 Z M 15,22 L 44,22 C 62,22 62,32 44,32 L 15,32 Z"/></g>
+                                    <text x="68" y="64" font-family="Bangers,cursive" font-size="74" fill="#1a1a1a" transform="translate(4,4)">T</text>
+                                    <text x="68" y="64" font-family="Bangers,cursive" font-size="74" fill="#0088aa" transform="translate(2,2)">T</text>
+                                    <text x="68" y="64" font-family="Bangers,cursive" font-size="74" fill="#00e5ff">T</text>
+                                    <text x="92" y="64" font-family="Bangers,cursive" font-size="74" fill="#1a1a1a" transform="translate(4,4)">A</text>
+                                    <text x="92" y="64" font-family="Bangers,cursive" font-size="74" fill="#0088aa" transform="translate(2,2)">A</text>
+                                    <text x="92" y="64" font-family="Bangers,cursive" font-size="74" fill="#00e5ff">A</text>
+                                </svg>
+                            </span>
+                            <span class="pta-w3">Teacher</span>
+                            <span class="pta-w4">Association</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- Floating science particles — 3 speed tiers: slow (18-25s), medium (12-16s), fast (7-10s) -->
+    <div class="science-particles" aria-hidden="true">
+        <!-- Slow drifters -->
+        <div class="particle atom p-slow-1"></div>
+        <div class="particle atom p-slow-2"></div>
+        <div class="particle atom p-slow-3"></div>
+        <div class="particle molecule p-slow-4"></div>
+        <div class="particle molecule p-slow-5"></div>
+        <div class="particle atom p-slow-6"></div>
+        <div class="particle hexagon p-slow-7"></div>
+        <div class="particle molecule p-slow-8"></div>
+        <div class="particle atom p-slow-9"></div>
+        <!-- Medium floaters -->
+        <div class="particle atom p-med-1"></div>
+        <div class="particle molecule p-med-2"></div>
+        <div class="particle atom p-med-3"></div>
+        <div class="particle hexagon p-med-4"></div>
+        <div class="particle molecule p-med-5"></div>
+        <div class="particle atom p-med-6"></div>
+        <div class="particle molecule p-med-7"></div>
+        <div class="particle atom p-med-8"></div>
+        <div class="particle hexagon p-med-9"></div>
+        <!-- Gentle quick movers -->
+        <div class="particle atom p-fast-1"></div>
+        <div class="particle molecule p-fast-2"></div>
+        <div class="particle atom p-fast-3"></div>
+        <div class="particle atom p-fast-4"></div>
+        <div class="particle molecule p-fast-5"></div>
+        <div class="particle hexagon p-fast-6"></div>
+        <div class="particle atom p-fast-7"></div>
+        <div class="particle molecule p-fast-8"></div>
+        <div class="particle atom p-fast-9"></div>
+    </div>
+</header>
+
+<!-- Main Content: Sidebar + Form -->
+<div class="page-layout">
+    <div class="content-grid">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="info-stack">
+            <div class="info-card">
+                <div class="info-icon">🧪</div>
+                <h3 data-en="What's Happening" data-es="Qué Va a Pasar">What's Happening</h3>
+                <p data-en="Students showcase their science projects in the MPR, plus science fun from SD Lab Rats!"
+                   data-es="¡Los estudiantes presentan sus proyectos de ciencias en el MPR, y además diversión científica con SD Lab Rats!">
+                    Students showcase their science projects in the MPR, plus science fun from SD Lab Rats!
+                </p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">🔬</div>
+                <h3 data-en="This Year's Focus" data-es="Enfoque de Este Año">This Year's Focus</h3>
+                <p data-en="What do you enjoy most? Sports, food, nature, music, games, Lego, Disneyland, or anything else? Find the science in it! Work alone or in a group of up to three."
+                   data-es="¿Qué es lo que más te gusta? ¿Deportes, comida, naturaleza, música, juegos, Lego, Disneyland, o cualquier otra cosa? ¡Encuentra la ciencia en ello! Trabaja solo o en un grupo de hasta tres.">
+                    What do you enjoy most? Sports, food, nature, music, games, Lego, Disneyland, or anything else? Find the science in it! Work alone or in a group of up to three.
+                </p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">🎪</div>
+                <h3 data-en="Everyone's Invited" data-es="Todos Están Invitados">Everyone's Invited</h3>
+                <p data-en="The Science Fair is open to ALL Capri families — you don't need a project to attend! Come explore, learn, and enjoy SD Lab Rats!"
+                   data-es="¡La Feria de Ciencias está abierta a TODAS las familias de Capri — no necesitas un proyecto para asistir! Ven a explorar, aprender y disfrutar de SD Lab Rats!">
+                    The Science Fair is open to ALL Capri families — you don't need a project to attend! Come explore, learn, and enjoy SD Lab Rats!
+                </p>
+            </div>
+    </div>
+
+    <!-- Quick Start Guide link -->
+    <div class="sidebar-guide">
+        <a href="guide.html" class="guide-link">
+            <span class="guide-icon">📘</span>
+            <div>
+                <strong data-en="Quick Start Guide" data-es="Guía de Inicio Rápido">Quick Start Guide</strong>
+                <small data-en="Project ideas, board tips, and how to get started" data-es="Ideas de proyectos, consejos para el tablero, y cómo empezar">Project ideas, board tips, and how to get started</small>
+            </div>
+        </a>
+    </div>
+
+    <!-- Inspiration link -->
+    <div class="sidebar-guide">
+        <a href="inspiration.html" class="guide-link">
+            <span class="guide-icon">💡</span>
+            <div>
+                <strong data-en="Get Inspired" data-es="Inspírate">Get Inspired</strong>
+                <small data-en="Project ideas, videos, and resources from real science fairs" data-es="Ideas, videos y recursos de ferias de ciencias reales">Project ideas, videos, and resources from real science fairs</small>
+            </div>
+        </a>
+    </div>
+
+    <!-- Dashboard link -->
+    <div class="sidebar-guide">
+        <a href="dashboard.html" class="guide-link">
+            <span class="guide-icon">📊</span>
+            <div>
+                <strong data-en="Live Dashboard" data-es="Panel en Vivo">Live Dashboard</strong>
+                <small data-en="See sign-up stats and project breakdowns" data-es="Vea estadísticas y desglose de proyectos">See sign-up stats and project breakdowns</small>
+            </div>
+        </a>
+    </div>
+
+    <!-- DNA helix divider -->
+    <div class="dna-divider" aria-hidden="true">
+        <svg viewBox="0 0 400 28" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Strand 1 — orange -->
+            <path d="M0,14 Q10,2 20,14 Q30,26 40,14 Q50,2 60,14 Q70,26 80,14 Q90,2 100,14 Q110,26 120,14 Q130,2 140,14 Q150,26 160,14 Q170,2 180,14 Q190,26 200,14 Q210,2 220,14 Q230,26 240,14 Q250,2 260,14 Q270,26 280,14 Q290,2 300,14 Q310,26 320,14 Q330,2 340,14 Q350,26 360,14 Q370,2 380,14 Q390,26 400,14" fill="none" stroke="#e8611a" stroke-width="2.5" opacity="0.4"/>
+            <!-- Strand 2 — blue (inverted) -->
+            <path d="M0,14 Q10,26 20,14 Q30,2 40,14 Q50,26 60,14 Q70,2 80,14 Q90,26 100,14 Q110,2 120,14 Q130,26 140,14 Q150,2 160,14 Q170,26 180,14 Q190,2 200,14 Q210,26 220,14 Q230,2 240,14 Q250,26 260,14 Q270,2 280,14 Q290,26 300,14 Q310,2 320,14 Q330,26 340,14 Q350,2 360,14 Q370,26 380,14 Q390,2 400,14" fill="none" stroke="#9cc5d4" stroke-width="2.5" opacity="0.4"/>
+            <!-- Base pair rungs with dots at ends -->
+            <g opacity="0.3">
+                <line x1="10" y1="8" x2="10" y2="20" stroke="#888" stroke-width="1.2"/>
+                <circle cx="10" cy="8" r="1.5" fill="#e8611a"/><circle cx="10" cy="20" r="1.5" fill="#9cc5d4"/>
+                <line x1="30" y1="8" x2="30" y2="20" stroke="#888" stroke-width="1.2"/>
+                <circle cx="30" cy="20" r="1.5" fill="#e8611a"/><circle cx="30" cy="8" r="1.5" fill="#9cc5d4"/>
+                <line x1="50" y1="8" x2="50" y2="20" stroke="#888" stroke-width="1.2"/>
+                <circle cx="50" cy="8" r="1.5" fill="#e8611a"/><circle cx="50" cy="20" r="1.5" fill="#9cc5d4"/>
+                <line x1="70" y1="8" x2="70" y2="20" stroke="#888" stroke-width="1.2"/>
+                <circle cx="70" cy="20" r="1.5" fill="#e8611a"/><circle cx="70" cy="8" r="1.5" fill="#9cc5d4"/>
+                <line x1="90" y1="8" x2="90" y2="20" stroke="#888" stroke-width="1.2"/>
+                <circle cx="90" cy="8" r="1.5" fill="#e8611a"/><circle cx="90" cy="20" r="1.5" fill="#9cc5d4"/>
+                <line x1="110" y1="8" x2="110" y2="20" stroke="#888" stroke-width="1.2"/>
+                <circle cx="110" cy="20" r="1.5" fill="#e8611a"/><circle cx="110" cy="8" r="1.5" fill="#9cc5d4"/>
+                <line x1="130" y1="8" x2="130" y2="20" stroke="#888" stroke-width="1.2"/>
+                <circle cx="130" cy="8" r="1.5" fill="#e8611a"/><circle cx="130" cy="20" r="1.5" fill="#9cc5d4"/>
+                <line x1="150" y1="8" x2="150" y2="20" stroke="#888" stroke-width="1.2"/>
+                <circle cx="150" cy="20" r="1.5" fill="#e8611a"/><circle cx="150" cy="8" r="1.5" fill="#9cc5d4"/>
+                <line x1="170" y1="8" x2="170" y2="20" stroke="#888" stroke-width="1.2"/>
+                <circle cx="170" cy="8" r="1.5" fill="#e8611a"/><circle cx="170" cy="20" r="1.5" fill="#9cc5d4"/>
+                <line x1="190" y1="8" x2="190" y2="20" stroke="#888" stroke-width="1.2"/>
+                <circle cx="190" cy="20" r="1.5" fill="#e8611a"/><circle cx="190" cy="8" r="1.5" fill="#9cc5d4"/>
+            </g>
+        </svg>
+    </div>
+
+    <!-- Key dates in sidebar -->
+    <div class="sidebar-schedule">
+        <h3 data-en="Important Dates" data-es="Fechas Importantes">Important Dates</h3>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="time" data-en="Thu, Oct 15" data-es="Jue, 15 oct">Thu, Oct 15</div>
+                <div class="event" data-en="First approval of project" data-es="Primera aprobación del proyecto">First approval of project</div>
+            </div>
+            <div class="timeline-item">
+                <div class="time" data-en="Thu, Nov 5" data-es="Jue, 5 nov">Thu, Nov 5</div>
+                <div class="event" data-en="Final approval &amp; sign-ups close" data-es="Aprobación final y cierre de inscripciones">Final approval &amp; sign-ups close</div>
+            </div>
+            <div class="timeline-item">
+                <div class="time" data-en="Thu, Nov 19" data-es="Jue, 19 nov">Thu, Nov 19</div>
+                <div class="event" data-en="🔬 Science Fair, 5–7 PM, MPR" data-es="🔬 Feria de Ciencias, 5–7 PM, MPR">🔬 Science Fair, 5–7 PM, MPR</div>
+            </div>
+            <div class="timeline-item">
+                <div class="time" data-en="Fair night" data-es="Noche de la feria">Fair night</div>
+                <div class="event" data-en="Detailed schedule coming soon" data-es="Horario detallado próximamente">Detailed schedule coming soon</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- Main Content: Sign-Up Form -->
+<main class="main-content">
+    <section class="form-section" id="signup">
+        <!-- Large Erlenmeyer flask with test tubes floating behind text -->
+        <div class="flask-bg" aria-hidden="true">
+                <svg viewBox="-120 -30 440 290" xmlns="http://www.w3.org/2000/svg" class="flask-svg">
+                    <!-- Test tubes — left side -->
+                    <g opacity="0.45">
+                        <!-- Tube 1 — tilted left -->
+                        <g transform="translate(-60,60) rotate(-15, 15, 60)">
+                            <rect x="8" y="10" width="14" height="100" rx="0" fill="none" stroke="#9cc5d4" stroke-width="2"/>
+                            <rect x="4" y="8" width="22" height="4" rx="0" fill="none" stroke="#9cc5d4" stroke-width="2"/>
+                            <rect x="10" y="70" width="10" height="38" rx="0" fill="#e8611a" opacity="0.4"/>
+                            <circle cx="15" cy="90" r="2" fill="#fff" opacity="0.4" class="flask-bubble flask-b1"/>
+                        </g>
+                        <!-- Tube 2 -->
+                        <g transform="translate(-30,80) rotate(-5, 15, 60)">
+                            <rect x="8" y="10" width="14" height="90" rx="0" fill="none" stroke="#9cc5d4" stroke-width="2"/>
+                            <rect x="4" y="8" width="22" height="4" rx="0" fill="none" stroke="#9cc5d4" stroke-width="2"/>
+                            <rect x="10" y="55" width="10" height="43" rx="0" fill="#9cc5d4" opacity="0.3"/>
+                            <circle cx="15" cy="75" r="1.5" fill="#fff" opacity="0.3" class="flask-bubble flask-b3"/>
+                        </g>
+                    </g>
+
+                    <!-- Test tubes — right side -->
+                    <g opacity="0.45">
+                        <!-- Tube 3 -->
+                        <g transform="translate(215,70) rotate(8, 15, 60)">
+                            <rect x="8" y="10" width="14" height="95" rx="0" fill="none" stroke="#9cc5d4" stroke-width="2"/>
+                            <rect x="4" y="8" width="22" height="4" rx="0" fill="none" stroke="#9cc5d4" stroke-width="2"/>
+                            <rect x="10" y="60" width="10" height="43" rx="0" fill="#e8611a" opacity="0.35"/>
+                            <circle cx="15" cy="80" r="2" fill="#fff" opacity="0.35" class="flask-bubble flask-b2"/>
+                        </g>
+                        <!-- Tube 4 — tilted right -->
+                        <g transform="translate(250,55) rotate(18, 15, 60)">
+                            <rect x="8" y="10" width="14" height="100" rx="0" fill="none" stroke="#9cc5d4" stroke-width="2"/>
+                            <rect x="4" y="8" width="22" height="4" rx="0" fill="none" stroke="#9cc5d4" stroke-width="2"/>
+                            <rect x="10" y="50" width="10" height="48" rx="0" fill="#9cc5d4" opacity="0.3"/>
+                            <circle cx="15" cy="70" r="1.5" fill="#fff" opacity="0.3" class="flask-bubble flask-b4"/>
+                        </g>
+                        <!-- Tube 5 — far right -->
+                        <g transform="translate(280,90) rotate(12, 15, 60)">
+                            <rect x="8" y="10" width="14" height="80" rx="0" fill="none" stroke="#9cc5d4" stroke-width="2"/>
+                            <rect x="4" y="8" width="22" height="4" rx="0" fill="none" stroke="#9cc5d4" stroke-width="2"/>
+                            <rect x="10" y="50" width="10" height="38" rx="0" fill="#e8611a" opacity="0.25"/>
+                        </g>
+                    </g>
+
+                    <!-- Flask body — center -->
+                    <path d="M80,10 L80,90 L20,220 Q15,235 30,245 L170,245 Q185,235 180,220 L120,90 L120,10" fill="none" stroke="#9cc5d4" stroke-width="3.5" opacity="0.55"/>
+                    <!-- Flask rim -->
+                    <line x1="70" y1="10" x2="130" y2="10" stroke="#9cc5d4" stroke-width="4" opacity="0.6" stroke-linecap="round"/>
+                    <!-- Liquid fill — clipped to flask interior -->
+                    <clipPath id="flask-clip">
+                        <path d="M80,10 L80,90 L20,220 Q15,235 30,245 L170,245 Q185,235 180,220 L120,90 L120,10 Z"/>
+                    </clipPath>
+                    <g clip-path="url(#flask-clip)">
+                        <rect x="0" y="140" width="200" height="110" fill="#9cc5d4" opacity="0.18"/>
+                        <rect x="0" y="150" width="200" height="100" fill="#9cc5d4" opacity="0.08"/>
+                        <!-- Liquid surface wave -->
+                        <path d="M0,140 Q30,132 60,140 Q90,148 120,140 Q150,132 200,140" fill="none" stroke="#9cc5d4" stroke-width="2" opacity="0.3"/>
+                    </g>
+                    <!-- Bubbles -->
+                    <circle cx="70" cy="200" r="5" fill="#e8611a" opacity="0.25" class="flask-bubble flask-b1"/>
+                    <circle cx="110" cy="220" r="4" fill="#9cc5d4" opacity="0.3" class="flask-bubble flask-b2"/>
+                    <circle cx="90" cy="190" r="6" fill="#e8611a" opacity="0.2" class="flask-bubble flask-b3"/>
+                    <circle cx="130" cy="210" r="3.5" fill="#9cc5d4" opacity="0.25" class="flask-bubble flask-b4"/>
+                    <circle cx="80" cy="225" r="3" fill="#e8611a" opacity="0.2" class="flask-bubble flask-b5"/>
+                    <!-- Steam -->
+                    <path d="M90,8 Q88,0 92,-8 Q96,-16 90,-24" fill="none" stroke="#9cc5d4" stroke-width="2" opacity="0.3" class="flask-steam steam-1"/>
+                    <path d="M100,8 Q103,0 98,-8 Q93,-16 100,-24" fill="none" stroke="#9cc5d4" stroke-width="2" opacity="0.25" class="flask-steam steam-2"/>
+                    <path d="M110,8 Q108,-2 112,-10 Q116,-18 110,-26" fill="none" stroke="#9cc5d4" stroke-width="2" opacity="0.2" class="flask-steam steam-3"/>
+                </svg>
+        </div>
+        <div id="form-header">
+            <h2 data-en="Sign Up Your Scientist!" data-es="¡Inscribe a Tu Científico!">Sign Up Your Scientist!</h2>
+            <p class="form-subtitle" data-en="Register your student's science project for the fair. Sign up by November 5 (Final Approval). The fair is November 19!"
+               data-es="Registre el proyecto de ciencias de su estudiante para la feria. Inscríbase antes del 5 de noviembre (Aprobación Final). ¡La feria es el 19 de noviembre!">
+                Register your student's science project for the fair. Sign up by November 5 (Final Approval). The fair is November 19!
+            </p>
+        </div>
+
+        <!-- Soft reminder banner (no hard deadline) -->
+        <div class="deadline-banner" id="deadline-banner">
+            <span class="deadline-icon">🔬</span>
+            <span data-en="Sign-ups close Thursday, November 5. The Science Fair is November 19 — all grades and topics welcome!"
+                  data-es="Las inscripciones cierran el jueves 5 de noviembre. La Feria de Ciencias es el 19 de noviembre — ¡todos los grados y temas son bienvenidos!">
+                Sign-ups close Thursday, November 5. The Science Fair is November 19 — all grades and topics welcome!
+            </span>
+            <span class="countdown" id="countdown"></span>
+        </div>
+
+        <!-- Sign-ups Opening Soon (shown until CONFIG.BACKEND_LIVE is true) -->
+        <div class="form-closed" id="form-coming-soon" style="display:none;">
+            <div style="font-size: 3rem; margin-bottom: 8px;">🧪</div>
+            <h3 data-en="Sign-ups are opening very soon!"
+                data-es="¡Las inscripciones abrirán muy pronto!">
+                Sign-ups are opening very soon!
+            </h3>
+            <p style="max-width: 560px; margin: 0 auto 20px; color: var(--text-dark);"
+               data-en="Check back in a day or two to register your project. In the meantime, start thinking about your idea: <strong>first approval is Thursday, October 15</strong>."
+               data-es="Vuelva en uno o dos días para inscribir su proyecto. Mientras tanto, empiece a pensar en su idea: <strong>la primera aprobación es el jueves 15 de octubre</strong>.">
+                Check back in a day or two to register your project. In the meantime, start thinking about your idea: <strong>first approval is Thursday, October 15</strong>.
+            </p>
+            <div class="success-actions no-print" style="justify-content: center;">
+                <a href="guide.html" class="action-btn primary">
+                    <span data-en="📘 Quick Start Guide" data-es="📘 Guía de Inicio Rápido">📘 Quick Start Guide</span>
+                </a>
+                <a href="inspiration.html" class="action-btn secondary">
+                    <span data-en="💡 Get Inspired" data-es="💡 Inspírate">💡 Get Inspired</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Sign-ups Closed (shown after the deadline) -->
+        <div class="form-closed" id="form-closed" style="display:none;">
+            <div style="font-size: 3rem; margin-bottom: 8px;">🔬</div>
+            <h3 data-en="Sign-ups are now closed — see you at the fair!"
+                data-es="Las inscripciones están cerradas — ¡nos vemos en la feria!">
+                Sign-ups are now closed — see you at the fair!
+            </h3>
+            <p style="max-width: 560px; margin: 0 auto 20px; color: var(--text-dark);"
+               data-en="Thank you to every family who signed up. The Capri Science Fair is <strong>Thursday, November 19, 5:00–7:00 PM</strong> in the MPR. Everyone is welcome to come explore the projects and enjoy SD Lab Rats!"
+               data-es="Gracias a todas las familias que se inscribieron. La Feria de Ciencias de Capri es el <strong>jueves 19 de noviembre, 5:00–7:00 PM</strong> en el MPR. ¡Todos son bienvenidos a ver los proyectos y disfrutar de SD Lab Rats!">
+                Thank you to every family who signed up. The Capri Science Fair is <strong>Thursday, November 19, 5:00–7:00 PM</strong> in the MPR. Everyone is welcome to come explore the projects and enjoy SD Lab Rats!
+            </p>
+            <div class="success-actions no-print" style="justify-content: center;">
+                <a href="guide.html" class="action-btn primary">
+                    <span data-en="📘 Quick Start Guide" data-es="📘 Guía de Inicio Rápido">📘 Quick Start Guide</span>
+                </a>
+                <a href="inspiration.html" class="action-btn secondary">
+                    <span data-en="💡 Get Inspired" data-es="💡 Inspírate">💡 Get Inspired</span>
+                </a>
+                <a href="dashboard.html" class="action-btn secondary">
+                    <span data-en="📊 Live Dashboard" data-es="📊 Panel en Vivo">📊 Live Dashboard</span>
+                </a>
+            </div>
+            <p style="margin-top: 24px; font-size: 0.9rem; color: var(--text-muted);">
+                <span data-en="Questions? Contact" data-es="¿Preguntas? Contacte">Questions? Contact</span>
+                Kris Thomson, krisdthomson@gmail.com
+            </p>
+        </div>
+
+        <!-- Success Message + Printable Confirmation -->
+        <div class="success-message" id="success-message" style="display:none;">
+            <div class="success-icon">🎉</div>
+            <h3 data-en="Hooray — You're Signed Up!" data-es="¡Hurra — Estás Inscrito!">Hooray — You're Signed Up!</h3>
+            <p class="success-intro" data-en="Save or print your confirmation below. More info about the Science Fair will be shared as we get closer to November 19."
+               data-es="Guarde o imprima su confirmación abajo. Más información sobre la Feria de Ciencias se compartirá a medida que nos acerquemos al 19 de noviembre.">
+                Save or print your confirmation below. More info about the Science Fair will be shared as we get closer to November 19.
+            </p>
+
+            <!-- Printable Confirmation Card -->
+            <div class="confirmation-card" id="confirmation-card">
+                <div class="conf-header">
+                    <img src="logo.png" alt="Capri Stingrays" class="conf-logo">
+                    <div>
+                        <h4 data-en="Capri Science Fair 2026-27" data-es="Feria de Ciencias de Capri 2026-27">Capri Science Fair 2026-27</h4>
+                        <p class="conf-tagline" data-en="Confirmation of Registration" data-es="Confirmación de Inscripción">Confirmation of Registration</p>
+                    </div>
+                </div>
+
+                <div class="conf-event">
+                    <div><strong data-en="Date:" data-es="Fecha:">Date:</strong> <span data-en="Thursday, November 19, 2026" data-es="Jueves, 19 de noviembre de 2026">Thursday, November 19, 2026</span></div>
+                    <div><strong data-en="Time:" data-es="Hora:">Time:</strong> 5:00 PM – 7:00 PM</div>
+                    <div><strong data-en="Location:" data-es="Lugar:">Location:</strong> <span data-en="Capri MPR" data-es="MPR de Capri">Capri MPR</span></div>
+                </div>
+
+                <h5 data-en="Your Sign-Up Details" data-es="Detalles de su Inscripción">Your Sign-Up Details</h5>
+                <dl class="conf-details" id="conf-details">
+                    <!-- populated by script.js -->
+                </dl>
+
+                <h5 data-en="What to Bring" data-es="Qué Traer">What to Bring</h5>
+                <ul class="conf-bring">
+                    <li data-en="Your completed science project" data-es="Su proyecto de ciencias completado">Your completed science project</li>
+                    <li data-en="Your tri-fold display board (a limited number are available in the front office, while supplies last)"
+                        data-es="Su tablero tríptico (hay una cantidad limitada disponible en la oficina, hasta agotar existencias)">
+                        Your tri-fold display board (a limited number are available in the front office, while supplies last)
+                    </li>
+                    <li data-en="Set-up time will be shared closer to the fair" data-es="La hora de montaje se compartirá más cerca de la feria">Set-up time will be shared closer to the fair</li>
+                </ul>
+
+                <h5 data-en="Schedule" data-es="Horario">Schedule</h5>
+                <ul class="conf-schedule">
+                    <li><strong>5:00 – 7:00 PM</strong> — <span data-en="Science Fair in the MPR, with SD Lab Rats" data-es="Feria de Ciencias en el MPR, con SD Lab Rats">Science Fair in the MPR, with SD Lab Rats</span></li>
+                    <li><span data-en="Detailed schedule coming soon" data-es="Horario detallado próximamente">Detailed schedule coming soon</span></li>
+                </ul>
+
+                <p class="conf-footer">
+                    <span data-en="Questions? Contact" data-es="¿Preguntas? Contacte">Questions? Contact</span>
+                    Kris Thomson, krisdthomson@gmail.com
+                </p>
+            </div>
+
+            <div class="success-actions no-print">
+                <button type="button" class="action-btn primary" id="add-to-calendar-btn">
+                    <span data-en="📅 Add to Calendar" data-es="📅 Agregar al Calendario">📅 Add to Calendar</span>
+                </button>
+                <button type="button" class="action-btn secondary" onclick="window.print()">
+                    <span data-en="🖨️ Print / Save as PDF" data-es="🖨️ Imprimir / Guardar como PDF">🖨️ Print / Save as PDF</span>
+                </button>
+                <a href="guide.html" class="action-btn secondary">
+                    <span data-en="📘 Open Quick Start Guide" data-es="📘 Abrir Guía de Inicio Rápido">📘 Open Quick Start Guide</span>
+                </a>
+                <a href="inspiration.html" class="action-btn secondary">
+                    <span data-en="💡 Get Inspired" data-es="💡 Inspírate">💡 Get Inspired</span>
+                </a>
+                <a href="dashboard.html" class="action-btn secondary">
+                    <span data-en="📊 Live Dashboard" data-es="📊 Panel en Vivo">📊 Live Dashboard</span>
+                </a>
+            </div>
+        </div>
+
+        <form id="signup-form" novalidate>
+            <!-- Student Info -->
+            <fieldset data-aos="fade-up">
+                <legend data-en="Student Information" data-es="Información del Estudiante">Student Information</legend>
+
+                <div class="form-group">
+                    <label for="student-name" data-en="Student Name *" data-es="Nombre del Estudiante *">Student Name *</label>
+                    <input type="text" id="student-name" name="studentName" required
+                           data-en-placeholder="First and Last Name"
+                           data-es-placeholder="Nombre y Apellido"
+                           placeholder="First and Last Name">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="grade" data-en="Grade *" data-es="Grado *">Grade *</label>
+                        <select id="grade" name="grade" required>
+                            <option value="" data-en="Select Grade" data-es="Seleccionar Grado">Select Grade</option>
+                            <option value="K">K</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher" data-en="Teacher *" data-es="Maestro/a *">Teacher *</label>
+                        <input type="text" id="teacher" name="teacher" required
+                               data-en-placeholder="Teacher's Last Name"
+                               data-es-placeholder="Apellido del Maestro/a"
+                               placeholder="Teacher's Last Name">
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Group Project -->
+            <fieldset data-aos="fade-up">
+                <legend data-en="Project Details" data-es="Detalles del Proyecto">Project Details</legend>
+                <small data-en="Each student may participate in one project. Students can work alone or in groups of up to three on one project."
+                       data-es="Cada estudiante puede participar en un solo proyecto. Los estudiantes pueden trabajar solos o en grupos de hasta tres en un proyecto.">
+                    Each student may participate in one project. Students can work alone or in groups of up to three on one project.
+                </small>
+
+                <div class="form-group" style="margin-top:16px;">
+                    <label data-en="Is this a group project? *" data-es="¿Es un proyecto en grupo? *">Is this a group project? *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="isGroup" value="no" checked class="group-toggle">
+                            <span data-en="No — individual project" data-es="No — proyecto individual">No — individual project</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="isGroup" value="yes" class="group-toggle">
+                            <span data-en="Yes — group project" data-es="Sí — proyecto en grupo">Yes — group project</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Group Members (conditional) -->
+                <div class="group-fields" id="group-fields" style="display:none;">
+                    <div class="group-note">
+                        <small data-en="The student above is the project lead. Add up to two more group members below. Only one sign-up per group project is needed."
+                               data-es="El estudiante de arriba es el líder del proyecto. Agregue hasta dos miembros más abajo. Solo se necesita una inscripción por proyecto de grupo.">
+                            The student above is the project lead. Add up to two more group members below. Only one sign-up per group project is needed.
+                        </small>
+                    </div>
+                    <div id="group-members-list"></div>
+                    <button type="button" class="add-member-btn" id="add-member-btn">
+                        <span data-en="+ Add Group Member" data-es="+ Agregar Miembro">+ Add Group Member</span>
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label for="project-title" data-en="Project Title *" data-es="Título del Proyecto *">Project Title *</label>
+                    <input type="text" id="project-title" name="projectTitle" required
+                           data-en-placeholder="What's your project called?"
+                           data-es-placeholder="¿Cómo se llama tu proyecto?"
+                           placeholder="What's your project called?">
+                </div>
+
+                <div class="form-group">
+                    <label for="project-description" data-en="Brief Description *" data-es="Descripción Breve *">Brief Description *</label>
+                    <textarea id="project-description" name="projectDescription" rows="3" required
+                              data-en-placeholder="In a few sentences, what is your project about?"
+                              data-es-placeholder="En pocas oraciones, ¿de qué trata tu proyecto?"
+                              placeholder="In a few sentences, what is your project about?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label data-en="Does your project use any special materials or activities?" data-es="¿Tu proyecto usa materiales o actividades especiales?">Does your project use any special materials or activities?</label>
+                    <small data-en="For example: chemicals (like vinegar, baking soda, cleaning products), living animals, plants from outside, batteries, magnets, UV lights, rockets, or anything you'd want a grown-up's help with."
+                           data-es="Por ejemplo: químicos (como vinagre, bicarbonato, productos de limpieza), animales vivos, plantas de afuera, baterías, imanes, luces UV, cohetes, o cualquier cosa con la que necesitarías ayuda de un adulto.">
+                        For example: chemicals (like vinegar, baking soda, cleaning products), living animals, plants from outside, batteries, magnets, UV lights, rockets, or anything you'd want a grown-up's help with.
+                    </small>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="hasSafety" value="no" checked class="safety-toggle">
+                            <span data-en="No — just everyday materials" data-es="No — solo materiales comunes">No — just everyday materials</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="hasSafety" value="yes" class="safety-toggle">
+                            <span data-en="Yes — my project involves something on this list" data-es="Sí — mi proyecto incluye algo de esta lista">Yes — my project involves something on this list</span>
+                        </label>
+                    </div>
+                    <small data-en="Most projects don't — this is just so we can help plan ahead." data-es="La mayoría de los proyectos no los necesitan — esto es solo para ayudarnos a planificar.">Most projects don't — this is just so we can help plan ahead.</small>
+                </div>
+
+                <!-- Safety Details (conditional) -->
+                <div id="safety-fields" style="display:none;">
+                    <div class="form-group">
+                        <label for="safety-details" data-en="Please describe the special materials or activities:" data-es="Por favor describe los materiales o actividades especiales:">Please describe the special materials or activities:</label>
+                        <textarea id="safety-details" name="safetyDetails" rows="3"
+                                  data-en-placeholder="Tell us what materials or activities your project involves so we can help make sure everything is safe and ready."
+                                  data-es-placeholder="Cuéntanos qué materiales o actividades incluye tu proyecto para que podamos asegurarnos de que todo sea seguro y esté listo."
+                                  placeholder="Tell us what materials or activities your project involves so we can help make sure everything is safe and ready."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="category" data-en="Project Category" data-es="Categoría del Proyecto">Project Category</label>
+                    <select id="category" name="category">
+                        <option value="" data-en="Select a category (optional)" data-es="Seleccionar categoría (opcional)">Select a category (optional)</option>
+                        <option value="clean-water" data-en="Clean Water" data-es="Agua Limpia">Clean Water</option>
+                        <option value="energy" data-en="Energy" data-es="Energía">Energy</option>
+                        <option value="food" data-en="Food & Agriculture" data-es="Alimentos y Agricultura">Food & Agriculture</option>
+                        <option value="sustainability" data-en="Sustainability & Recycling" data-es="Sostenibilidad y Reciclaje">Sustainability & Recycling</option>
+                        <option value="health" data-en="Health & Body" data-es="Salud y Cuerpo">Health & Body</option>
+                        <option value="space" data-en="Space & Weather" data-es="Espacio y Clima">Space & Weather</option>
+                        <option value="animals" data-en="Animals & Nature" data-es="Animales y Naturaleza">Animals & Nature</option>
+                        <option value="engineering" data-en="Engineering & Building" data-es="Ingeniería y Construcción">Engineering & Building</option>
+                        <option value="other" data-en="Other" data-es="Otro">Other</option>
+                    </select>
+                </div>
+            </fieldset>
+
+            <!-- Parent Info -->
+            <fieldset data-aos="fade-up">
+                <legend data-en="Parent / Guardian Information" data-es="Información del Padre / Tutor">Parent / Guardian Information</legend>
+
+                <div class="form-group">
+                    <label for="parent-name" data-en="Parent/Guardian Name *" data-es="Nombre del Padre/Tutor *">Parent/Guardian Name *</label>
+                    <input type="text" id="parent-name" name="parentName" required
+                           data-en-placeholder="First and Last Name"
+                           data-es-placeholder="Nombre y Apellido"
+                           placeholder="First and Last Name">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="parent-email" data-en="Email *" data-es="Correo Electrónico *">Email *</label>
+                        <input type="email" id="parent-email" name="parentEmail" required
+                               placeholder="email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="parent-phone" data-en="Phone" data-es="Teléfono">Phone</label>
+                        <input type="tel" id="parent-phone" name="parentPhone"
+                               placeholder="(555) 555-5555">
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Needs -->
+            <fieldset data-aos="fade-up">
+                <legend data-en="Day-Of Details" data-es="Detalles del Día">Day-Of Details</legend>
+
+                <div class="form-group">
+                    <label data-en="Do you need a tri-fold display board?" data-es="¿Necesita un tablero tríptico?">Do you need a tri-fold display board?</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="needBoard" value="yes">
+                            <span data-en="Yes, I need a board" data-es="Sí, necesito un tablero">Yes, I need a board</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="needBoard" value="no" checked>
+                            <span data-en="No, I have my own" data-es="No, tengo el mío">No, I have my own</span>
+                        </label>
+                    </div>
+                    <small data-en="A limited number of tri-fold boards are available in the front office, while supplies last." data-es="Hay una cantidad limitada de tableros trípticos disponibles en la oficina, hasta agotar existencias.">A limited number of tri-fold boards are available in the front office, while supplies last.</small>
+                </div>
+
+                <div class="form-group">
+                    <label data-en="Will you need access to electricity for your project?" data-es="¿Necesitará acceso a electricidad para su proyecto?">Will you need access to electricity for your project?</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="needPower" value="yes">
+                            <span data-en="Yes" data-es="Sí">Yes</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="needPower" value="no" checked>
+                            <span data-en="No" data-es="No">No</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="special-needs" data-en="Anything else we should know?" data-es="¿Algo más que debamos saber?">Anything else we should know?</label>
+                    <textarea id="special-needs" name="specialNeeds" rows="2"
+                              data-en-placeholder="Special setup needs, accommodations, etc."
+                              data-es-placeholder="Necesidades especiales de montaje, acomodaciones, etc."
+                              placeholder="Special setup needs, accommodations, etc."></textarea>
+                </div>
+            </fieldset>
+
+            <!-- Privacy & Consent -->
+            <fieldset class="privacy-fieldset">
+                <div class="privacy-notice">
+                    <div class="privacy-icon">🔒</div>
+                    <div>
+                        <strong data-en="Your Privacy" data-es="Su Privacidad">Your Privacy</strong>
+                        <p data-en="The information you provide is used solely by Capri Elementary PTA to coordinate Science Fair participation. Your data is stored securely and shared only with event organizers (PTA volunteers and school staff). We do not share your information with third parties. All sign-up data will be deleted within 30 days after the event."
+                           data-es="La información que proporciona se utiliza únicamente por el PTA de Capri Elementary para coordinar la participación en la Feria de Ciencias. Sus datos se almacenan de forma segura y se comparten solo con los organizadores del evento (voluntarios del PTA y personal escolar). No compartimos su información con terceros. Todos los datos de inscripción se eliminarán dentro de los 30 días posteriores al evento.">
+                            The information you provide is used solely by Capri Elementary PTA to coordinate Science Fair participation. Your data is stored securely and shared only with event organizers (PTA volunteers and school staff). We do not share your information with third parties. All sign-up data will be deleted within 30 days after the event.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group consent-group" style="position:relative;">
+                    <!-- Full-height lightning bolt overlay -->
+                    <div class="lightning-full" id="lightning-full" aria-hidden="true">
+                        <svg class="lightning-full-svg" viewBox="0 0 300 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Traced from reference photo — main bolt starts upper-right, angles down-left with tight zigzags -->
+
+                            <!-- Outer glow -->
+                            <path class="bolt-path bolt-outer" d="M195,0 L190,15 L200,30 L185,50 L195,65 L180,85 L192,100 L175,125 L188,140 L170,165 L182,180 L165,205 L178,220 L158,248 L172,265 L152,290 L165,305 L145,335 L160,350 L140,378 L155,395 L132,425 L148,440 L125,470 L142,488 L120,515 L135,530 L112,560 L128,578 L108,605 L122,620 L102,650 L118,668 L98,695 L112,710 L92,740 L108,758 L90,785 L105,800 L88,830 L102,845 L85,875 L98,892 L82,920 L95,938 L80,965 L90,985 L85,1000" fill="none" stroke="#9999bb" stroke-width="16" opacity="0.12" stroke-linecap="round" stroke-linejoin="round"/>
+                            <!-- Mid glow -->
+                            <path class="bolt-path bolt-mid" d="M195,0 L190,15 L200,30 L185,50 L195,65 L180,85 L192,100 L175,125 L188,140 L170,165 L182,180 L165,205 L178,220 L158,248 L172,265 L152,290 L165,305 L145,335 L160,350 L140,378 L155,395 L132,425 L148,440 L125,470 L142,488 L120,515 L135,530 L112,560 L128,578 L108,605 L122,620 L102,650 L118,668 L98,695 L112,710 L92,740 L108,758 L90,785 L105,800 L88,830 L102,845 L85,875 L98,892 L82,920 L95,938 L80,965 L90,985 L85,1000" fill="none" stroke="#ffff66" stroke-width="7" opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <!-- White hot core -->
+                            <path class="bolt-path bolt-core" d="M195,0 L190,15 L200,30 L185,50 L195,65 L180,85 L192,100 L175,125 L188,140 L170,165 L182,180 L165,205 L178,220 L158,248 L172,265 L152,290 L165,305 L145,335 L160,350 L140,378 L155,395 L132,425 L148,440 L125,470 L142,488 L120,515 L135,530 L112,560 L128,578 L108,605 L122,620 L102,650 L118,668 L98,695 L112,710 L92,740 L108,758 L90,785 L105,800 L88,830 L102,845 L85,875 L98,892 L82,920 L95,938 L80,965 L90,985 L85,1000" fill="none" stroke="#ffffcc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+                            <!-- Major left fork at ~28% — long branch going far left -->
+                            <path class="bolt-path bolt-branch" d="M158,248 L140,262 L128,270 L115,285 L100,298 L88,315 L72,330 L60,348 L45,365 L35,385 L25,410" fill="none" stroke="#9999aa" stroke-width="8" opacity="0.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path class="bolt-path bolt-branch" d="M158,248 L140,262 L128,270 L115,285 L100,298 L88,315 L72,330 L60,348 L45,365 L35,385 L25,410" fill="none" stroke="#ffff66" stroke-width="4" opacity="0.45" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path class="bolt-path bolt-branch" d="M158,248 L140,262 L128,270 L115,285 L100,298 L88,315 L72,330 L60,348 L45,365 L35,385 L25,410" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <!-- Sub-branch off the major fork -->
+                            <path class="bolt-path bolt-branch" d="M100,298 L85,305 L72,298 L58,310 L48,305" fill="none" stroke="#ffff66" stroke-width="2" opacity="0.3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path class="bolt-path bolt-branch" d="M100,298 L85,305 L72,298 L58,310 L48,305" fill="none" stroke="#ffffff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+                            <!-- Right fork at ~55% -->
+                            <path class="bolt-path bolt-branch" d="M120,515 L138,528 L150,545 L162,560 L170,580" fill="none" stroke="#9999aa" stroke-width="5" opacity="0.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path class="bolt-path bolt-branch" d="M120,515 L138,528 L150,545 L162,560 L170,580" fill="none" stroke="#ffff66" stroke-width="3" opacity="0.4" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path class="bolt-path bolt-branch" d="M120,515 L138,528 L150,545 L162,560 L170,580" fill="none" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+
+                            <!-- Small left fork at ~70% -->
+                            <path class="bolt-path bolt-branch" d="M98,695 L82,708 L68,718 L58,735" fill="none" stroke="#ffff66" stroke-width="2.5" opacity="0.3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path class="bolt-path bolt-branch" d="M98,695 L82,708 L68,718 L58,735" fill="none" stroke="#ffffff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+                            <!-- Small right fork at ~85% -->
+                            <path class="bolt-path bolt-branch" d="M88,830 L105,842 L115,858" fill="none" stroke="#ffff66" stroke-width="2" opacity="0.25" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path class="bolt-path bolt-branch" d="M88,830 L105,842 L115,858" fill="none" stroke="#ffffff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+                            <!-- Tiny fork at ~42% -->
+                            <path class="bolt-path bolt-branch" d="M140,378 L125,388 L118,400" fill="none" stroke="#ffff66" stroke-width="1.5" opacity="0.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div class="lightning-impact"></div>
+                        <div class="smoke-puff smoke-1"></div>
+                        <div class="smoke-puff smoke-2"></div>
+                        <div class="smoke-puff smoke-3"></div>
+                        <div class="smoke-puff smoke-4"></div>
+                        <div class="smoke-puff smoke-5"></div>
+                        <div class="smoke-puff smoke-6"></div>
+                    </div>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="consent" name="consent" required>
+                        <span data-en="I understand and agree that my information will be used to coordinate Science Fair participation as described above. *"
+                              data-es="Entiendo y acepto que mi información se utilizará para coordinar la participación en la Feria de Ciencias como se describe arriba. *">
+                            I understand and agree that my information will be used to coordinate Science Fair participation as described above. *
+                        </span>
+                    </label>
+                </div>
+            </fieldset>
+
+            <!-- Optional: Support STEM -->
+            <div class="donate-strip">
+                <span class="donate-label" data-en="Inspired? Support STEM at Capri:" data-es="Inspirado? Apoya STEM en Capri:">Inspired? Support STEM at Capri:</span>
+                <div class="donate-links">
+                    <a href="https://caprieef.org/" target="_blank" rel="noopener" class="donate-chip" data-en="Capri EEF" data-es="Capri EEF">Capri EEF</a>
+                    <a href="https://www.capripta.org/fundraisers" target="_blank" rel="noopener" class="donate-chip" data-en="PTA Giving" data-es="Donar al PTA">PTA Giving</a>
+                    <a href="https://www.donorschoose.org/schools/california/encinitas-union-school-district/capri-elementary-school/36382" target="_blank" rel="noopener" class="donate-chip" data-en="DonorsChoose" data-es="DonorsChoose">DonorsChoose</a>
+                </div>
+            </div>
+
+            <div class="submit-orbit-wrap">
+                <div class="orbit-dot orbit-dot-1"></div>
+                <div class="orbit-dot orbit-dot-2"></div>
+                <div class="orbit-dot orbit-dot-3"></div>
+                <div class="orbit-dot orbit-dot-4"></div>
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    <span data-en="Sign Up for Science Fair!" data-es="¡Inscribirse en la Feria de Ciencias!">Sign Up for Science Fair!</span>
+                </button>
+            </div>
+
+            <p class="form-footer" data-en="Questions? Contact Science Fair coordinator Kris Thomson at krisdthomson@gmail.com"
+               data-es="¿Preguntas? Contacte a la coordinadora de la Feria de Ciencias, Kris Thomson, en krisdthomson@gmail.com">
+                Questions? Contact Science Fair coordinator Kris Thomson at krisdthomson@gmail.com
+            </p>
+        </form>
+    </section>
+</main>
+
+    </div>
+</div>
+
+<!-- Sine wave before footer -->
+<svg class="footer-wave" viewBox="0 0 1200 16" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0,8 Q50,0 100,8 Q150,16 200,8 Q250,0 300,8 Q350,16 400,8 Q450,0 500,8 Q550,16 600,8 Q650,0 700,8 Q750,16 800,8 Q850,0 900,8 Q950,16 1000,8 Q1050,0 1100,8 Q1150,16 1200,8 L1200,16 L0,16 Z" fill="#6a9aad"/>
+</svg>
+
+<!-- Footer -->
+<footer>
+    <p data-en="Capri Elementary PTA • Science Fair 2026-27" data-es="PTA de Capri Elementary • Feria de Ciencias 2026-27">Capri Elementary PTA • Science Fair 2026-27</p>
+    <p data-en="Science in Life! 🔬" data-es="¡La Ciencia en la Vida! 🔬">Science in Life! 🔬</p>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="script.js"></script>
+<script>
+// AOS scroll animations
+AOS.init({ duration: 600, once: true, offset: 50 });
+
+// Hero entrance sequence
+(function() {
+    var flash = document.getElementById('hero-flash');
+    var sparksContainer = document.getElementById('sparks-container');
+
+    // Generate sparks
+    function createSparks() {
+        for (var i = 0; i < 30; i++) {
+            var spark = document.createElement('div');
+            spark.className = 'spark';
+            var angle = (Math.random() * 360) * (Math.PI / 180);
+            var distance = 80 + Math.random() * 200;
+            var x = Math.cos(angle) * distance;
+            var y = Math.sin(angle) * distance;
+            var size = 3 + Math.random() * 5;
+            var color = Math.random() > 0.5 ? '#9cc5d4' : '#ffffff';
+            if (Math.random() > 0.7) color = '#e8611a';
+            spark.style.cssText = 'width:' + size + 'px;height:' + size + 'px;background:' + color +
+                ';--tx:' + x + 'px;--ty:' + y + 'px;animation-delay:' + (Math.random() * 0.2) + 's;';
+            sparksContainer.appendChild(spark);
+        }
+    }
+
+    // Trigger sequence
+    setTimeout(function() {
+        // Flash
+        flash.classList.add('flash-active');
+        createSparks();
+        sparksContainer.classList.add('sparks-active');
+
+        // Title materializes from glow
+        setTimeout(function() {
+            document.querySelector('.hero-anim-title').classList.add('anim-in');
+        }, 300);
+
+        // Badge fades in
+        setTimeout(function() {
+            document.querySelector('.hero-anim-badge').classList.add('anim-in');
+        }, 600);
+
+        // Theme types in
+        setTimeout(function() {
+            document.querySelector('.hero-anim-theme').classList.add('anim-in');
+        }, 900);
+
+        // Details pop in one by one
+        setTimeout(function() {
+            document.querySelector('.hero-anim-detail-1').classList.add('anim-in');
+        }, 1200);
+        setTimeout(function() {
+            document.querySelector('.hero-anim-detail-2').classList.add('anim-in');
+        }, 1400);
+        setTimeout(function() {
+            document.querySelector('.hero-anim-detail-3').classList.add('anim-in');
+        }, 1600);
+
+        // Logos slide in from sides
+        setTimeout(function() {
+            var left = document.querySelector('.hero-anim-logo-left');
+            var right = document.querySelector('.hero-anim-logo-right');
+            if (left) left.classList.add('anim-in');
+            if (right) right.classList.add('anim-in');
+        }, 500);
+
+    }, 400);
+})();
+</script>
+</body>
+</html>
