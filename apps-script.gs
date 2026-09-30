@@ -26,10 +26,10 @@ const SPREADSHEET_ID = '1MdSP6gHM4ARZlQekV2MleN_z81r0hbm0IkBb4UYpA-E';
 const SPREADSHEET_NAME = 'Capri Science Fair 2026-27 — Sign-Ups';
 // Admins who have access to the spreadsheet (used for sharing on setup)
 const ADMIN_EMAILS = ['capriptapresident@gmail.com', 'christopher.kohl@gmail.com', 'tracykohl06@gmail.com'];
-// Notification recipients — only Chris gets sign-up notification emails
-const NOTIFY_EMAILS = ['christopher.kohl@gmail.com'];
-// Sign-ups close at Final Approval (Thu Nov 5)
-const DEADLINE = new Date('2026-11-05T23:55:00');
+// Notification recipients — Chris and Kris (Science Fair coordinator) get sign-up notification emails
+const NOTIFY_EMAILS = ['christopher.kohl@gmail.com', 'krisdthomson@gmail.com'];
+// Final Approval is Thu Nov 5 (published date); the form accepts entries through Thu Nov 12 per Kris
+const DEADLINE = new Date('2026-11-12T23:55:00');
 
 // ===== Setup (DISABLED — spreadsheet already exists and is locked by ID) =====
 // This function is intentionally a no-op that throws. The original setup logic
@@ -383,8 +383,10 @@ Hora: 5:00 PM – 7:00 PM
 Lugar: MPR de Capri Elementary
 
 HORARIO:
-• 5:00–7:00 PM — Feria de Ciencias en el MPR, con SD Lab Rats
-• Hora de montaje y horario detallado próximamente
+• 3:00–5:00 PM — Montaje de proyectos en el MPR
+• 5:00–7:00 PM — Feria de Ciencias (demostraciones de SD Lab Rats afuera)
+• 6:30–7:00 PM — Show de SD Lab Rats
+• 7:00–7:30 PM — Desmontaje
 
 📌 QUÉ TRAER:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -426,8 +428,10 @@ Time: 5:00 PM – 7:00 PM
 Location: Capri Elementary MPR
 
 SCHEDULE:
-• 5:00–7:00 PM — Science Fair in the MPR, with SD Lab Rats
-• Set-up time and detailed schedule coming soon
+• 3:00–5:00 PM — Project set-up in the MPR
+• 5:00–7:00 PM — Science Fair (SD Lab Rats demos out front)
+• 6:30–7:00 PM — SD Lab Rats show
+• 7:00–7:30 PM — Teardown
 
 📌 WHAT TO BRING:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -457,7 +461,7 @@ Capri Elementary PTA
 }
 
 // ===== Admin Notification =====
-// Only Chris gets these (NOTIFY_EMAILS) to avoid spamming the rest of the admin list.
+// Only NOTIFY_EMAILS (Chris + Kris) get these, to avoid spamming the rest of the admin list.
 function notifyAdmins(count) {
     const subject = `🔬 Science Fair Update: ${count} sign-up${count !== 1 ? 's' : ''}!`;
     const body = `The Capri Science Fair 2026-27 sign-up page has received ${count} registration${count !== 1 ? 's' : ''}.\n\nView all sign-ups in the spreadsheet.`;
