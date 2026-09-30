@@ -3,8 +3,8 @@ const CONFIG = {
     // UPDATE THIS: Your Google Apps Script Web App URL after deploying
     APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwRAR60DTotOBdDuemXk3xDd8nd05sr6XYBIvPyojZQS0gYKQaMPZeiz0P3s0vS0y4/exec',
 
-    // Sign-ups close at Final Approval (Thu Nov 5)
-    DEADLINE: new Date('2026-11-05T23:55:00'),
+    // Final Approval is Thu Nov 5 (published date); the form stays open through Thu Nov 12 per Kris
+    DEADLINE: new Date('2026-11-12T23:55:00'),
 
     // Backend is live only once the 2026-27 Apps Script URL is set above.
     // Until then the form is replaced by a "sign-ups opening soon" notice.
@@ -497,10 +497,10 @@ function escapeHtml(s) {
 function downloadCalendar(d) {
     // Generate .ics file with sign-up details in description
     var pad = function(n) { return n < 10 ? '0' + n : n; };
-    // Event: November 19, 2026, 5:00 PM - 7:00 PM Pacific
+    // Event: November 19, 2026, 3:00 PM set-up through 7:30 PM teardown, Pacific
     // Use UTC timestamps for portability — PT is UTC-8 in November (standard time)
-    var dtStart = '20261120T010000Z'; // Nov 19, 5:00 PM PT = Nov 20, 01:00 UTC
-    var dtEnd = '20261120T030000Z';   // Nov 19, 7:00 PM PT = Nov 20, 03:00 UTC
+    var dtStart = '20261119T230000Z'; // Nov 19, 3:00 PM PT = Nov 19, 23:00 UTC
+    var dtEnd = '20261120T033000Z';   // Nov 19, 7:30 PM PT = Nov 20, 03:30 UTC
     var now = new Date();
     var dtStamp = now.getUTCFullYear() +
                   pad(now.getUTCMonth()+1) + pad(now.getUTCDate()) + 'T' +
@@ -535,8 +535,10 @@ function downloadCalendar(d) {
         '- Thu Nov 5: Final Approval\\n' +
         '- Thu Nov 19, 5-7 PM: Science Fair in the MPR, with SD Lab Rats\\n\\n' +
         'SCHEDULE:\\n' +
-        '5:00-7:00 PM — Science Fair in the MPR, with SD Lab Rats\\n' +
-        'Set-up time and detailed schedule coming soon\\n\\n' +
+        '3:00-5:00 PM — Project set-up in the MPR\\n' +
+        '5:00-7:00 PM — Science Fair (SD Lab Rats demos out front)\\n' +
+        '6:30-7:00 PM — SD Lab Rats show\\n' +
+        '7:00-7:30 PM — Teardown\\n\\n' +
         'Quick Start Guide: https://localhostusr.github.io/capri-science-fair-2026-27/guide.html\\n\\n' +
         'Questions? Kris Thomson, krisdthomson@gmail.com';
 
