@@ -53,8 +53,9 @@ function setLang(lang) {
     // Update deadline date display
     updateDeadlineDisplay();
 
-    // Re-label the test-tube meter in the new language
+    // Re-label the test-tube meter and countdown in the new language
     updateTubeMeter();
+    if (document.getElementById('countdown')) updateCountdown();
 }
 
 // ===== Test-Tube Progress Meter (display only — never blocks submit) =====
