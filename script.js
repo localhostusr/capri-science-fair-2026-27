@@ -1,14 +1,14 @@
 // ===== Configuration =====
 const CONFIG = {
     // UPDATE THIS: Your Google Apps Script Web App URL after deploying
-    APPS_SCRIPT_URL: '',
+    APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwRAR60DTotOBdDuemXk3xDd8nd05sr6XYBIvPyojZQS0gYKQaMPZeiz0P3s0vS0y4/exec',
 
     // Sign-ups close at Final Approval (Thu Nov 5)
     DEADLINE: new Date('2026-11-05T23:55:00'),
 
     // Backend is live only once the 2026-27 Apps Script URL is set above.
     // Until then the form is replaced by a "sign-ups opening soon" notice.
-    BACKEND_LIVE: false
+    BACKEND_LIVE: true
 };
 
 // ===== Visit Tracking =====
