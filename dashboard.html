@@ -518,41 +518,57 @@ const PALETTE = {
 };
 
 const CATEGORY_COLORS = {
-    'clean-water': '#06b6d4',
-    'energy': '#fbbf24',
-    'food': '#10b981',
-    'sustainability': '#84cc16',
+    'sports': '#e8611a',
+    'food': '#f59e0b',
+    'nature': '#10b981',
+    'music': '#ec4899',
+    'games': '#fbbf24',
+    'rides': '#8b5cf6',
+    'space': '#3b82f6',
     'health': '#ef4444',
-    'space': '#8b5cf6',
-    'animals': '#f59e0b',
     'engineering': '#6a9aad',
     'other': '#94a3b8',
     'uncategorized': '#cbd5e1'
 };
 
 const CATEGORY_LABELS = {
-    'clean-water': 'Clean Water',
-    'energy': 'Energy',
-    'food': 'Food & Agriculture',
-    'sustainability': 'Sustainability',
-    'health': 'Health & Body',
+    'sports': 'Sports & Movement',
+    'food': 'Food & Cooking',
+    'nature': 'Nature & Animals',
+    'music': 'Music & Sound',
+    'games': 'Games, Toys & Lego',
+    'rides': 'Rides & Motion',
     'space': 'Space & Weather',
-    'animals': 'Animals & Nature',
-    'engineering': 'Engineering',
+    'health': 'Body & Health',
+    'engineering': 'Building & Engineering',
     'other': 'Other',
     'uncategorized': 'No category'
 };
 
-// Normalize category keys — the sheet may have full display text ("sustainability & recycling")
-// instead of short keys ("sustainability"). Map them back so the heatmap matches.
+// Normalize category keys — the sheet may have full display text ("food & cooking")
+// instead of short keys ("food"). Map them back so the heatmap matches.
+// 2026 keys are mapped to their closest 2026-27 category in case any stray old values appear.
 const CATEGORY_ALIASES = {
-    'clean water': 'clean-water',
-    'food & agriculture': 'food',
-    'sustainability & recycling': 'sustainability',
-    'health & body': 'health',
+    'sports & movement': 'sports',
+    'food & cooking': 'food',
+    'nature & animals': 'nature',
+    'music & sound': 'music',
+    'games, toys & lego': 'games',
+    'rides & motion': 'rides',
+    'rides & motion (like disneyland!)': 'rides',
     'space & weather': 'space',
-    'animals & nature': 'animals',
-    'engineering & building': 'engineering'
+    'body & health': 'health',
+    'building & engineering': 'engineering',
+    'animals': 'nature',
+    'animals & nature': 'nature',
+    'food & agriculture': 'food',
+    'health & body': 'health',
+    'engineering & building': 'engineering',
+    'clean-water': 'other',
+    'clean water': 'other',
+    'energy': 'other',
+    'sustainability': 'other',
+    'sustainability & recycling': 'other'
 };
 
 function normalizeCategories(byCategory) {
@@ -583,7 +599,7 @@ async function loadStats() {
 
 // Always-visible baseline lists — every grade and category shows even with 0 entries
 const ALL_GRADES = ['K', '1', '2', '3', '4', '5', '6'];
-const ALL_CATEGORIES = ['clean-water', 'energy', 'food', 'sustainability', 'health', 'space', 'animals', 'engineering', 'other'];
+const ALL_CATEGORIES = ['sports', 'food', 'nature', 'music', 'games', 'rides', 'space', 'health', 'engineering', 'other'];
 
 function renderDashboard(stats) {
     const updatedAt = stats.updatedAt ? new Date(stats.updatedAt) : new Date();

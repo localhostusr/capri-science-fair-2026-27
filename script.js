@@ -52,6 +52,44 @@ function setLang(lang) {
 
     // Update deadline date display
     updateDeadlineDisplay();
+
+    // Re-label the test-tube meter and countdown in the new language
+    updateTubeMeter();
+    if (document.getElementById('countdown')) updateCountdown();
+}
+
+// ===== Test-Tube Progress Meter (display only — never blocks submit) =====
+const REDUCED_MOTION = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FLASK_RISE_PX = 80; // how far the big flask's liquid climbs at 100%
+
+function updateTubeMeter() {
+    const form = document.getElementById('signup-form');
+    const meter = document.getElementById('tube-meter');
+    if (!form || !meter) return;
+
+    // Count required fields that are visible and valid (reads validity only, never values)
+    const required = Array.from(form.querySelectorAll('[required]')).filter(el => el.offsetParent !== null || el.type === 'checkbox');
+    const done = required.filter(el => el.checkValidity()).length;
+    const pct = required.length ? Math.round((done / required.length) * 100) : 0;
+
+    const liquid = document.getElementById('tube-liquid');
+    if (liquid) liquid.setAttribute('width', String(2 * pct)); // tube interior is 200 units wide
+
+    const flask = document.getElementById('flask-liquid');
+    if (flask) flask.style.transform = 'translateY(' + (-FLASK_RISE_PX * pct / 100) + 'px)';
+
+    const label = document.getElementById('tube-label');
+    const isEs = currentLang === 'es';
+    if (label) {
+        label.textContent = pct === 100
+            ? (isEs ? '¡Listo para despegar! 🚀' : 'Ready to launch! 🚀')
+            : (isEs ? 'Experimento ' + pct + '% completo' : 'Experiment ' + pct + '% complete');
+    }
+
+    meter.setAttribute('aria-valuenow', String(pct));
+    meter.style.setProperty('--bubble-run', Math.max(20, 2 * pct - 20) + 'px');
+    meter.classList.toggle('tube-active', pct > 0 && pct < 100);
+    meter.classList.toggle('tube-full', pct === 100);
 }
 
 // ===== Countdown to the Fair (not a deadline — just excitement) =====
@@ -306,7 +344,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
                 body: JSON.stringify(formData)
             });
 
-            showSuccess(formData);
+            eruptThen(showSuccess, formData);
         } catch (error) {
             console.error('Submission error:', error);
             submitBtn.disabled = false;
@@ -321,6 +359,62 @@ document.getElementById('signup-form').addEventListener('submit', async function
         setTimeout(() => showSuccess(formData), 1000);
     }
 });
+
+// ===== Volcano Eruption on Submit =====
+// Baking-soda volcano of molecules from the submit button, then the success card.
+// The callback ALWAYS runs exactly once, even if the effect fails or is skipped.
+function eruptThen(callback, data) {
+    let done = false;
+    const finish = function() {
+        if (done) return;
+        done = true;
+        callback(data);
+    };
+
+    if (REDUCED_MOTION) { finish(); return; }
+
+    try {
+        const btn = document.getElementById('submit-btn');
+        const rect = btn.getBoundingClientRect();
+        const originX = rect.left + rect.width / 2;
+        const originY = rect.top;
+
+        const layer = document.createElement('div');
+        layer.className = 'volcano-layer';
+        layer.setAttribute('aria-hidden', 'true');
+
+        const lava = document.createElement('div');
+        lava.className = 'volcano-lava';
+        lava.style.left = originX + 'px';
+        lava.style.top = (originY - 80) + 'px';
+        layer.appendChild(lava);
+
+        const colors = ['#e8611a', '#9cc5d4', '#ffffff', '#e8611a', '#9cc5d4'];
+        for (let i = 0; i < 40; i++) {
+            const bit = document.createElement('div');
+            const color = colors[i % colors.length];
+            const size = 5 + Math.random() * 9;
+            // Mostly upward, fanning out like an eruption
+            const angle = (-90 + (Math.random() * 110 - 55)) * (Math.PI / 180);
+            const distance = 120 + Math.random() * 260;
+            bit.className = 'volcano-bit' + (i % 3 === 0 ? ' molecule' : '');
+            bit.style.cssText = 'left:' + originX + 'px;top:' + originY + 'px;width:' + size + 'px;height:' + size + 'px;' +
+                'background:' + color + ';color:' + color + ';' +
+                (color === '#ffffff' ? 'box-shadow:0 0 0 1px rgba(0,0,0,0.15);' : '') +
+                '--tx:' + (Math.cos(angle) * distance) + 'px;--ty:' + (Math.sin(angle) * distance) + 'px;' +
+                '--rot:' + Math.round(Math.random() * 360) + 'deg;animation-delay:' + (Math.random() * 0.15) + 's;';
+            layer.appendChild(bit);
+        }
+
+        document.body.appendChild(layer);
+        setTimeout(function() { layer.remove(); }, 1400);
+        setTimeout(finish, 900);
+    } catch (e) {
+        finish();
+    }
+    // Safety net: never leave a family without their confirmation
+    setTimeout(finish, 2000);
+}
 
 function showSuccess(data) {
     document.getElementById('signup-form').style.display = 'none';
@@ -436,6 +530,10 @@ function downloadCalendar(d) {
         'WHAT TO BRING:\\n' +
         '- Your completed science project\\n' +
         '- Tri-fold display board (limited supply in the front office)\\n\\n' +
+        "WHAT'S NEXT:\\n" +
+        '- Thu Oct 15: First Approval of your project idea\\n' +
+        '- Thu Nov 5: Final Approval\\n' +
+        '- Thu Nov 19, 5-7 PM: Science Fair in the MPR, with SD Lab Rats\\n\\n' +
         'SCHEDULE:\\n' +
         '5:00-7:00 PM — Science Fair in the MPR, with SD Lab Rats\\n' +
         'Set-up time and detailed schedule coming soon\\n\\n' +
@@ -504,6 +602,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('form-coming-soon').style.display = '';
     }
 
+    // Test-tube progress meter
+    var signupForm = document.getElementById('signup-form');
+    if (signupForm) {
+        signupForm.addEventListener('input', updateTubeMeter);
+        signupForm.addEventListener('change', updateTubeMeter);
+        updateTubeMeter();
+    }
+
     // Group project toggle
     document.querySelectorAll('.group-toggle').forEach(function(radio) {
         radio.addEventListener('change', toggleGroupFields);
@@ -527,7 +633,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var consentBox = document.getElementById('consent');
     if (consentBox) {
         consentBox.addEventListener('change', function() {
-            if (!this.checked) return;
+            if (!this.checked || REDUCED_MOTION) return;
             var bolt = document.getElementById('lightning-full');
             if (!bolt) return;
 

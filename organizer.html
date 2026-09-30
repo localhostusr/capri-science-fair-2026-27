@@ -382,11 +382,10 @@ const PALETTE = {
 };
 
 const ALL_GRADES = ['K','1','2','3','4','5','6'];
-const ALL_CATEGORIES = ['clean-water','energy','food','sustainability','health','space','animals','engineering','other'];
+const ALL_CATEGORIES = ['sports','food','nature','music','games','rides','space','health','engineering','other'];
 const CATEGORY_LABELS = {
-    'clean-water':'Clean Water','energy':'Energy','food':'Food & Ag',
-    'sustainability':'Sustainability','health':'Health','space':'Space',
-    'animals':'Animals','engineering':'Engineering','other':'Other'
+    'sports':'Sports','food':'Food','nature':'Nature','music':'Music','games':'Games & Lego',
+    'rides':'Rides & Motion','space':'Space','health':'Body & Health','engineering':'Engineering','other':'Other'
 };
 
 // Send a visit ping — counts the browser as unique once
@@ -432,8 +431,10 @@ function renderOrganizer(data) {
     if (data.recommendations && data.recommendations.underGrades && data.recommendations.underGrades.length) {
         recos.push(`Under-represented grades: <strong>${data.recommendations.underGrades.map(g => g === 'K' ? 'K' : 'Grade ' + g).join(', ')}</strong>`);
     }
-    if (data.recommendations && data.recommendations.emptyCategories && data.recommendations.emptyCategories.length) {
-        recos.push(`Categories with zero entries: <strong>${data.recommendations.emptyCategories.map(c => CATEGORY_LABELS[c] || c).join(', ')}</strong>`);
+    // Computed here (not from the backend) so the category list lives with the page
+    const emptyCategories = ALL_CATEGORIES.filter(c => !((base.byCategory || {})[c] > 0));
+    if (emptyCategories.length) {
+        recos.push(`Categories with zero entries: <strong>${emptyCategories.map(c => CATEGORY_LABELS[c] || c).join(', ')}</strong>`);
     }
     if (base.boardsNeeded > 0) {
         recos.push(`<strong>${base.boardsNeeded}</strong> tri-fold board${base.boardsNeeded === 1 ? '' : 's'} need to be picked up before event`);
