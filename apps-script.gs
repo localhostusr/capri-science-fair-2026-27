@@ -19,7 +19,7 @@
 const SPREADSHEET_ID = '1MdSP6gHM4ARZlQekV2MleN_z81r0hbm0IkBb4UYpA-E';
 const SPREADSHEET_NAME = 'Capri Science Fair 2026-27 — Sign-Ups';
 // Admins who have access to the spreadsheet (used for sharing on setup)
-const ADMIN_EMAILS = ['capriptapresident@gmail.com', 'christopher.kohl@gmail.com', 'tracykohl06@gmail.com', 'vasunanduri@gmail.com'];
+const ADMIN_EMAILS = ['capriptapresident@gmail.com', 'christopher.kohl@gmail.com', 'tracykohl06@gmail.com'];
 // Notification recipients — only Chris gets sign-up notification emails
 const NOTIFY_EMAILS = ['christopher.kohl@gmail.com'];
 // Sign-ups close the night before the fair so the roster is finalized on fair day
@@ -451,7 +451,7 @@ Capri Elementary PTA
 }
 
 // ===== Admin Notification =====
-// Only Chris gets these (NOTIFY_EMAILS) to avoid spamming Rose, Tracy, Mr. Nanduri.
+// Only Chris gets these (NOTIFY_EMAILS) to avoid spamming the rest of the admin list.
 function notifyAdmins(count) {
     const subject = `🔬 Science Fair Update: ${count} sign-up${count !== 1 ? 's' : ''}!`;
     const body = `The Capri Science Fair 2026-27 sign-up page has received ${count} registration${count !== 1 ? 's' : ''}.\n\nView all sign-ups in the spreadsheet.`;
