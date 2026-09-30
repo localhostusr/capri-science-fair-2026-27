@@ -2,6 +2,12 @@
  * Capri Science Fair 2026-27 — Google Apps Script Backend
  *
  * SETUP INSTRUCTIONS:
+ * Reuses the 2026 spreadsheet (renamed, old rows deleted) and the 2026 Apps Script project.
+ * TO UPDATE: open the existing project, paste this file into Code.gs, then
+ * Deploy > Manage deployments > pencil > Version: New version > Deploy.
+ * Never "New deployment" (that changes the Web App URL).
+ *
+ * ORIGINAL FIRST-TIME SETUP:
  * 1. Go to https://script.google.com and create a new project
  * 2. Paste this entire file into Code.gs
  * 3. Run the setup() function once (it will create the spreadsheet)
@@ -22,7 +28,7 @@ const SPREADSHEET_NAME = 'Capri Science Fair 2026-27 — Sign-Ups';
 const ADMIN_EMAILS = ['capriptapresident@gmail.com', 'christopher.kohl@gmail.com', 'tracykohl06@gmail.com'];
 // Notification recipients — only Chris gets sign-up notification emails
 const NOTIFY_EMAILS = ['christopher.kohl@gmail.com'];
-// Sign-ups close the night before the fair so the roster is finalized on fair day
+// Sign-ups close at Final Approval (Thu Nov 5)
 const DEADLINE = new Date('2026-11-05T23:55:00');
 
 // ===== Setup (DISABLED — spreadsheet already exists and is locked by ID) =====
@@ -469,5 +475,5 @@ function notifyAdmins(count) {
 function getSheet() {
     // Lock to specific spreadsheet ID — no searching by name
     const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-    return ss.getSheetByName('Sign-Ups');
+    return ss.getSheetByName('Sign-Ups 2026-27');
 }
