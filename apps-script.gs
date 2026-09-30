@@ -332,7 +332,7 @@ function getOrganizerStats() {
         underGrades = ['K','1','2','3','4','5','6'].filter(g => !(baseStats.byGrade[g] > 0));
     }
 
-    const allCats = ['clean-water','energy','food','sustainability','health','space','animals','engineering','other'];
+    const allCats = ['sports','food','nature','music','games','rides','space','health','engineering','other']; // organizer.html now computes this itself
     const emptyCats = allCats.filter(c => !(baseStats.byCategory[c] > 0));
 
     return {
