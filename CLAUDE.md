@@ -6,6 +6,8 @@
 
 - GitHub Pages builds from `main` only. Build on a branch, test locally (`python3 -m http.server`), then merge to `main` to go live.
 - Restore points are annotated tags. `v2026.09.30-live` = sign-ups open, before round 1. To roll back: `git revert <merge-sha> && git push`, or check out the tag's files.
+- The 2026 site (`localhostusr/capri-science-fair`, archived) now redirects every page to the matching 2026-27 page (done 2026.09.30). The original 2026 site is preserved at tag `v2026-final` in that repo.
+- Every sub-page shares the sticky bilingual "← Main Page" bar (`home-link.css`). Add it to any new page.
 - Use `/plan-improvement <idea>` (`.claude/commands/plan-improvement.md`) for any change.
 - Round 1 (merged 2026.09.30) set the categories to `sports, food, nature, music, games, rides, space, health, engineering, other`. Keep index.html, dashboard.html (`ALL_CATEGORIES`/`CATEGORY_LABELS`/`CATEGORY_ALIASES`), organizer.html, and apps-script.gs `allCats` in sync.
 
