@@ -799,7 +799,7 @@
 <script src="script.js"></script>
 <script>
 // AOS scroll animations
-AOS.init({ duration: 600, once: true, offset: 50 });
+AOS.init({ duration: 600, once: true, offset: 50, disable: REDUCED_MOTION });
 
 // Hero entrance sequence
 (function() {
@@ -822,6 +822,12 @@ AOS.init({ duration: 600, once: true, offset: 50 });
                 ';--tx:' + x + 'px;--ty:' + y + 'px;animation-delay:' + (Math.random() * 0.2) + 's;';
             sparksContainer.appendChild(spark);
         }
+    }
+
+    // Reduced motion: show everything at once, no flash or sparks
+    if (REDUCED_MOTION) {
+        document.querySelectorAll('.hero-anim').forEach(function(el) { el.classList.add('anim-in'); });
+        return;
     }
 
     // Trigger sequence

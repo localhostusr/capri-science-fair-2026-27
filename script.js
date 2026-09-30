@@ -343,7 +343,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
                 body: JSON.stringify(formData)
             });
 
-            showSuccess(formData);
+            eruptThen(showSuccess, formData);
         } catch (error) {
             console.error('Submission error:', error);
             submitBtn.disabled = false;
@@ -358,6 +358,62 @@ document.getElementById('signup-form').addEventListener('submit', async function
         setTimeout(() => showSuccess(formData), 1000);
     }
 });
+
+// ===== Volcano Eruption on Submit =====
+// Baking-soda volcano of molecules from the submit button, then the success card.
+// The callback ALWAYS runs exactly once, even if the effect fails or is skipped.
+function eruptThen(callback, data) {
+    let done = false;
+    const finish = function() {
+        if (done) return;
+        done = true;
+        callback(data);
+    };
+
+    if (REDUCED_MOTION) { finish(); return; }
+
+    try {
+        const btn = document.getElementById('submit-btn');
+        const rect = btn.getBoundingClientRect();
+        const originX = rect.left + rect.width / 2;
+        const originY = rect.top;
+
+        const layer = document.createElement('div');
+        layer.className = 'volcano-layer';
+        layer.setAttribute('aria-hidden', 'true');
+
+        const lava = document.createElement('div');
+        lava.className = 'volcano-lava';
+        lava.style.left = originX + 'px';
+        lava.style.top = (originY - 80) + 'px';
+        layer.appendChild(lava);
+
+        const colors = ['#e8611a', '#9cc5d4', '#ffffff', '#e8611a', '#9cc5d4'];
+        for (let i = 0; i < 40; i++) {
+            const bit = document.createElement('div');
+            const color = colors[i % colors.length];
+            const size = 5 + Math.random() * 9;
+            // Mostly upward, fanning out like an eruption
+            const angle = (-90 + (Math.random() * 110 - 55)) * (Math.PI / 180);
+            const distance = 120 + Math.random() * 260;
+            bit.className = 'volcano-bit' + (i % 3 === 0 ? ' molecule' : '');
+            bit.style.cssText = 'left:' + originX + 'px;top:' + originY + 'px;width:' + size + 'px;height:' + size + 'px;' +
+                'background:' + color + ';color:' + color + ';' +
+                (color === '#ffffff' ? 'box-shadow:0 0 0 1px rgba(0,0,0,0.15);' : '') +
+                '--tx:' + (Math.cos(angle) * distance) + 'px;--ty:' + (Math.sin(angle) * distance) + 'px;' +
+                '--rot:' + Math.round(Math.random() * 360) + 'deg;animation-delay:' + (Math.random() * 0.15) + 's;';
+            layer.appendChild(bit);
+        }
+
+        document.body.appendChild(layer);
+        setTimeout(function() { layer.remove(); }, 1400);
+        setTimeout(finish, 900);
+    } catch (e) {
+        finish();
+    }
+    // Safety net: never leave a family without their confirmation
+    setTimeout(finish, 2000);
+}
 
 function showSuccess(data) {
     document.getElementById('signup-form').style.display = 'none';
@@ -576,7 +632,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var consentBox = document.getElementById('consent');
     if (consentBox) {
         consentBox.addEventListener('change', function() {
-            if (!this.checked) return;
+            if (!this.checked || REDUCED_MOTION) return;
             var bolt = document.getElementById('lightning-full');
             if (!bolt) return;
 
