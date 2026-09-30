@@ -2,6 +2,13 @@
 
 **Status (2026.09.30).** This is the 2026-27 school-year fair: **Thu Nov 19, 2026, 5–7 PM, MPR**, theme "Science in Life!". Key dates: first approval Oct 15, final approval and sign-up close Nov 5 at 23:55. Coordinator: Kris Thomson (krisdthomson@gmail.com). Repo `localhostusr/capri-science-fair-2026-27`, live at https://localhostusr.github.io/capri-science-fair-2026-27/. The QR code (`qr-code.png`) encodes that URL, so never rename the repo. Content sweep is done. **Backend still pending:** `CONFIG.BACKEND_LIVE` is false and `APPS_SCRIPT_URL` is blank in script.js, dashboard, inspiration, and organizer, so the form shows "opening soon". Chris chose to **reuse the 2026 sheet** (same ID `1MdSP6gH…`, renamed "Capri Science Fair 2026-27 — Sign-Ups", 2026 rows deleted on 2026.09.30, tab renamed "Sign-Ups 2026-27"; Summary formulas follow the tab name). **Backend live since 2026.09.30:** the 2026 Apps Script project ("Capri Science Fair 2026", ID `1gjva6nX…`) is on Version 10 with the 2026-27 code. Deployment `AKfycbwRAR60DTotOBdDuemXk3xDd8nd05sr6XYBIvPyojZQS0gYKQaMPZeiz0P3s0vS0y4` is wired into script.js, dashboard, inspiration, and organizer, and `BACKEND_LIVE: true`. The older `AKfycbyajxk_…` URL returns 404, so don't use it. A test sign-up worked end to end and the test row was deleted. Older versions of the sheet (in version history) still hold 2026 data. Schedule details and the poster owner are waiting on Kris.
 
+## Safe-change workflow (live site, no staging)
+
+- GitHub Pages builds from `main` only. Build on a branch, test locally (`python3 -m http.server`), then merge to `main` to go live.
+- Restore points are annotated tags. `v2026.09.30-live` = sign-ups open, before round 1. To roll back: `git revert <merge-sha> && git push`, or check out the tag's files.
+- Use `/plan-improvement <idea>` (`.claude/commands/plan-improvement.md`) for any change.
+- Round 1 (merged 2026.09.30) set the categories to `sports, food, nature, music, games, rides, space, health, engineering, other`. Keep index.html, dashboard.html (`ALL_CATEGORIES`/`CATEGORY_LABELS`/`CATEGORY_ALIASES`), organizer.html, and apps-script.gs `allCats` in sync.
+
 ## What was decided at scaffold time
 
 - Fresh new Google Sheet for 2027 sign-ups. The 2026 sheet stays frozen with its final roster.
