@@ -436,6 +436,10 @@ function downloadCalendar(d) {
         'WHAT TO BRING:\\n' +
         '- Your completed science project\\n' +
         '- Tri-fold display board (limited supply in the front office)\\n\\n' +
+        "WHAT'S NEXT:\\n" +
+        '- Thu Oct 15: First Approval of your project idea\\n' +
+        '- Thu Nov 5: Final Approval\\n' +
+        '- Thu Nov 19, 5-7 PM: Science Fair in the MPR, with SD Lab Rats\\n\\n' +
         'SCHEDULE:\\n' +
         '5:00-7:00 PM — Science Fair in the MPR, with SD Lab Rats\\n' +
         'Set-up time and detailed schedule coming soon\\n\\n' +

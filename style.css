@@ -386,6 +386,19 @@ body {
     line-height: 1.6;
 }
 
+.info-card .info-link {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.info-card .info-link:hover {
+    text-decoration: underline;
+}
+
 /* ===== Sidebar Schedule ===== */
 /* Sidebar Guide Link */
 .sidebar-guide {
