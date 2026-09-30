@@ -52,6 +52,43 @@ function setLang(lang) {
 
     // Update deadline date display
     updateDeadlineDisplay();
+
+    // Re-label the test-tube meter in the new language
+    updateTubeMeter();
+}
+
+// ===== Test-Tube Progress Meter (display only — never blocks submit) =====
+const REDUCED_MOTION = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FLASK_RISE_PX = 80; // how far the big flask's liquid climbs at 100%
+
+function updateTubeMeter() {
+    const form = document.getElementById('signup-form');
+    const meter = document.getElementById('tube-meter');
+    if (!form || !meter) return;
+
+    // Count required fields that are visible and valid (reads validity only, never values)
+    const required = Array.from(form.querySelectorAll('[required]')).filter(el => el.offsetParent !== null || el.type === 'checkbox');
+    const done = required.filter(el => el.checkValidity()).length;
+    const pct = required.length ? Math.round((done / required.length) * 100) : 0;
+
+    const liquid = document.getElementById('tube-liquid');
+    if (liquid) liquid.setAttribute('width', String(2 * pct)); // tube interior is 200 units wide
+
+    const flask = document.getElementById('flask-liquid');
+    if (flask) flask.style.transform = 'translateY(' + (-FLASK_RISE_PX * pct / 100) + 'px)';
+
+    const label = document.getElementById('tube-label');
+    const isEs = currentLang === 'es';
+    if (label) {
+        label.textContent = pct === 100
+            ? (isEs ? '¡Listo para despegar! 🚀' : 'Ready to launch! 🚀')
+            : (isEs ? 'Experimento ' + pct + '% completo' : 'Experiment ' + pct + '% complete');
+    }
+
+    meter.setAttribute('aria-valuenow', String(pct));
+    meter.style.setProperty('--bubble-run', Math.max(20, 2 * pct - 20) + 'px');
+    meter.classList.toggle('tube-active', pct > 0 && pct < 100);
+    meter.classList.toggle('tube-full', pct === 100);
 }
 
 // ===== Countdown to the Fair (not a deadline — just excitement) =====
@@ -506,6 +543,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('signup-form').style.display = 'none';
         document.getElementById('deadline-banner').style.display = 'none';
         document.getElementById('form-coming-soon').style.display = '';
+    }
+
+    // Test-tube progress meter
+    var signupForm = document.getElementById('signup-form');
+    if (signupForm) {
+        signupForm.addEventListener('input', updateTubeMeter);
+        signupForm.addEventListener('change', updateTubeMeter);
+        updateTubeMeter();
     }
 
     // Group project toggle

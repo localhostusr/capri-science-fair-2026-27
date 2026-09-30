@@ -1839,6 +1839,170 @@ footer p + p {
     z-index: 1;
 }
 
+/* ===== Test-tube progress meter (sticky on top of the form) ===== */
+.tube-meter {
+    position: sticky;
+    top: 0;
+    z-index: 50;                 /* below the fixed language toggle (100) */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 16px;
+    padding: 6px 12px;
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.tube-svg {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 28px;
+}
+
+.tube-liquid {
+    fill: var(--secondary);
+    transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), fill 0.4s ease;
+}
+
+.tube-glass { stroke: var(--text); stroke-width: 1.5; opacity: 0.5; }
+.tube-cap { fill: var(--primary); }
+
+.tube-bubble {
+    fill: #fff;
+    opacity: 0;
+}
+
+.tube-meter.tube-active .tube-bubble {
+    animation: tubeBubble 1.6s ease-in infinite;
+}
+
+.tube-b2 { animation-delay: 0.5s !important; }
+.tube-b3 { animation-delay: 1s !important; }
+
+@keyframes tubeBubble {
+    0% { transform: translateX(0); opacity: 0; }
+    30% { opacity: 0.8; }
+    100% { transform: translateX(var(--bubble-run, 60px)); opacity: 0; }
+}
+
+.tube-label {
+    flex: 0 0 auto;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+/* Full tube: liquid turns Capri orange and foams over */
+.tube-meter.tube-full .tube-liquid { fill: var(--primary); }
+.tube-meter.tube-full .tube-label { color: var(--primary); }
+.tube-meter.tube-full { animation: tubeFoam 0.6s ease-out; }
+
+@keyframes tubeFoam {
+    0% { box-shadow: 0 0 0 0 rgba(232, 97, 26, 0.5); }
+    100% { box-shadow: 0 0 0 14px rgba(232, 97, 26, 0); }
+}
+
+/* Big flask liquid rises with the meter */
+#flask-liquid {
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (max-width: 600px) {
+    .tube-meter { padding-right: 12px; }
+    .tube-label { font-size: 12px; }
+}
+
+/* ===== Volcano eruption on submit ===== */
+.volcano-layer {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 200;
+}
+
+.volcano-lava {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    margin-left: -80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232, 97, 26, 0.9) 0%, rgba(232, 97, 26, 0.35) 45%, rgba(232, 97, 26, 0) 70%);
+    animation: lavaBurst 0.8s ease-out forwards;
+}
+
+@keyframes lavaBurst {
+    0% { transform: scale(0.2) translateY(0); opacity: 1; }
+    100% { transform: scale(2.4) translateY(-60px); opacity: 0; }
+}
+
+.volcano-bit {
+    position: absolute;
+    border-radius: 50%;
+    animation: volcanoFly 0.9s cubic-bezier(0.2, 0.7, 0.4, 1) forwards;
+}
+
+/* Molecule bits get a little bond line */
+.volcano-bit.molecule::after {
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    width: 8px;
+    height: 2px;
+    background: currentColor;
+}
+
+@keyframes volcanoFly {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    70% { opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0.4) rotate(var(--rot, 180deg)); opacity: 0; }
+}
+
+/* ===== Reduced motion: keep the content, drop the flashes and motion ===== */
+@media (prefers-reduced-motion: reduce) {
+    .hero-anim,
+    .hero-anim-title,
+    .hero-anim-badge,
+    .hero-anim-theme,
+    .hero-anim-detail-1,
+    .hero-anim-detail-2,
+    .hero-anim-detail-3,
+    .hero-anim-logo-left,
+    .hero-anim-logo-right {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        transition: none !important;
+        animation: none !important;
+    }
+
+    .lightning-full,
+    .sparks-container,
+    .hero-flash,
+    .science-particles,
+    .flask-bubble,
+    .flask-steam,
+    .volcano-layer {
+        display: none !important;
+    }
+
+    .hero-logo-link,
+    .tube-bubble,
+    .tube-meter.tube-full {
+        animation: none !important;
+    }
+
+    .tube-liquid,
+    #flask-liquid {
+        transition: none !important;
+    }
+}
+
 /* Print styles for QR code flyer */
 @media print {
     /* Reset everything */
