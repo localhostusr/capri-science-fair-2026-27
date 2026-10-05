@@ -28,7 +28,7 @@ const SPREADSHEET_NAME = 'Capri Science Fair 2026-27 — Sign-Ups';
 const ADMIN_EMAILS = ['capriptapresident@gmail.com', 'christopher.kohl@gmail.com', 'tracykohl06@gmail.com'];
 // Notification recipients — Chris and Kris (Science Fair coordinator) get sign-up notification emails
 const NOTIFY_EMAILS = ['christopher.kohl@gmail.com', 'krisdthomson@gmail.com'];
-// Final Approval is Thu Nov 5 (published date); the form accepts entries through Thu Nov 12 per Kris
+// Final Approval and sign-up close are both Thu Nov 12 (Kris, 2026-10-05)
 const DEADLINE = new Date('2026-11-12T23:55:00');
 
 // ===== Setup (DISABLED — spreadsheet already exists and is locked by ID) =====
@@ -385,7 +385,7 @@ Lugar: MPR de Capri Elementary
 HORARIO:
 • 3:00–5:00 PM — Montaje de proyectos en el MPR
 • 5:00–7:00 PM — Feria de Ciencias (demostraciones de SD Lab Rats afuera)
-• 6:30–7:00 PM — Show de SD Lab Rats
+• 6:30–7:00 PM — Show de SD Lab Rats en el MPR
 • 7:00–7:30 PM — Desmontaje
 
 📌 QUÉ TRAER:
@@ -430,7 +430,7 @@ Location: Capri Elementary MPR
 SCHEDULE:
 • 3:00–5:00 PM — Project set-up in the MPR
 • 5:00–7:00 PM — Science Fair (SD Lab Rats demos out front)
-• 6:30–7:00 PM — SD Lab Rats show
+• 6:30–7:00 PM — SD Lab Rats show in the MPR
 • 7:00–7:30 PM — Teardown
 
 📌 WHAT TO BRING:
