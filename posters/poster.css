@@ -171,3 +171,18 @@ html, body {
 }
 
 .foot strong { font-family: 'Outfit', sans-serif; }
+
+/* ---- 11x17 (tabloid): same layout scaled up; add ?size=tabloid to the URL ----
+   8.5in x 13.14in zoomed by 11/8.5 = exactly 11in x 17in */
+@page tabloid { size: 11in 17in; margin: 0; }
+html.tabloid .poster {
+    page: tabloid;
+    height: 13.1in;
+    zoom: 1.2941;
+}
+html.tabloid .body { justify-content: space-evenly; }
+html.tabloid .enter { flex-basis: 2.9in; }
+html.tabloid .enter img { width: 2.5in; height: 2.5in; }
+html.tabloid .hook { font-size: 15pt; }
+
+html.tabloid, html.tabloid body { height: 17in; overflow: hidden; }
