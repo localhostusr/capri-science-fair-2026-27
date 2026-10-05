@@ -3,7 +3,7 @@ const CONFIG = {
     // UPDATE THIS: Your Google Apps Script Web App URL after deploying
     APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwRAR60DTotOBdDuemXk3xDd8nd05sr6XYBIvPyojZQS0gYKQaMPZeiz0P3s0vS0y4/exec',
 
-    // Final Approval is Thu Nov 5 (published date); the form stays open through Thu Nov 12 per Kris
+    // Final Approval and sign-up close are both Thu Nov 12 (Kris, 2026-10-05)
     DEADLINE: new Date('2026-11-12T23:55:00'),
 
     // Backend is live only once the 2026-27 Apps Script URL is set above.
@@ -531,13 +531,13 @@ function downloadCalendar(d) {
         '- Your completed science project\\n' +
         '- Tri-fold display board (limited supply in the front office)\\n\\n' +
         "WHAT'S NEXT:\\n" +
-        '- Thu Oct 15: First Approval of your project idea\\n' +
-        '- Thu Nov 5: Final Approval\\n' +
+        '- Thu Oct 22: First Approval of your project idea\\n' +
+        '- Thu Nov 12: Final Approval\\n' +
         '- Thu Nov 19, 5-7 PM: Science Fair in the MPR, with SD Lab Rats\\n\\n' +
         'SCHEDULE:\\n' +
         '3:00-5:00 PM — Project set-up in the MPR\\n' +
         '5:00-7:00 PM — Science Fair (SD Lab Rats demos out front)\\n' +
-        '6:30-7:00 PM — SD Lab Rats show\\n' +
+        '6:30-7:00 PM — SD Lab Rats show in the MPR\\n' +
         '7:00-7:30 PM — Teardown\\n\\n' +
         'Quick Start Guide: https://localhostusr.github.io/capri-science-fair-2026-27/guide.html\\n\\n' +
         'Questions? Kris Thomson, krisdthomson@gmail.com';
