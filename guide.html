@@ -16,7 +16,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Oswald:wght@700&family=Bangers&family=Anton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         /* ===== Reset & Variables (matching main site) ===== */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -713,9 +713,9 @@
 </nav>
 
 <!-- Language Toggle -->
-<div class="lang-toggle">
-    <button id="btn-en" class="lang-btn active" onclick="setLang('en')">English</button>
-    <button id="btn-es" class="lang-btn" onclick="setLang('es')">Español</button>
+<div class="lang-toggle" role="group" aria-label="Language / Idioma">
+    <button id="btn-en" class="lang-btn active" aria-pressed="true" lang="en" onclick="setLang('en')">English</button>
+    <button id="btn-es" class="lang-btn" aria-pressed="false" lang="es" onclick="setLang('es')">Español</button>
 </div>
 
 <!-- Hero -->
@@ -1092,18 +1092,23 @@ function setLang(lang) {
 
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+    document.getElementById('btn-en').setAttribute('aria-pressed', String(lang === 'en'));
+    document.getElementById('btn-es').setAttribute('aria-pressed', String(lang === 'es'));
 
     document.querySelectorAll('[data-en]').forEach(function(el) {
         el.innerHTML = el.getAttribute('data-' + lang) || el.getAttribute('data-en');
     });
 
     document.documentElement.lang = lang;
+    try { localStorage.setItem('csf-lang', lang); } catch (e) {}  // remember across pages
 }
 
 // Auto-detect language from browser
 document.addEventListener('DOMContentLoaded', function() {
-    var browserLang = navigator.language || navigator.userLanguage;
-    if (browserLang && browserLang.startsWith('es')) {
+    var savedLang = null;
+    try { savedLang = localStorage.getItem('csf-lang'); } catch (e) {}
+    var browserLang = navigator.language || navigator.userLanguage || '';
+    if (savedLang === 'es' || (!savedLang && browserLang.startsWith('es'))) {
         setLang('es');
     }
 });

@@ -160,86 +160,6 @@ body {
     padding: 0 32px;
 }
 
-/* PTA logo — muted school logo with overlay */
-.pta-logo-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.pta-logo-img {
-    filter: saturate(0.2) brightness(1.3) opacity(0.4);
-}
-
-.pta-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.pta-stack {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 0.72;
-    text-transform: uppercase;
-    transform: rotate(-3deg) scale(0.75);
-    margin-top: -28px;
-}
-
-.pta-w1 {
-    font-family: 'Anton', sans-serif;
-    font-size: 40px;
-    color: #b8e02a;
-    letter-spacing: 0.15em;
-    display: block;
-    text-shadow: 2px 2px 0 #1a1a1a;
-    -webkit-text-stroke: 1px #1a1a1a;
-    transform: rotate(2deg);
-}
-
-.pta-w2 {
-    display: block;
-    transform: rotate(-1deg);
-    line-height: 0;
-    margin: 0;
-    padding: 0;
-}
-
-.pta-svg {
-    width: 310px;
-    height: 138px;
-    display: block;
-    margin: 0 auto;
-}
-
-.pta-w3 {
-    font-family: 'Anton', sans-serif;
-    font-size: 34px;
-    color: #ff2d9b;
-    letter-spacing: 0.08em;
-    display: block;
-    text-shadow: 2px 2px 0 #1a1a1a;
-    -webkit-text-stroke: 1px #1a1a1a;
-    transform: rotate(1deg);
-}
-
-.pta-w4 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: 0.25em;
-    display: block;
-    text-shadow: 1px 1px 0 #1a1a1a;
-}
-
 /* ===== Logo dance animations ===== */
 .hero-logo-link {
     animation: logoDance 6s ease-in-out infinite;
@@ -380,6 +300,7 @@ body {
     margin-bottom: 8px;
 }
 
+.info-card h2,
 .info-card h3 {
     font-family: 'Outfit', sans-serif;
     color: var(--text);
@@ -455,6 +376,7 @@ body {
     border-bottom: 1px solid var(--border-light);
 }
 
+.sidebar-schedule h2,
 .sidebar-schedule h3 {
     font-family: 'Outfit', sans-serif;
     color: var(--text);

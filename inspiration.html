@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get Inspired — Capri Science Fair 2026-27</title>
+    <meta name="description" content="Project ideas by interest, videos from real science fair finalists, and free resources for K–6 science fair projects.">
+    <meta name="theme-color" content="#e8611a">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Get Inspired — Capri Science Fair 2026-27">
+    <meta property="og:description" content="Project ideas by interest, videos from real science fair finalists, and free resources for K–6 science fair projects.">
+    <meta property="og:url" content="https://localhostusr.github.io/capri-science-fair-2026-27/inspiration.html">
+    <meta property="og:image" content="https://localhostusr.github.io/capri-science-fair-2026-27/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/png" href="logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Bungee&family=VT323&display=swap" rel="stylesheet">
     <style>
@@ -273,7 +284,7 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
-        .idea-card h4 {
+        .idea-card h3 {
             font-family: 'Outfit', sans-serif;
             font-size: 0.85rem;
             text-transform: uppercase;
@@ -329,6 +340,12 @@
             header { padding: 28px 20px 24px; }
             .header-inner { flex-direction: column; align-items: flex-start; }
         }
+        /* Language toggle (same look as the guide) */
+        .lang-toggle { position: fixed; top: 8px; right: 12px; z-index: 100; display: flex; background: #fff; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .lang-btn { padding: 8px 18px; border: none; background: transparent; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; }
+        .lang-btn.active { background: var(--secondary-dark); color: #fff; }
+        .lang-btn:not(.active):hover { background: var(--border-light); }
+        @media (max-width: 600px) { .lang-toggle { top: 6px; right: 8px; } .lang-btn { padding: 7px 12px; font-size: 12px; } }
     </style>
     <link rel="stylesheet" href="home-link.css">
 </head>
@@ -342,11 +359,17 @@
     </a>
 </nav>
 
+<!-- Language Toggle -->
+<div class="lang-toggle" role="group" aria-label="Language / Idioma">
+    <button id="btn-en" class="lang-btn active" aria-pressed="true" lang="en" onclick="setLang('en')">English</button>
+    <button id="btn-es" class="lang-btn" aria-pressed="false" lang="es" onclick="setLang('es')">Español</button>
+</div>
+
 <header>
     <div class="header-inner">
         <div>
-            <h1>💡 Get Inspired</h1>
-            <p class="subtitle">Capri Science Fair 2026-27 — "Science in Life!"</p>
+            <h1 data-en="💡 Get Inspired" data-es="💡 Inspírate">💡 Get Inspired</h1>
+            <p class="subtitle" data-en="Capri Science Fair 2026-27 — &quot;Science in Life!&quot;" data-es="Feria de Ciencias de Capri 2026-27 — &quot;¡La Ciencia en la Vida!&quot;">Capri Science Fair 2026-27 — &quot;Science in Life!&quot;</p>
         </div>
     </div>
 </header>
@@ -354,16 +377,15 @@
 <div class="container">
 
     <div class="intro">
-        <h2>Looking for project ideas?</h2>
-        <p>Not sure what to do for your project? You're in the right place. Below are trusted resources, real videos from past science fair finalists, and starter project ideas by topic. Some come from national programs, some from local fairs — all are safe, kid-friendly, and totally free to explore.</p>
+        <h2 data-en="Looking for project ideas?" data-es="¿Buscas ideas para tu proyecto?">Looking for project ideas?</h2>
+        <p data-en="Not sure what to do for your project? You&#x27;re in the right place. Below are trusted resources, real videos from past science fair finalists, and starter project ideas by topic. Some come from national programs, some from local fairs — all are safe, kid-friendly, and totally free to explore." data-es="¿No sabes qué hacer para tu proyecto? Estás en el lugar correcto. Abajo hay recursos confiables, videos reales de finalistas de ferias de ciencias e ideas de proyectos por tema. Algunos vienen de programas nacionales y otros de ferias locales; todos son seguros, aptos para niños y totalmente gratuitos.">Not sure what to do for your project? You&#x27;re in the right place. Below are trusted resources, real videos from past science fair finalists, and starter project ideas by topic. Some come from national programs, some from local fairs — all are safe, kid-friendly, and totally free to explore.</p>
     </div>
 
     <!-- VIDEO INSPIRATION -->
     <div class="section">
-        <h2>🎬 Watch &amp; Get Ideas</h2>
-        <p class="section-sub">Real students and real scientists — from official program channels</p>
+        <h2 data-en="🎬 Watch &amp; Get Ideas" data-es="🎬 Mira y Encuentra Ideas">🎬 Watch &amp; Get Ideas</h2>
+        <p class="section-sub" data-en="Real students and real scientists — from official program channels" data-es="Estudiantes y científicos reales, de canales oficiales">Real students and real scientists — from official program channels</p>
         <div class="video-grid">
-
             <div class="video-card">
                 <div class="video-wrap">
                     <iframe
@@ -376,10 +398,9 @@
                 </div>
                 <div class="video-meta">
                     <h3>3M Young Scientist Challenge</h3>
-                    <p>Follow real student finalists as they build their inventions</p>
+                    <p data-en="Follow real student finalists as they build their inventions" data-es="Sigue a estudiantes finalistas reales mientras construyen sus inventos">Follow real student finalists as they build their inventions</p>
                 </div>
             </div>
-
             <div class="video-card">
                 <div class="video-wrap">
                     <iframe
@@ -392,10 +413,9 @@
                 </div>
                 <div class="video-meta">
                     <h3>Science Buddies</h3>
-                    <p>20 great project ideas, each with instructions</p>
+                    <p data-en="20 great project ideas, each with instructions" data-es="20 grandes ideas de proyectos, cada una con instrucciones">20 great project ideas, each with instructions</p>
                 </div>
             </div>
-
             <div class="video-card">
                 <div class="video-wrap">
                     <iframe
@@ -408,181 +428,200 @@
                 </div>
                 <div class="video-meta">
                     <h3>NASA JPL: How to Do a Science Fair Project</h3>
-                    <p>Six short videos from NASA scientists, from idea to results</p>
+                    <p data-en="Six short videos from NASA scientists, from idea to results" data-es="Seis videos cortos de científicos de la NASA, de la idea a los resultados">Six short videos from NASA scientists, from idea to results</p>
                 </div>
             </div>
-
         </div>
     </div>
 
     <!-- RESOURCES -->
     <div class="section">
-        <h2>🔗 Best Free Resources for K–6 Projects</h2>
-        <p class="section-sub">Trusted sites with project ideas, materials lists, and safety guides</p>
+        <h2 data-en="🔗 Best Free Resources for K–6 Projects" data-es="🔗 Los Mejores Recursos Gratuitos para Proyectos de K–6">🔗 Best Free Resources for K–6 Projects</h2>
+        <p class="section-sub" data-en="Trusted sites with project ideas, materials lists, and safety guides" data-es="Sitios confiables con ideas de proyectos, listas de materiales y guías de seguridad">Trusted sites with project ideas, materials lists, and safety guides</p>
         <div class="resource-grid">
-
             <a href="https://www.sciencebuddies.org/science-fair-projects/project-ideas" target="_blank" rel="noopener" class="resource-card">
-                <span class="badge national">⭐ Top Pick</span>
+                <span class="badge national" data-en="⭐ Top Pick" data-es="⭐ Recomendado">⭐ Top Pick</span>
                 <h3>Science Buddies</h3>
-                <p>The biggest free library of K–12 science fair projects, filterable by grade, time, materials, and topic. Each project includes a full tutorial and safety guide.</p>
-                <span class="arrow">Explore projects →</span>
+                <p data-en="The biggest free library of K–12 science fair projects, filterable by grade, time, materials, and topic. Each project includes a full tutorial and safety guide." data-es="La biblioteca gratuita más grande de proyectos de ciencias para K–12, con filtros por grado, tiempo, materiales y tema. Cada proyecto incluye un tutorial completo y una guía de seguridad.">The biggest free library of K–12 science fair projects, filterable by grade, time, materials, and topic. Each project includes a full tutorial and safety guide.</p>
+                <span class="arrow" data-en="Explore projects →" data-es="Explorar proyectos →">Explore projects →</span>
             </a>
-
             <a href="https://www.youngscientistlab.com/challenge" target="_blank" rel="noopener" class="resource-card">
-                <span class="badge national">National Program</span>
+                <span class="badge national" data-en="National Program" data-es="Programa Nacional">National Program</span>
                 <h3>3M Young Scientist Challenge</h3>
-                <p>Annual competition with archived videos of past finalists. Great for seeing what excellent middle-school science projects look like — inspiring for older elementary kids.</p>
-                <span class="arrow">View finalists →</span>
+                <p data-en="Annual competition with archived videos of past finalists. Great for seeing what excellent middle-school science projects look like — inspiring for older elementary kids." data-es="Competencia anual con videos de finalistas anteriores. Ideal para ver cómo son los excelentes proyectos de secundaria, muy inspirador para los niños mayores de primaria.">Annual competition with archived videos of past finalists. Great for seeing what excellent middle-school science projects look like — inspiring for older elementary kids.</p>
+                <span class="arrow" data-en="View finalists →" data-es="Ver finalistas →">View finalists →</span>
             </a>
-
             <a href="https://gsdsef.org/" target="_blank" rel="noopener" class="resource-card">
-                <span class="badge local">San Diego</span>
+                <span class="badge local" data-en="San Diego" data-es="San Diego">San Diego</span>
                 <h3>Greater San Diego Science Fair</h3>
-                <p>Our regional fair! Browse past project archives to see what other local students have done — many are elementary-age and from nearby schools.</p>
-                <span class="arrow">Browse projects →</span>
+                <p data-en="Our regional fair! Browse past project archives to see what other local students have done — many are elementary-age and from nearby schools." data-es="¡Nuestra feria regional! Explora proyectos anteriores de estudiantes locales, muchos de primaria y de escuelas cercanas.">Our regional fair! Browse past project archives to see what other local students have done — many are elementary-age and from nearby schools.</p>
+                <span class="arrow" data-en="Browse projects →" data-es="Ver proyectos →">Browse projects →</span>
             </a>
-
             <a href="https://www.sdlabrats.org/stemathome/" target="_blank" rel="noopener" class="resource-card">
-                <span class="badge local">San Diego</span>
+                <span class="badge local" data-en="San Diego" data-es="San Diego">San Diego</span>
                 <h3>SD Lab Rats: STEM at Home</h3>
-                <p>Hands-on science activities from SD Lab Rats, the San Diego nonprofit coming to our fair on November 19. Easy experiments to try at home and spark a project idea.</p>
-                <span class="arrow">Try an experiment →</span>
+                <p data-en="Hands-on science activities from SD Lab Rats, the San Diego nonprofit coming to our fair on November 19. Easy experiments to try at home and spark a project idea." data-es="Actividades de ciencia prácticas de SD Lab Rats, la organización de San Diego que vendrá a nuestra feria el 19 de noviembre. Experimentos fáciles para probar en casa y encontrar una idea de proyecto.">Hands-on science activities from SD Lab Rats, the San Diego nonprofit coming to our fair on November 19. Easy experiments to try at home and spark a project idea.</p>
+                <span class="arrow" data-en="Try an experiment →" data-es="Prueba un experimento →">Try an experiment →</span>
             </a>
-
             <a href="https://csef.usc.edu/" target="_blank" rel="noopener" class="resource-card">
-                <span class="badge local">California</span>
-                <h3>California Science & Engineering Fair</h3>
-                <p>State-level fair with elementary divisions. Past project archives show winning ideas from across California.</p>
-                <span class="arrow">Visit fair →</span>
+                <span class="badge local" data-en="California" data-es="California">California</span>
+                <h3>California Science &amp; Engineering Fair</h3>
+                <p data-en="State-level fair with elementary divisions. Past project archives show winning ideas from across California." data-es="Feria estatal con divisiones de primaria. Los archivos de proyectos anteriores muestran ideas ganadoras de todo California.">State-level fair with elementary divisions. Past project archives show winning ideas from across California.</p>
+                <span class="arrow" data-en="Visit fair →" data-es="Visitar la feria →">Visit fair →</span>
             </a>
-
             <a href="https://www.nasa.gov/learning-resources/for-kids-and-students/" target="_blank" rel="noopener" class="resource-card">
-                <span class="badge national">NASA</span>
+                <span class="badge national" data-en="NASA" data-es="NASA">NASA</span>
                 <h3>NASA STEM for Kids</h3>
-                <p>Space, weather, and engineering activities designed for K–4. Free downloadable guides and experiment ideas straight from NASA.</p>
-                <span class="arrow">Explore activities →</span>
+                <p data-en="Space, weather, and engineering activities designed for K–4. Free downloadable guides and experiment ideas straight from NASA." data-es="Actividades de espacio, clima e ingeniería para K–4. Guías gratuitas e ideas de experimentos directamente de la NASA.">Space, weather, and engineering activities designed for K–4. Free downloadable guides and experiment ideas straight from NASA.</p>
+                <span class="arrow" data-en="Explore activities →" data-es="Explorar actividades →">Explore activities →</span>
             </a>
-
             <a href="https://www.sciencefriday.com/educational-resources/" target="_blank" rel="noopener" class="resource-card">
-                <span class="badge national">Science Friday</span>
+                <span class="badge national" data-en="Science Friday" data-es="Science Friday">Science Friday</span>
                 <h3>Science Friday Educate</h3>
-                <p>Free hands-on science lessons and activities perfect for project inspiration, organized by grade level and subject.</p>
-                <span class="arrow">Browse lessons →</span>
+                <p data-en="Free hands-on science lessons and activities perfect for project inspiration, organized by grade level and subject." data-es="Lecciones y actividades de ciencia prácticas y gratuitas, perfectas para inspirar proyectos, organizadas por grado y tema.">Free hands-on science lessons and activities perfect for project inspiration, organized by grade level and subject.</p>
+                <span class="arrow" data-en="Browse lessons →" data-es="Ver lecciones →">Browse lessons →</span>
             </a>
-
             <a href="https://www.exploratorium.edu/explore/activities" target="_blank" rel="noopener" class="resource-card">
-                <span class="badge global">Exploratorium</span>
+                <span class="badge global" data-en="Exploratorium" data-es="Exploratorium">Exploratorium</span>
                 <h3>Exploratorium Activities</h3>
-                <p>The legendary San Francisco science museum's hands-on activity library — perfect for sparking curiosity and project ideas.</p>
-                <span class="arrow">Try an activity →</span>
+                <p data-en="The legendary San Francisco science museum&#x27;s hands-on activity library — perfect for sparking curiosity and project ideas." data-es="La biblioteca de actividades prácticas del legendario museo de ciencias de San Francisco, perfecta para despertar la curiosidad y las ideas de proyectos.">The legendary San Francisco science museum&#x27;s hands-on activity library — perfect for sparking curiosity and project ideas.</p>
+                <span class="arrow" data-en="Try an activity →" data-es="Prueba una actividad →">Try an activity →</span>
             </a>
-
             <a href="https://www.societyforscience.org/isef/" target="_blank" rel="noopener" class="resource-card">
-                <span class="badge global">Global</span>
+                <span class="badge global" data-en="Global" data-es="Global">Global</span>
                 <h3>Regeneron ISEF</h3>
-                <p>The world's largest international science fair (high school). Worth a peek to see where science fair journeys can lead — and the amazing projects students invent.</p>
-                <span class="arrow">See past winners →</span>
+                <p data-en="The world&#x27;s largest international science fair (high school). Worth a peek to see where science fair journeys can lead — and the amazing projects students invent." data-es="La feria de ciencias internacional más grande del mundo (preparatoria). Vale la pena verla para saber hasta dónde puede llegar una feria de ciencias y los increíbles proyectos que inventan los estudiantes.">The world&#x27;s largest international science fair (high school). Worth a peek to see where science fair journeys can lead — and the amazing projects students invent.</p>
+                <span class="arrow" data-en="See past winners →" data-es="Ver ganadores anteriores →">See past winners →</span>
             </a>
-
         </div>
     </div>
 
-    <!-- IDEA STARTERS BY CATEGORY -->
+    <!-- IDEA STARTERS BY CATEGORY (this year's 10 interest categories, same as the sign-up form) -->
     <div class="section">
-        <h2>💡 Project Idea Starters</h2>
-        <p class="section-sub">Quick prompts to get your brain going — pick one and make it your own</p>
+        <h2 data-en="💡 Project Idea Starters" data-es="💡 Ideas para Empezar tu Proyecto">💡 Project Idea Starters</h2>
+        <p class="section-sub" data-en="What do you enjoy most? Pick your favorite thing, find the science in it, and make it your own." data-es="¿Qué es lo que más te gusta? Elige tu cosa favorita, encuentra la ciencia en ella y hazla tuya.">What do you enjoy most? Pick your favorite thing, find the science in it, and make it your own.</p>
         <div class="idea-grid">
-
             <div class="idea-card">
-                <h4>💧 Clean Water</h4>
+                <h3 data-en="⚽ Sports &amp; Movement" data-es="⚽ Deportes y Movimiento">⚽ Sports &amp; Movement</h3>
                 <ul>
-                    <li>Can a homemade filter clean dirty water?</li>
-                    <li>Which natural material absorbs the most water?</li>
-                    <li>How does temperature affect how fast water evaporates?</li>
-                    <li>Do plants grow better with rainwater or tap water?</li>
+                    <li data-en="Does a cold basketball bounce lower than a warm one?" data-es="¿Rebota menos un balón de básquetbol frío que uno caliente?">Does a cold basketball bounce lower than a warm one?</li>
+                    <li data-en="Which soccer kick sends the ball the farthest?" data-es="¿Qué tipo de patada manda el balón de fútbol más lejos?">Which soccer kick sends the ball the farthest?</li>
+                    <li data-en="Does stretching help you jump higher?" data-es="¿Estirarte te ayuda a saltar más alto?">Does stretching help you jump higher?</li>
+                    <li data-en="Why does a curveball curve?" data-es="¿Por qué se curva una bola curva?">Why does a curveball curve?</li>
                 </ul>
             </div>
-
             <div class="idea-card">
-                <h4>⚡ Energy</h4>
+                <h3 data-en="🍳 Food &amp; Cooking" data-es="🍳 Comida y Cocina">🍳 Food &amp; Cooking</h3>
                 <ul>
-                    <li>Which color absorbs the most solar heat?</li>
-                    <li>Can you build a solar oven that melts chocolate?</li>
-                    <li>What insulates a cup of hot water best?</li>
-                    <li>Does wind direction affect how a pinwheel spins?</li>
+                    <li data-en="What makes popcorn pop — and which brand pops best?" data-es="¿Qué hace que las palomitas exploten y qué marca explota mejor?">What makes popcorn pop — and which brand pops best?</li>
+                    <li data-en="Why do cookies spread in the oven?" data-es="¿Por qué las galletas se extienden en el horno?">Why do cookies spread in the oven?</li>
+                    <li data-en="Which fruit browns the fastest once it&#x27;s cut?" data-es="¿Qué fruta se pone café más rápido después de cortarla?">Which fruit browns the fastest once it&#x27;s cut?</li>
+                    <li data-en="Does salt make ice melt faster?" data-es="¿La sal hace que el hielo se derrita más rápido?">Does salt make ice melt faster?</li>
                 </ul>
             </div>
-
             <div class="idea-card">
-                <h4>🌱 Food & Agriculture</h4>
+                <h3 data-en="🌿 Nature &amp; Animals" data-es="🌿 Naturaleza y Animales">🌿 Nature &amp; Animals</h3>
                 <ul>
-                    <li>Do plants grow faster with music?</li>
-                    <li>Which fruit produces the most electricity?</li>
-                    <li>Can you grow a plant from kitchen scraps?</li>
-                    <li>What soil grows the tallest bean plant?</li>
+                    <li data-en="Do ants prefer sugar or protein?" data-es="¿Las hormigas prefieren azúcar o proteína?">Do ants prefer sugar or protein?</li>
+                    <li data-en="Which bird seed attracts the most birds?" data-es="¿Qué alpiste atrae a más pájaros?">Which bird seed attracts the most birds?</li>
+                    <li data-en="Do plants grow toward light or toward water?" data-es="¿Las plantas crecen hacia la luz o hacia el agua?">Do plants grow toward light or toward water?</li>
+                    <li data-en="What&#x27;s living in a drop of pond water?" data-es="¿Qué vive en una gota de agua de estanque?">What&#x27;s living in a drop of pond water?</li>
                 </ul>
             </div>
-
             <div class="idea-card">
-                <h4>♻️ Sustainability</h4>
+                <h3 data-en="🎵 Music &amp; Sound" data-es="🎵 Música y Sonido">🎵 Music &amp; Sound</h3>
                 <ul>
-                    <li>Which material decomposes fastest in soil?</li>
-                    <li>How much trash does your family make in a week?</li>
-                    <li>Can you make your own paper from old paper?</li>
-                    <li>What recycled materials make the strongest bridge?</li>
+                    <li data-en="Do plants grow faster with music?" data-es="¿Crecen más rápido las plantas con música?">Do plants grow faster with music?</li>
+                    <li data-en="How does water level change the note a glass makes?" data-es="¿Cómo cambia la nota de un vaso según el nivel del agua?">How does water level change the note a glass makes?</li>
+                    <li data-en="Can you hear sound underwater?" data-es="¿Se puede escuchar el sonido bajo el agua?">Can you hear sound underwater?</li>
+                    <li data-en="Does music change your heart rate?" data-es="¿La música cambia tu ritmo cardíaco?">Does music change your heart rate?</li>
                 </ul>
             </div>
-
             <div class="idea-card">
-                <h4>🩺 Health & Body</h4>
+                <h3 data-en="🧱 Games, Toys &amp; Lego" data-es="🧱 Juegos, Juguetes y Lego">🧱 Games, Toys &amp; Lego</h3>
                 <ul>
-                    <li>Does hand sanitizer work better than soap?</li>
-                    <li>How does sleep affect memory?</li>
-                    <li>Which apple stays fresh longest in different liquids?</li>
-                    <li>Does music change your heart rate?</li>
+                    <li data-en="Can a Lego bridge hold a backpack?" data-es="¿Puede un puente de Lego sostener una mochila?">Can a Lego bridge hold a backpack?</li>
+                    <li data-en="Which yo-yo spins the longest, and why?" data-es="¿Qué yoyo gira por más tiempo y por qué?">Which yo-yo spins the longest, and why?</li>
+                    <li data-en="Does a toy car go farther down a steeper ramp?" data-es="¿Un carrito de juguete llega más lejos en una rampa más inclinada?">Does a toy car go farther down a steeper ramp?</li>
+                    <li data-en="Is a dice roll really random? Roll it 100 times!" data-es="¿Es realmente al azar un dado? ¡Lánzalo 100 veces!">Is a dice roll really random? Roll it 100 times!</li>
                 </ul>
             </div>
-
             <div class="idea-card">
-                <h4>🚀 Space & Weather</h4>
+                <h3 data-en="🎢 Rides &amp; Motion" data-es="🎢 Atracciones y Movimiento">🎢 Rides &amp; Motion</h3>
                 <ul>
-                    <li>Can you predict tomorrow's weather by looking at clouds?</li>
-                    <li>How does wind affect the temperature outside?</li>
-                    <li>Build a rain gauge — how much rain fell this week?</li>
-                    <li>Why does the moon look bigger near the horizon?</li>
+                    <li data-en="Why do roller coasters make your stomach drop?" data-es="¿Por qué las montañas rusas te dan cosquillas en la panza?">Why do roller coasters make your stomach drop?</li>
+                    <li data-en="Can a marble roller coaster do a loop?" data-es="¿Puede una montaña rusa de canicas dar una vuelta completa?">Can a marble roller coaster do a loop?</li>
+                    <li data-en="Which paper airplane flies the farthest?" data-es="¿Qué avión de papel vuela más lejos?">Which paper airplane flies the farthest?</li>
+                    <li data-en="How does a parachute&#x27;s size change how fast it falls?" data-es="¿Cómo cambia la velocidad de caída según el tamaño del paracaídas?">How does a parachute&#x27;s size change how fast it falls?</li>
                 </ul>
             </div>
-
             <div class="idea-card">
-                <h4>🦋 Animals & Nature</h4>
+                <h3 data-en="🚀 Space &amp; Weather" data-es="🚀 Espacio y Clima">🚀 Space &amp; Weather</h3>
                 <ul>
-                    <li>Do ants prefer sugar or protein?</li>
-                    <li>What's living in a drop of pond water?</li>
-                    <li>How do birds find food in winter?</li>
-                    <li>Which bird seed attracts the most birds?</li>
+                    <li data-en="Can you predict tomorrow&#x27;s weather by looking at clouds?" data-es="¿Puedes predecir el clima de mañana mirando las nubes?">Can you predict tomorrow&#x27;s weather by looking at clouds?</li>
+                    <li data-en="Build a rain gauge — how much rain fell this week?" data-es="Construye un pluviómetro: ¿cuánta lluvia cayó esta semana?">Build a rain gauge — how much rain fell this week?</li>
+                    <li data-en="Why does the moon look bigger near the horizon?" data-es="¿Por qué la luna se ve más grande cerca del horizonte?">Why does the moon look bigger near the horizon?</li>
+                    <li data-en="Which color absorbs the most heat from the sun?" data-es="¿Qué color absorbe más calor del sol?">Which color absorbs the most heat from the sun?</li>
                 </ul>
             </div>
-
             <div class="idea-card">
-                <h4>🛠️ Engineering & Building</h4>
+                <h3 data-en="🫀 Body &amp; Health" data-es="🫀 Cuerpo y Salud">🫀 Body &amp; Health</h3>
                 <ul>
-                    <li>What bridge design holds the most weight?</li>
-                    <li>Can you build a tower using only paper and tape?</li>
-                    <li>What makes a paper airplane fly farthest?</li>
-                    <li>Which boat design holds the most pennies before sinking?</li>
+                    <li data-en="Does hand sanitizer work better than soap?" data-es="¿El desinfectante de manos funciona mejor que el jabón?">Does hand sanitizer work better than soap?</li>
+                    <li data-en="How does sleep affect memory?" data-es="¿Cómo afecta el sueño a la memoria?">How does sleep affect memory?</li>
+                    <li data-en="Which sunscreen blocks the most sun?" data-es="¿Qué protector solar bloquea más sol?">Which sunscreen blocks the most sun?</li>
+                    <li data-en="Does exercise change how fast your heart recovers?" data-es="¿El ejercicio cambia qué tan rápido se recupera tu corazón?">Does exercise change how fast your heart recovers?</li>
                 </ul>
             </div>
-
+            <div class="idea-card">
+                <h3 data-en="🏗️ Building &amp; Engineering" data-es="🏗️ Construcción e Ingeniería">🏗️ Building &amp; Engineering</h3>
+                <ul>
+                    <li data-en="What bridge design holds the most weight?" data-es="¿Qué diseño de puente sostiene más peso?">What bridge design holds the most weight?</li>
+                    <li data-en="Can you build a tower using only paper and tape?" data-es="¿Puedes construir una torre solo con papel y cinta?">Can you build a tower using only paper and tape?</li>
+                    <li data-en="Which boat design holds the most pennies before sinking?" data-es="¿Qué diseño de barco sostiene más monedas antes de hundirse?">Which boat design holds the most pennies before sinking?</li>
+                    <li data-en="Can you build a solar oven that melts chocolate?" data-es="¿Puedes construir un horno solar que derrita chocolate?">Can you build a solar oven that melts chocolate?</li>
+                </ul>
+            </div>
+            <div class="idea-card">
+                <h3 data-en="✨ Something Else" data-es="✨ Otra Cosa">✨ Something Else</h3>
+                <ul>
+                    <li data-en="Which material keeps an ice cube frozen the longest?" data-es="¿Qué material mantiene un cubo de hielo congelado por más tiempo?">Which material keeps an ice cube frozen the longest?</li>
+                    <li data-en="Does the shape of a bubble wand change the bubble?" data-es="¿La forma del aro cambia la forma de la burbuja?">Does the shape of a bubble wand change the bubble?</li>
+                    <li data-en="Which paper towel brand is the most absorbent?" data-es="¿Qué marca de toallas de papel absorbe más?">Which paper towel brand is the most absorbent?</li>
+                    <li data-en="Got your own idea? Ask your teacher about it!" data-es="¿Tienes tu propia idea? ¡Pregúntale a tu maestro!">Got your own idea? Ask your teacher about it!</li>
+                </ul>
+            </div>
         </div>
     </div>
 
 </div>
 
 <footer>
-    <p>📚 All resources are free and from official sources. Capri Elementary PTA does not endorse any specific program — these are starting points for your own exploration.</p>
-    <p style="margin-top:8px;"><a href="index.html">← Main Page · Página Principal</a> · <a href="guide.html">Quick Start Guide</a></p>
+    <p data-en="📚 All resources are free and from official sources. Capri Elementary PTA does not endorse any specific program — these are starting points for your own exploration." data-es="📚 Todos los recursos son gratuitos y de fuentes oficiales. El PTA de Capri Elementary no respalda ningún programa en particular; son puntos de partida para tu propia exploración.">📚 All resources are free and from official sources. Capri Elementary PTA does not endorse any specific program — these are starting points for your own exploration.</p>
+    <p style="margin-top:8px;"><a href="index.html">← Main Page · Página Principal</a> · <a href="guide.html" data-en="Quick Start Guide" data-es="Guía de Inicio Rápido">Quick Start Guide</a></p>
 </footer>
 
+
+<script>
+// ===== Language toggle (remembers the choice across pages) =====
+function setLang(lang) {
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+    document.getElementById('btn-en').setAttribute('aria-pressed', String(lang === 'en'));
+    document.getElementById('btn-es').setAttribute('aria-pressed', String(lang === 'es'));
+    document.querySelectorAll('[data-en]').forEach(function(el) {
+        el.innerHTML = el.getAttribute('data-' + lang) || el.getAttribute('data-en');
+    });
+    document.documentElement.lang = lang;
+    try { localStorage.setItem('csf-lang', lang); } catch (e) {}
+}
+document.addEventListener('DOMContentLoaded', function() {
+    var saved = null;
+    try { saved = localStorage.getItem('csf-lang'); } catch (e) {}
+    var browserEs = (navigator.language || '').toLowerCase().startsWith('es');
+    if (saved === 'es' || (!saved && browserEs)) setLang('es');
+});
+</script>
 <script>
 // Visit tracking ping
 (function pingVisit() {

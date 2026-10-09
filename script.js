@@ -31,6 +31,8 @@ function setLang(lang) {
     // Update toggle buttons
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+    document.getElementById('btn-en').setAttribute('aria-pressed', String(lang === 'en'));
+    document.getElementById('btn-es').setAttribute('aria-pressed', String(lang === 'es'));
 
     // Update all elements with data-en / data-es attributes
     document.querySelectorAll('[data-en]').forEach(el => {
@@ -49,6 +51,7 @@ function setLang(lang) {
 
     // Update html lang attribute
     document.documentElement.lang = lang;
+    try { localStorage.setItem('csf-lang', lang); } catch (e) {}  // remember across pages
 
     // Update deadline date display
     updateDeadlineDisplay();
@@ -352,6 +355,7 @@ function toggleGroupFields() {
     if (isGroup && groupMemberCount === 0) {
         addGroupMember();
     }
+    updateTubeMeter();
 }
 
 const MAX_GROUP_MEMBERS = 2; // lead + 2 = groups of up to three
@@ -373,8 +377,8 @@ function addGroupMember() {
         </div>
         <div class="form-row">
             <div class="form-group">
-                <label>${isEs ? 'Nombre del Estudiante' : 'Student Name'}</label>
-                <input type="text" name="gm${n}_studentName" placeholder="${isEs ? 'Nombre y Apellido' : 'First and Last Name'}">
+                <label for="gm${n}_studentName">${isEs ? 'Nombre del Estudiante' : 'Student Name'} *</label>
+                <input type="text" name="gm${n}_studentName" id="gm${n}_studentName" required maxlength="80" autocomplete="off" placeholder="${isEs ? 'Nombre y Apellido' : 'First and Last Name'}">
             </div>
             <div class="form-group">
                 <label>${isEs ? 'Grado' : 'Grade'}</label>
@@ -390,16 +394,16 @@ function addGroupMember() {
         <div class="form-row">
             <div class="form-group">
                 <label>${isEs ? 'Nombre del Padre/Tutor' : 'Parent/Guardian Name'}</label>
-                <input type="text" name="gm${n}_parentName" placeholder="${isEs ? 'Nombre y Apellido' : 'First and Last Name'}">
+                <input type="text" name="gm${n}_parentName" maxlength="80" placeholder="${isEs ? 'Nombre y Apellido' : 'First and Last Name'}">
             </div>
             <div class="form-group">
                 <label>${isEs ? 'Correo Electrónico' : 'Email'}</label>
-                <input type="email" name="gm${n}_parentEmail" placeholder="email@example.com">
+                <input type="email" name="gm${n}_parentEmail" maxlength="120" placeholder="email@example.com">
             </div>
         </div>
         <div class="form-group">
             <label>${isEs ? 'Teléfono' : 'Phone'}</label>
-            <input type="tel" name="gm${n}_parentPhone" placeholder="(555) 555-5555">
+            <input type="tel" name="gm${n}_parentPhone" maxlength="30" inputmode="tel" placeholder="(555) 555-5555">
         </div>
     `;
     list.appendChild(member);
@@ -410,6 +414,7 @@ function removeGroupMember(n) {
     const el = document.getElementById('group-member-' + n);
     if (el) el.remove();
     updateAddMemberBtn();
+    updateTubeMeter();
 }
 
 function updateAddMemberBtn() {
@@ -439,6 +444,9 @@ function toggleSafetyFields() {
     const hasSafety = document.querySelector('input[name="hasSafety"]:checked').value === 'yes';
     const safetyFields = document.getElementById('safety-fields');
     safetyFields.style.display = hasSafety ? 'block' : 'none';
+    // If they said yes, we need the details (Kris and the STEM teacher review these)
+    document.getElementById('safety-details').required = hasSafety;
+    updateTubeMeter();
 }
 
 // ===== Form Validation =====
@@ -447,10 +455,12 @@ function validateForm(form) {
 
     // Clear previous errors
     form.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+    form.querySelectorAll('[aria-invalid]').forEach(el => { el.removeAttribute('aria-invalid'); el.removeAttribute('aria-describedby'); });
     form.querySelectorAll('.error-text').forEach(el => el.remove());
 
     // Required text/select fields
-    const required = form.querySelectorAll('input[required]:not([type="checkbox"]), textarea[required], select[required]');
+    const required = [...form.querySelectorAll('input[required]:not([type="checkbox"]), textarea[required], select[required]')]
+        .filter(field => field.offsetParent !== null);
     required.forEach(field => {
         if (!field.value.trim()) {
             markError(field, currentLang === 'es' ? 'Este campo es obligatorio' : 'This field is required');
@@ -479,24 +489,35 @@ function validateForm(form) {
         isValid = false;
     }
 
+    // Move keyboard/screen-reader focus to the first problem
+    const firstError = form.querySelector('[aria-invalid="true"]');
+    if (firstError) firstError.focus({ preventScroll: true });
+
     return isValid;
 }
 
+let errorSeq = 0;
 function markError(field, message) {
     field.classList.add('error');
     const errorEl = document.createElement('div');
     errorEl.className = 'error-text';
+    errorEl.id = 'err-' + (++errorSeq);
+    errorEl.setAttribute('role', 'alert');   // announced by screen readers
     errorEl.textContent = message;
     errorEl.style.display = 'block';
     field.parentNode.appendChild(errorEl);
+    field.setAttribute('aria-invalid', 'true');
+    field.setAttribute('aria-describedby', errorEl.id);
 
     // Clear error on input
-    field.addEventListener('input', function handler() {
+    const clear = function() {
         field.classList.remove('error');
-        const err = field.parentNode.querySelector('.error-text');
-        if (err) err.remove();
-        field.removeEventListener('input', handler);
-    }, { once: true });
+        field.removeAttribute('aria-invalid');
+        field.removeAttribute('aria-describedby');
+        errorEl.remove();
+    };
+    field.addEventListener('input', clear, { once: true });
+    field.addEventListener('change', clear, { once: true });
 }
 
 // ===== Form Submission =====
@@ -523,7 +544,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
         grade: document.getElementById('grade').value,
         teacher: document.getElementById('teacher').value.trim(),
         isGroup: document.querySelector('input[name="isGroup"]:checked').value,
-        groupMembers: collectGroupMembers(),
+        groupMembers: document.querySelector('input[name="isGroup"]:checked').value === 'yes' ? collectGroupMembers() : '',
         projectTitle: document.getElementById('project-title').value.trim(),
         projectDescription: document.getElementById('project-description').value.trim(),
         category: document.getElementById('category').value,
@@ -1061,9 +1082,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Auto-detect language from browser
-    const browserLang = navigator.language || navigator.userLanguage;
-    if (browserLang.startsWith('es')) {
+    // Saved choice wins; otherwise follow the browser language
+    let savedLang = null;
+    try { savedLang = localStorage.getItem('csf-lang'); } catch (e) {}
+    const browserLang = navigator.language || navigator.userLanguage || '';
+    if (savedLang === 'es' || (!savedLang && browserLang.startsWith('es'))) {
         setLang('es');
     }
 });
