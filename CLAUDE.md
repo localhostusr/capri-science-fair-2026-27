@@ -9,6 +9,8 @@
 - The 2026 site (`localhostusr/capri-science-fair`, archived) now redirects every page to the matching 2026-27 page (done 2026.09.30). The original 2026 site is preserved at tag `v2026-final` in that repo.
 - Every sub-page shares the sticky bilingual "← Main Page" bar (`home-link.css`). Add it to any new page.
 - Use `/plan-improvement <idea>` (`.claude/commands/plan-improvement.md`) for any change.
+- Round 2 "audit-upgrades" (2026.10.08): accessibility and validation fixes, bilingual Inspiration, draft autosave (`csf-draft-v1`, 3-day expiry, "Start over"), share button, CSS scroll reveals instead of AOS, View Transitions, installable web app (manifest + `icons/`, no service worker on purpose). The backend (Version 12) saves special-materials answers to sheet columns R/S, trims and caps inputs, neutralizes values starting with `= + - @`, checks required fields server-side, and has `purgeAfterFair()`, which wipes sign-ups and visits on 2026-12-19 once `installPurgeTrigger()` has been run.
+- Local checks: the W3C upload is blocked by guard.sh, so use the scratchpad `lint.py` structural check, or validate the live URL. Chrome automation `ref` clicks don't fire "Start over", but real clicks do.
 - Round 1 (merged 2026.09.30) set the categories to `sports, food, nature, music, games, rides, space, health, engineering, other`. Keep index.html, dashboard.html (`ALL_CATEGORIES`/`CATEGORY_LABELS`/`CATEGORY_ALIASES`), organizer.html, and apps-script.gs `allCats` in sync.
 
 ## What was decided at scaffold time

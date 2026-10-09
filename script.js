@@ -68,6 +68,8 @@ const FLASK_RISE_PX = 80; // how far the big flask's liquid climbs at 100%
 // Short name for a required field, taken from its label (consent checkbox gets a short name)
 function fieldName(el, isEs) {
     if (el.type === 'checkbox') return isEs ? 'casilla de privacidad' : 'privacy checkbox';
+    if (el.id === 'safety-details') return isEs ? 'materiales especiales' : 'special materials';
+    if (el.id && el.id.startsWith('gm')) return isEs ? 'nombre del miembro del grupo' : 'group member name';
     const label = el.id && document.querySelector('label[for="' + el.id + '"]');
     return label ? label.textContent.replace('*', '').trim() : (isEs ? 'un campo' : 'a field');
 }
@@ -130,6 +132,7 @@ const DRAFT_KEY = 'csf-draft-v1';
 const DRAFT_MAX_AGE_MS = 3 * 24 * 60 * 60 * 1000;   // forget drafts after 3 days (shared office computers)
 const DRAFT_RADIOS = ['isGroup', 'hasSafety', 'needBoard', 'needPower'];
 let draftTimer = null;
+let draftResetting = false;   // blocks saves while "Start over" reloads the page
 
 function readDraft() {
     try {
@@ -144,6 +147,7 @@ function clearDraft() {
 }
 
 function saveDraft() {
+    if (draftResetting) return;
     const form = document.getElementById('signup-form');
     if (!form) return;
     const fields = {};
@@ -203,6 +207,8 @@ function restoreDraft() {
 }
 
 function resetDraft() {
+    draftResetting = true;
+    clearTimeout(draftTimer);
     clearDraft();
     location.reload();
 }
