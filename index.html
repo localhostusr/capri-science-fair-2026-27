@@ -29,6 +29,9 @@
 </div>
 
 <!-- Hero Section -->
+<!-- Catch-an-atom easter egg toast (script.js setupAtomCatch) -->
+<div class="atom-toast" id="atom-toast" role="status" aria-live="polite"></div>
+
 <header class="hero">
     <!-- Explosion flash -->
     <div class="hero-flash" id="hero-flash" aria-hidden="true"></div>
@@ -46,6 +49,8 @@
                 </div>
                 <h1 class="hero-anim hero-anim-title" data-en="Science Fair 2026-27" data-es="Feria de Ciencias 2026-27">Science Fair 2026-27</h1>
                 <p class="theme hero-anim hero-anim-theme" data-en="&ldquo;Science in Life!&rdquo;" data-es="&ldquo;&iexcl;La Ciencia en la Vida!&rdquo;">&ldquo;Science in Life!&rdquo;</p>
+                <!-- Mystery question ticker (script.js startQuestionTicker) -->
+                <p class="hero-question" aria-hidden="true"><span class="hq-text" id="hq-text"></span><span class="hq-caret"></span></p>
                 <div class="event-details">
                     <div class="detail hero-anim hero-anim-detail-1">
                         <span class="detail-icon">📅</span>
@@ -372,6 +377,12 @@
                 Sign-ups close Thursday, November 12. The Science Fair is November 19 — grades K–6, every topic welcome!
             </span>
             <span class="countdown" id="countdown"></span>
+            <!-- Rocket countdown: climbs from site launch (Sep 30) to fair night (Nov 19) -->
+            <span class="rocket-track" aria-hidden="true">
+                <span class="rocket-trail" id="rocket-trail"></span>
+                <span class="rocket" id="rocket">🚀</span>
+                <span class="rocket-goal">🔬</span>
+            </span>
         </div>
 
         <!-- Sign-ups Opening Soon (shown until CONFIG.BACKEND_LIVE is true) -->

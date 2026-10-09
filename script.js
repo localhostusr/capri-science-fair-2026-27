@@ -62,6 +62,24 @@ function setLang(lang) {
 const REDUCED_MOTION = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const FLASK_RISE_PX = 80; // how far the big flask's liquid climbs at 100%
 
+// Short name for a required field, taken from its label (consent checkbox gets a short name)
+function fieldName(el, isEs) {
+    if (el.type === 'checkbox') return isEs ? 'casilla de privacidad' : 'privacy checkbox';
+    const label = el.id && document.querySelector('label[for="' + el.id + '"]');
+    return label ? label.textContent.replace('*', '').trim() : (isEs ? 'un campo' : 'a field');
+}
+
+// Tapping the meter jumps to the next field that still needs attention
+function jumpToNextField() {
+    const meter = document.getElementById('tube-meter');
+    const el = meter && meter._nextField;
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - 160;  // clear the sticky bar
+    window.scrollTo({ top: top, behavior: REDUCED_MOTION ? 'auto' : 'smooth' });
+    el.focus({ preventScroll: true });
+    if (typeof el.reportValidity === 'function') el.reportValidity();  // shows the browser's own hint, e.g. "include an @"
+}
+
 function updateTubeMeter() {
     const form = document.getElementById('signup-form');
     const meter = document.getElementById('tube-meter');
@@ -71,6 +89,8 @@ function updateTubeMeter() {
     const required = Array.from(form.querySelectorAll('[required]')).filter(el => el.offsetParent !== null || el.type === 'checkbox');
     const done = required.filter(el => el.checkValidity()).length;
     const pct = required.length ? Math.round((done / required.length) * 100) : 0;
+    const firstMissing = required.find(el => !el.checkValidity());
+    meter._nextField = firstMissing || null;
 
     const liquid = document.getElementById('tube-liquid');
     if (liquid) liquid.style.width = pct + '%';
@@ -85,6 +105,10 @@ function updateTubeMeter() {
         const parts = pct === 100
             ? [[isEs ? '¡Listo' : 'Ready', ''], [isEs ? ' para despegar' : ' to launch', 'tube-long'], ['! 🚀', '']]
             : [[isEs ? 'Experimento ' : 'Experiment ', 'tube-long'], [pct + '%', ''], [isEs ? ' completo' : ' complete', 'tube-long']];
+        // Once started, name the next field that still needs attention (e.g. "· next: Email")
+        if (pct > 0 && pct < 100 && firstMissing) {
+            parts.push(['\u00a0· ' + (isEs ? 'sigue: ' : 'next: ') + fieldName(firstMissing, isEs), 'tube-next']);
+        }
         label.replaceChildren(...parts.map(([text, cls]) => {
             const s = document.createElement('span');
             if (cls) s.className = cls;
@@ -99,7 +123,8 @@ function updateTubeMeter() {
 }
 
 // ===== Hero particles: 3x the floaters, each at its own speed (1 = lazy drift, 10 = quick) =====
-const EXTRA_PARTICLES = 54;          // 27 in the HTML + 54 here = 81 total
+const EXTRA_PARTICLES = 54;          // 27 in the HTML + 54 here = 81 total (desktop)
+const EXTRA_PARTICLES_PHONE = 18;    // 27 + 18 = 45 on small screens, where the header is much smaller
 const SPEED_SLOWEST_S = 30;          // speed 1 → one loop every 30s
 const SPEED_FASTEST_S = 4;           // speed 10 → one loop every 4s
 
@@ -114,7 +139,8 @@ function addHeroParticles() {
     const paths = ['floatA', 'floatB', 'floatC', 'floatD', 'floatD'];
     const rand = (a, b) => a + Math.random() * (b - a);
 
-    for (let i = 0; i < EXTRA_PARTICLES; i++) {
+    const extra = window.innerWidth < 600 ? EXTRA_PARTICLES_PHONE : EXTRA_PARTICLES;
+    for (let i = 0; i < extra; i++) {
         const p = document.createElement('div');
         const shape = shapes[Math.floor(Math.random() * shapes.length)];
         p.className = 'particle ' + shape;
@@ -176,10 +202,143 @@ function updateCountdown() {
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 
     if (currentLang === 'es') {
-        countdownEl.textContent = `${days} día${days !== 1 ? 's' : ''} y ${hours} hora${hours !== 1 ? 's' : ''} hasta la Feria de Ciencias`;
+        countdownEl.textContent = `🚀 T-menos ${days} día${days !== 1 ? 's' : ''} y ${hours} hora${hours !== 1 ? 's' : ''} para la Feria de Ciencias`;
     } else {
-        countdownEl.textContent = `${days} day${days !== 1 ? 's' : ''} and ${hours} hour${hours !== 1 ? 's' : ''} until the Science Fair`;
+        countdownEl.textContent = `🚀 T-minus ${days} day${days !== 1 ? 's' : ''}, ${hours} hour${hours !== 1 ? 's' : ''} until the Science Fair`;
     }
+
+    // Rocket climbs from site launch to fair night
+    const launch = new Date('2026-09-30T00:00:00');
+    const pct = Math.min(100, Math.max(0, (now - launch) / (fairDate - launch) * 100));
+    const rocket = document.getElementById('rocket');
+    const trail = document.getElementById('rocket-trail');
+    if (rocket) rocket.style.left = pct + '%';
+    if (trail) trail.style.width = pct + '%';
+}
+
+// ===== Mystery question ticker (hero): types a curious question, holds, erases, next =====
+const HERO_QUESTIONS = [
+    ['Why does a curveball curve?', '¿Por qué se curva una bola curva?'],
+    ['Can a Lego bridge hold a backpack?', '¿Puede un puente de Lego sostener una mochila?'],
+    ['Do plants grow faster with music?', '¿Crecen más rápido las plantas con música?'],
+    ['Which paper airplane flies the farthest?', '¿Qué avión de papel vuela más lejos?'],
+    ['Why do roller coasters make your stomach drop?', '¿Por qué las montañas rusas te dan cosquillas en la panza?'],
+    ['Does a cold basketball bounce lower?', '¿Rebota menos un balón de básquetbol frío?'],
+    ['What makes popcorn pop?', '¿Qué hace que las palomitas exploten?'],
+    ['Can you hear sound underwater?', '¿Se puede escuchar el sonido bajo el agua?'],
+    ['Why do cookies spread in the oven?', '¿Por qué las galletas se extienden en el horno?'],
+    ['Which sunscreen blocks the most sun?', '¿Qué protector solar bloquea más sol?'],
+];
+const HQ_TYPE_MS = 45;
+const HQ_HOLD_MS = 2600;
+
+function startQuestionTicker() {
+    const el = document.getElementById('hq-text');
+    if (!el) return;
+    let i = Math.floor(Math.random() * HERO_QUESTIONS.length);
+    const text = () => HERO_QUESTIONS[i][currentLang === 'es' ? 1 : 0];
+
+    if (REDUCED_MOTION) {
+        // No typing animation: just swap the question every few seconds
+        el.textContent = text();
+        setInterval(() => { i = (i + 1) % HERO_QUESTIONS.length; el.textContent = text(); }, 6000);
+        return;
+    }
+
+    const typeNext = () => {
+        const q = text();
+        let n = 0;
+        const typer = setInterval(() => {
+            el.textContent = q.slice(0, ++n);
+            if (n >= q.length) {
+                clearInterval(typer);
+                setTimeout(() => {
+                    const eraser = setInterval(() => {
+                        el.textContent = el.textContent.slice(0, -1);
+                        if (!el.textContent) {
+                            clearInterval(eraser);
+                            i = (i + 1) % HERO_QUESTIONS.length;
+                            setTimeout(typeNext, 350);
+                        }
+                    }, 18);
+                }, HQ_HOLD_MS);
+            }
+        }, HQ_TYPE_MS);
+    };
+    setTimeout(typeNext, 1800); // after the hero entrance animation
+}
+
+// ===== Catch-an-atom easter egg: tap atoms in the header; catch 5 to unlock a fun fact =====
+const ATOMS_TO_UNLOCK = 5;
+const CATCH_RADIUS_PX = 28;  // generous so small atoms are tappable on phones
+const FUN_FACTS = [
+    ['A teaspoon of a neutron star would weigh about 6 billion tons!', '¡Una cucharadita de una estrella de neutrones pesaría unos 6 mil millones de toneladas!'],
+    ['Octopuses have three hearts and blue blood.', 'Los pulpos tienen tres corazones y sangre azul.'],
+    ['Honey never spoils. Archaeologists found 3,000-year-old honey that was still good!', 'La miel nunca se echa a perder. ¡Encontraron miel de 3,000 años que todavía estaba buena!'],
+    ['Lightning is about five times hotter than the surface of the Sun.', 'Un rayo es unas cinco veces más caliente que la superficie del Sol.'],
+    ['Your body has about as many bacteria cells as human cells.', 'Tu cuerpo tiene casi tantas células de bacterias como células humanas.'],
+    ['A day on Venus is longer than a year on Venus.', 'Un día en Venus dura más que un año en Venus.'],
+    ['Bananas are slightly radioactive (but totally safe to eat).', 'Los plátanos son un poquito radiactivos (pero son totalmente seguros para comer).'],
+    ['Stingrays can sense the electricity in other animals’ muscles.', 'Las mantarrayas pueden sentir la electricidad en los músculos de otros animales.'],
+];
+let atomsCaught = 0;
+let toastTimer = null;
+
+function showAtomToast(msg, big) {
+    const t = document.getElementById('atom-toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.toggle('atom-toast-big', !!big);
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), big ? 7000 : 1400);
+}
+
+function popSpark(x, y) {
+    const layer = document.createElement('div');
+    layer.className = 'atom-pop';
+    layer.style.left = x + 'px';
+    layer.style.top = y + 'px';
+    for (let k = 0; k < 10; k++) {
+        const s = document.createElement('span');
+        const a = (k / 10) * Math.PI * 2;
+        s.style.setProperty('--tx', (Math.cos(a) * 28) + 'px');
+        s.style.setProperty('--ty', (Math.sin(a) * 28) + 'px');
+        layer.appendChild(s);
+    }
+    document.body.appendChild(layer);
+    setTimeout(() => layer.remove(), 700);
+}
+
+function setupAtomCatch() {
+    const hero = document.querySelector('.hero');
+    if (!hero || REDUCED_MOTION) return;
+    hero.addEventListener('pointerdown', e => {
+        if (e.target.closest('a, button')) return;  // never steal clicks from logos or links
+        let best = null, bestD = CATCH_RADIUS_PX;
+        hero.querySelectorAll('.science-particles .particle.atom:not(.caught)').forEach(p => {
+            const r = p.getBoundingClientRect();
+            const d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+            if (d < bestD) { bestD = d; best = p; }
+        });
+        if (!best) return;
+        popSpark(e.clientX, e.clientY);
+        best.classList.add('caught');
+        setTimeout(() => {  // the atom drifts back in somewhere new
+            best.style.top = (5 + Math.random() * 85) + '%';
+            best.style.left = (2 + Math.random() * 94) + '%';
+            best.classList.remove('caught');
+        }, 4000);
+        atomsCaught++;
+        const isEs = currentLang === 'es';
+        if (atomsCaught % ATOMS_TO_UNLOCK === 0) {
+            const f = FUN_FACTS[Math.floor(Math.random() * FUN_FACTS.length)][isEs ? 1 : 0];
+            showAtomToast((isEs ? '🧪 ¡Laboratorio desbloqueado! ' : '🧪 Lab unlocked! ') + f, true);
+        } else {
+            const n = atomsCaught % ATOMS_TO_UNLOCK;
+            showAtomToast('⚛️ ' + n + '/' + ATOMS_TO_UNLOCK + (isEs ? ' átomos atrapados' : ' atoms caught'));
+        }
+    });
 }
 
 // ===== Group Project Toggle =====
@@ -649,13 +808,17 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('form-coming-soon').style.display = '';
     }
 
-    // Hero floaters
+    // Hero floaters, mystery questions, catch-an-atom
     addHeroParticles();
+    startQuestionTicker();
+    setupAtomCatch();
 
     // Test-tube progress meter
     var signupForm = document.getElementById('signup-form');
     if (signupForm) {
         signupForm.addEventListener('input', updateTubeMeter);
+        var meterEl = document.getElementById('tube-meter');
+        if (meterEl) meterEl.addEventListener('click', jumpToNextField);
         signupForm.addEventListener('change', updateTubeMeter);
         updateTubeMeter();
     }
