@@ -15,17 +15,18 @@
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/png" href="logo.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Oswald:wght@700&family=Bangers&family=Anton&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <!-- Language Toggle -->
-<div class="lang-toggle">
-    <button id="btn-en" class="lang-btn active" onclick="setLang('en')">English</button>
-    <button id="btn-es" class="lang-btn" onclick="setLang('es')">Español</button>
+<div class="lang-toggle" role="group" aria-label="Language / Idioma">
+    <button id="btn-en" class="lang-btn active" aria-pressed="true" lang="en" onclick="setLang('en')">English</button>
+    <button id="btn-es" class="lang-btn" aria-pressed="false" lang="es" onclick="setLang('es')">Español</button>
 </div>
 
 <!-- Hero Section -->
@@ -111,10 +112,57 @@
 
 <!-- Sidebar -->
 <aside class="sidebar">
+    <!-- Key dates in sidebar -->
+    <div class="sidebar-schedule">
+        <h2 data-en="Important Dates" data-es="Fechas Importantes">Important Dates</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="time" data-en="Thu, Oct 22" data-es="Jue, 22 oct">Thu, Oct 22</div>
+                <div class="event" data-en="&lt;strong&gt;Sign up online&lt;/strong&gt; with your project idea for &lt;strong&gt;First Approval&lt;/strong&gt;" data-es="&lt;strong&gt;Inscríbete en línea&lt;/strong&gt; con tu idea de proyecto para la &lt;strong&gt;Primera Aprobación&lt;/strong&gt;"><strong>Sign up online</strong> with your project idea for <strong>First Approval</strong></div>
+            </div>
+            <div class="timeline-item">
+                <div class="time" data-en="Thu, Nov 12" data-es="Jue, 12 nov">Thu, Nov 12</div>
+                <div class="event" data-en="&lt;strong&gt;Final Approval&lt;/strong&gt; &amp;middot; last day to sign up" data-es="&lt;strong&gt;Aprobación Final&lt;/strong&gt; &amp;middot; último día para inscribirse"><strong>Final Approval</strong> &middot; last day to sign up</div>
+            </div>
+            <div class="timeline-item">
+                <div class="time" data-en="Thu, Nov 19" data-es="Jue, 19 nov">Thu, Nov 19</div>
+                <div class="event" data-en="🔬 Science Fair, 5–7 PM, MPR" data-es="🔬 Feria de Ciencias, 5–7 PM, MPR">🔬 Science Fair, 5–7 PM, MPR</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share the fair (Web Share API, falls back to copying the link) -->
+    <div class="sidebar-share">
+        <button type="button" class="share-btn" data-share data-en="📣 Know a young scientist? Share the fair" data-es="📣 ¿Conoces a un joven científico? Comparte la feria">📣 Know a young scientist? Share the fair</button>
+    </div>
+
+    <!-- Fair-night schedule (Thu Nov 19) -->
+    <div class="sidebar-schedule">
+        <h2 data-en="Fair Night · Nov 19" data-es="Noche de la Feria · 19 nov">Fair Night · Nov 19</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="time">3:00 PM</div>
+                <div class="event" data-en="Project set-up in the MPR (until 5:00)" data-es="Montaje de proyectos en el MPR (hasta las 5:00)">Project set-up in the MPR (until 5:00)</div>
+            </div>
+            <div class="timeline-item">
+                <div class="time">5:00 PM</div>
+                <div class="event" data-en="🔬 Science Fair opens + SD Lab Rats demos out front of the MPR" data-es="🔬 Abre la Feria de Ciencias + demostraciones de SD Lab Rats frente al MPR">🔬 Science Fair opens + SD Lab Rats demos out front of the MPR</div>
+            </div>
+            <div class="timeline-item">
+                <div class="time">6:30 PM</div>
+                <div class="event" data-en="🐀 SD Lab Rats show in the MPR" data-es="🐀 Show de SD Lab Rats en el MPR">🐀 SD Lab Rats show in the MPR</div>
+            </div>
+            <div class="timeline-item">
+                <div class="time">7:00 PM</div>
+                <div class="event" data-en="Teardown — take projects home (until 7:30)" data-es="Desmontaje — lleva tu proyecto a casa (hasta las 7:30)">Teardown — take projects home (until 7:30)</div>
+            </div>
+        </div>
+    </div>
+
     <div class="info-stack">
             <div class="info-card">
                 <div class="info-icon">🧪</div>
-                <h3 data-en="What's Happening" data-es="Qué Va a Pasar">What's Happening</h3>
+                <h2 data-en="What's Happening" data-es="Qué Va a Pasar">What's Happening</h2>
                 <p data-en="Students showcase their science projects in the MPR, plus SD Lab Rats demos out front and a live show in the MPR at 6:30!"
                    data-es="¡Los estudiantes presentan sus proyectos de ciencias en el MPR, además de demostraciones de SD Lab Rats frente al MPR y un show en vivo en el MPR a las 6:30!">
                     Students showcase their science projects in the MPR, plus SD Lab Rats demos out front and a live show in the MPR at 6:30!
@@ -124,7 +172,7 @@
             </div>
             <div class="info-card">
                 <div class="info-icon">🔬</div>
-                <h3 data-en="This Year's Focus" data-es="Enfoque de Este Año">This Year's Focus</h3>
+                <h2 data-en="This Year's Focus" data-es="Enfoque de Este Año">This Year's Focus</h2>
                 <p data-en="What do you enjoy most? Sports, food, nature, music, games, Lego, Disneyland, or anything else? Find the science in it! Open to grades K–6. Work alone or in a group of up to three."
                    data-es="¿Qué es lo que más te gusta? ¿Deportes, comida, naturaleza, música, juegos, Lego, Disneyland, o cualquier otra cosa? ¡Encuentra la ciencia en ello! Abierto a los grados K–6. Trabaja solo o en un grupo de hasta tres.">
                     What do you enjoy most? Sports, food, nature, music, games, Lego, Disneyland, or anything else? Find the science in it! Open to grades K–6. Work alone or in a group of up to three.
@@ -132,7 +180,7 @@
             </div>
             <div class="info-card">
                 <div class="info-icon">🎪</div>
-                <h3 data-en="Everyone's Invited" data-es="Todos Están Invitados">Everyone's Invited</h3>
+                <h2 data-en="Everyone's Invited" data-es="Todos Están Invitados">Everyone's Invited</h2>
                 <p data-en="The Science Fair is open to ALL Capri families — you don't need a project to attend! Come explore, learn, and enjoy SD Lab Rats!"
                    data-es="¡La Feria de Ciencias está abierta a TODAS las familias de Capri — no necesitas un proyecto para asistir! Ven a explorar, aprender y disfrutar de SD Lab Rats!">
                     The Science Fair is open to ALL Capri families — you don't need a project to attend! Come explore, learn, and enjoy SD Lab Rats!
@@ -217,48 +265,7 @@
         </svg>
     </div>
 
-    <!-- Key dates in sidebar -->
-    <div class="sidebar-schedule">
-        <h3 data-en="Important Dates" data-es="Fechas Importantes">Important Dates</h3>
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="time" data-en="Thu, Oct 22" data-es="Jue, 22 oct">Thu, Oct 22</div>
-                <div class="event" data-en="&lt;strong&gt;Sign up online&lt;/strong&gt; with your project idea for &lt;strong&gt;First Approval&lt;/strong&gt;" data-es="&lt;strong&gt;Inscríbete en línea&lt;/strong&gt; con tu idea de proyecto para la &lt;strong&gt;Primera Aprobación&lt;/strong&gt;"><strong>Sign up online</strong> with your project idea for <strong>First Approval</strong></div>
-            </div>
-            <div class="timeline-item">
-                <div class="time" data-en="Thu, Nov 12" data-es="Jue, 12 nov">Thu, Nov 12</div>
-                <div class="event" data-en="&lt;strong&gt;Final Approval&lt;/strong&gt; &amp;middot; last day to sign up" data-es="&lt;strong&gt;Aprobación Final&lt;/strong&gt; &amp;middot; último día para inscribirse"><strong>Final Approval</strong> &middot; last day to sign up</div>
-            </div>
-            <div class="timeline-item">
-                <div class="time" data-en="Thu, Nov 19" data-es="Jue, 19 nov">Thu, Nov 19</div>
-                <div class="event" data-en="🔬 Science Fair, 5–7 PM, MPR" data-es="🔬 Feria de Ciencias, 5–7 PM, MPR">🔬 Science Fair, 5–7 PM, MPR</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Fair-night schedule (Thu Nov 19) -->
-    <div class="sidebar-schedule">
-        <h3 data-en="Fair Night · Nov 19" data-es="Noche de la Feria · 19 nov">Fair Night · Nov 19</h3>
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="time">3:00 PM</div>
-                <div class="event" data-en="Project set-up in the MPR (until 5:00)" data-es="Montaje de proyectos en el MPR (hasta las 5:00)">Project set-up in the MPR (until 5:00)</div>
-            </div>
-            <div class="timeline-item">
-                <div class="time">5:00 PM</div>
-                <div class="event" data-en="🔬 Science Fair opens + SD Lab Rats demos out front of the MPR" data-es="🔬 Abre la Feria de Ciencias + demostraciones de SD Lab Rats frente al MPR">🔬 Science Fair opens + SD Lab Rats demos out front of the MPR</div>
-            </div>
-            <div class="timeline-item">
-                <div class="time">6:30 PM</div>
-                <div class="event" data-en="🐀 SD Lab Rats show in the MPR" data-es="🐀 Show de SD Lab Rats en el MPR">🐀 SD Lab Rats show in the MPR</div>
-            </div>
-            <div class="timeline-item">
-                <div class="time">7:00 PM</div>
-                <div class="event" data-en="Teardown — take projects home (until 7:30)" data-es="Desmontaje — lleva tu proyecto a casa (hasta las 7:30)">Teardown — take projects home (until 7:30)</div>
-            </div>
-        </div>
-    </div>
-</aside>
+    </aside>
 
 <!-- Main Content: Sign-Up Form -->
 <main class="main-content">
@@ -474,6 +481,9 @@
             </div>
 
             <div class="success-actions no-print">
+                <button type="button" class="action-btn secondary" data-share>
+                    <span data-en="📣 Tell a friend" data-es="📣 Cuéntale a un amigo">📣 Tell a friend</span>
+                </button>
                 <button type="button" class="action-btn primary" id="add-to-calendar-btn">
                     <span data-en="📅 Add to Calendar" data-es="📅 Agregar al Calendario">📅 Add to Calendar</span>
                 </button>
@@ -490,6 +500,12 @@
                     <span data-en="📊 Live Dashboard" data-es="📊 Panel en Vivo">📊 Live Dashboard</span>
                 </a>
             </div>
+        </div>
+
+        <!-- Shown when an unfinished entry was restored from this device (script.js restoreDraft) -->
+        <div class="draft-banner" id="draft-banner" hidden>
+            <span data-en="✏️ Welcome back! We filled in your unfinished entry (saved only on this device)." data-es="✏️ ¡Bienvenido de nuevo! Llenamos tu inscripción sin terminar (guardada solo en este dispositivo).">✏️ Welcome back! We filled in your unfinished entry (saved only on this device).</span>
+            <button type="button" class="draft-reset" id="draft-reset" data-en="Start over" data-es="Empezar de nuevo">Start over</button>
         </div>
 
         <form id="signup-form" novalidate>
@@ -512,12 +528,12 @@
             </div>
 
             <!-- Student Info -->
-            <fieldset data-aos="fade-up">
+            <fieldset class="reveal">
                 <legend data-en="Student Information" data-es="Información del Estudiante">Student Information</legend>
 
                 <div class="form-group">
                     <label for="student-name" data-en="Student Name *" data-es="Nombre del Estudiante *">Student Name *</label>
-                    <input type="text" id="student-name" name="studentName" required
+                    <input type="text" id="student-name" name="studentName" required maxlength="80" autocomplete="off"
                            data-en-placeholder="First and Last Name"
                            data-es-placeholder="Nombre y Apellido"
                            placeholder="First and Last Name">
@@ -539,7 +555,7 @@
                     </div>
                     <div class="form-group">
                         <label for="teacher" data-en="Teacher *" data-es="Maestro/a *">Teacher *</label>
-                        <input type="text" id="teacher" name="teacher" required
+                        <input type="text" id="teacher" name="teacher" required maxlength="60" autocomplete="off"
                                data-en-placeholder="Teacher's Last Name"
                                data-es-placeholder="Apellido del Maestro/a"
                                placeholder="Teacher's Last Name">
@@ -548,7 +564,7 @@
             </fieldset>
 
             <!-- Group Project -->
-            <fieldset data-aos="fade-up">
+            <fieldset class="reveal">
                 <legend data-en="Project Details" data-es="Detalles del Proyecto">Project Details</legend>
                 <small data-en="Each student may participate in one project. Students can work alone or in groups of up to three on one project."
                        data-es="Cada estudiante puede participar en un solo proyecto. Los estudiantes pueden trabajar solos o en grupos de hasta tres en un proyecto.">
@@ -585,7 +601,7 @@
 
                 <div class="form-group">
                     <label for="project-title" data-en="Project Title *" data-es="Título del Proyecto *">Project Title *</label>
-                    <input type="text" id="project-title" name="projectTitle" required
+                    <input type="text" id="project-title" name="projectTitle" required maxlength="120" autocomplete="off"
                            data-en-placeholder="What's your project called?"
                            data-es-placeholder="¿Cómo se llama tu proyecto?"
                            placeholder="What's your project called?">
@@ -593,7 +609,7 @@
 
                 <div class="form-group">
                     <label for="project-description" data-en="Brief Description *" data-es="Descripción Breve *">Brief Description *</label>
-                    <textarea id="project-description" name="projectDescription" rows="3" required
+                    <textarea id="project-description" name="projectDescription" rows="3" required maxlength="1000"
                               data-en-placeholder="In a few sentences, what is your project about?"
                               data-es-placeholder="En pocas oraciones, ¿de qué trata tu proyecto?"
                               placeholder="In a few sentences, what is your project about?"></textarea>
@@ -622,7 +638,7 @@
                 <div id="safety-fields" style="display:none;">
                     <div class="form-group">
                         <label for="safety-details" data-en="Please describe the special materials or activities:" data-es="Por favor describe los materiales o actividades especiales:">Please describe the special materials or activities:</label>
-                        <textarea id="safety-details" name="safetyDetails" rows="3"
+                        <textarea id="safety-details" name="safetyDetails" rows="3" maxlength="500"
                                   data-en-placeholder="Tell us what materials or activities your project involves so we can help make sure everything is safe and ready."
                                   data-es-placeholder="Cuéntanos qué materiales o actividades incluye tu proyecto para que podamos asegurarnos de que todo sea seguro y esté listo."
                                   placeholder="Tell us what materials or activities your project involves so we can help make sure everything is safe and ready."></textarea>
@@ -648,12 +664,12 @@
             </fieldset>
 
             <!-- Parent Info -->
-            <fieldset data-aos="fade-up">
+            <fieldset class="reveal">
                 <legend data-en="Parent / Guardian Information" data-es="Información del Padre / Tutor">Parent / Guardian Information</legend>
 
                 <div class="form-group">
                     <label for="parent-name" data-en="Parent/Guardian Name *" data-es="Nombre del Padre/Tutor *">Parent/Guardian Name *</label>
-                    <input type="text" id="parent-name" name="parentName" required
+                    <input type="text" id="parent-name" name="parentName" required maxlength="80" autocomplete="name"
                            data-en-placeholder="First and Last Name"
                            data-es-placeholder="Nombre y Apellido"
                            placeholder="First and Last Name">
@@ -662,19 +678,19 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="parent-email" data-en="Email *" data-es="Correo Electrónico *">Email *</label>
-                        <input type="email" id="parent-email" name="parentEmail" required
+                        <input type="email" id="parent-email" name="parentEmail" required maxlength="120" autocomplete="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
                                placeholder="email@example.com">
                     </div>
                     <div class="form-group">
                         <label for="parent-phone" data-en="Phone" data-es="Teléfono">Phone</label>
-                        <input type="tel" id="parent-phone" name="parentPhone"
+                        <input type="tel" id="parent-phone" name="parentPhone" maxlength="30" autocomplete="tel" inputmode="tel"
                                placeholder="(555) 555-5555">
                     </div>
                 </div>
             </fieldset>
 
             <!-- Needs -->
-            <fieldset data-aos="fade-up">
+            <fieldset class="reveal">
                 <legend data-en="Day-Of Details" data-es="Detalles del Día">Day-Of Details</legend>
 
                 <div class="form-group">
@@ -708,7 +724,7 @@
 
                 <div class="form-group">
                     <label for="special-needs" data-en="Anything else we should know?" data-es="¿Algo más que debamos saber?">Anything else we should know?</label>
-                    <textarea id="special-needs" name="specialNeeds" rows="2"
+                    <textarea id="special-needs" name="specialNeeds" rows="2" maxlength="500"
                               data-en-placeholder="Special setup needs, accommodations, etc."
                               data-es-placeholder="Necesidades especiales de montaje, acomodaciones, etc."
                               placeholder="Special setup needs, accommodations, etc."></textarea>
@@ -825,11 +841,8 @@
     <p data-en="Science in Life! 🔬" data-es="¡La Ciencia en la Vida! 🔬">Science in Life! 🔬</p>
 </footer>
 
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script src="script.js"></script>
 <script>
-// AOS scroll animations
-AOS.init({ duration: 600, once: true, offset: 50, disable: REDUCED_MOTION });
 
 // Hero entrance sequence
 (function() {
