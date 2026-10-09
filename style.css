@@ -1846,60 +1846,133 @@ footer p + p {
     z-index: 50;                 /* below the fixed language toggle (100) */
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 18px;
     margin: 0 0 16px;
-    padding: 6px 12px;
+    padding: 10px 18px;
     background: var(--bg-white);
     border: 1px solid var(--border-light);
     border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.tube-svg {
-    flex: 0 1 260px;
+/* Tube stretches across the whole bar; label sits on the right */
+.tube {
+    flex: 1 1 auto;
     min-width: 0;
-    height: 28px;
+    display: flex;
+    align-items: center;
 }
 
-.tube-meter .tube-label { margin-left: auto; }
+/* Rubber stopper in Capri orange */
+.tube-stopper {
+    flex: 0 0 auto;
+    width: 14px;
+    height: 28px;
+    margin-right: -2px;
+    position: relative;
+    z-index: 1;
+    border-radius: 3px 2px 2px 3px;
+    background: linear-gradient(180deg, #f2894f 0%, var(--primary) 50%, #c24f12 100%);
+    box-shadow: inset -2px 0 0 rgba(0, 0, 0, 0.18);
+}
+
+/* Glass body: open on the stopper side, rounded bottom on the right */
+.tube-glass {
+    position: relative;
+    flex: 1 1 auto;
+    height: 22px;
+    overflow: hidden;
+    border: 2px solid rgba(26, 26, 26, 0.32);
+    border-left: none;
+    border-radius: 0 13px 13px 0;
+    background: linear-gradient(180deg, #ffffff 0%, #eef6f9 100%);
+}
 
 .tube-liquid {
-    fill: var(--secondary);
-    transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), fill 0.4s ease;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    overflow: hidden;
+    background: linear-gradient(180deg, #c3e0ea 0%, var(--secondary) 45%, #7fb0c3 100%);
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.tube-glass { stroke: var(--text); stroke-width: 1.5; opacity: 0.5; }
-.tube-cap { fill: var(--primary); }
+/* Meniscus highlight on the liquid's leading edge */
+.tube-liquid::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 3px;
+    background: rgba(255, 255, 255, 0.55);
+}
 
+/* Measurement marks every 10% along the top edge */
+.tube-ticks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    pointer-events: none;
+    background: repeating-linear-gradient(90deg,
+        transparent 0, transparent calc(10% - 1px),
+        rgba(26, 26, 26, 0.22) calc(10% - 1px), rgba(26, 26, 26, 0.22) 10%);
+}
+
+/* Glass shine */
+.tube-shine {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    right: 14px;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.75);
+    pointer-events: none;
+}
+
+/* Bubbles rise up through the liquid while the form is in progress */
 .tube-bubble {
-    fill: #fff;
+    position: absolute;
+    bottom: -6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
     opacity: 0;
 }
 
+.tube-b1 { left: 12%; width: 5px; height: 5px; }
+.tube-b2 { left: 38%; width: 4px; height: 4px; animation-delay: 0.5s !important; }
+.tube-b3 { left: 63%; width: 6px; height: 6px; animation-delay: 1s !important; }
+.tube-b4 { left: 86%; width: 3px; height: 3px; animation-delay: 1.4s !important; }
+
 .tube-meter.tube-active .tube-bubble {
-    animation: tubeBubble 1.6s ease-in infinite;
+    animation: tubeRise 1.8s ease-in infinite;
 }
 
-.tube-b2 { animation-delay: 0.5s !important; }
-.tube-b3 { animation-delay: 1s !important; }
-
-@keyframes tubeBubble {
-    0% { transform: translateX(0); opacity: 0; }
-    30% { opacity: 0.8; }
-    100% { transform: translateX(var(--bubble-run, 60px)); opacity: 0; }
+@keyframes tubeRise {
+    0% { transform: translateY(0); opacity: 0; }
+    25% { opacity: 0.9; }
+    100% { transform: translateY(-24px); opacity: 0; }
 }
 
 .tube-label {
     flex: 0 0 auto;
     font-family: 'Outfit', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--text);
     white-space: nowrap;
 }
 
 /* Full tube: liquid turns Capri orange and foams over */
-.tube-meter.tube-full .tube-liquid { fill: var(--primary); }
+.tube-meter.tube-full .tube-liquid {
+    background: linear-gradient(180deg, #f2894f 0%, var(--primary) 50%, #c24f12 100%);
+}
+.tube-meter.tube-full .tube-bubble { animation: tubeRise 1.2s ease-in infinite; }
 .tube-meter.tube-full .tube-label { color: var(--primary); }
 .tube-meter.tube-full { animation: tubeFoam 0.6s ease-out; }
 
@@ -1917,7 +1990,9 @@ footer p + p {
     .tube-meter { top: 50px; }   /* mobile toggle sits at top: 10px */
     /* 420px flask overflowed 375px phones (sideways scroll) — scale it to fit */
     .flask-bg { width: 320px; height: 290px; top: -71px; }
-    .tube-label { font-size: 12px; }
+    .tube-label { font-size: 13px; }
+    .tube-label .tube-long { display: none; }   /* "38%" instead of "Experiment 38% complete" */
+    .tube-meter { gap: 12px; padding: 8px 12px; }
 }
 
 /* ===== Volcano eruption on submit ===== */
