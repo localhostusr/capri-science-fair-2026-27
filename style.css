@@ -2044,27 +2044,27 @@ footer p + p {
 .rocket-track {
     position: relative;
     display: block;
-    max-width: 420px;
-    height: 22px;
-    margin: 8px auto 0;
+    max-width: 460px;
+    height: 38px;
+    margin: 10px auto 0;
 }
 
 .rocket-track::before {          /* dotted flight path */
     content: '';
     position: absolute;
     left: 0;
-    right: 18px;
+    right: 30px;
     top: 50%;
-    border-top: 2px dotted rgba(255, 255, 255, 0.55);
+    border-top: 3px dotted rgba(255, 255, 255, 0.6);
 }
 
 .rocket-trail {                  /* glowing trail behind the rocket */
     position: absolute;
     left: 0;
-    top: calc(50% - 2px);
-    height: 4px;
+    top: calc(50% - 3px);
+    height: 6px;
     width: 0;
-    border-radius: 2px;
+    border-radius: 3px;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 230, 150, 0.9));
 }
 
@@ -2072,7 +2072,7 @@ footer p + p {
     position: absolute;
     top: 50%;
     left: 0;
-    font-size: 18px;
+    font-size: 30px;
     line-height: 1;
     transform: translate(-50%, -50%) rotate(45deg);   /* emoji points up-right; tilt to point right */
     animation: rocketHover 1.6s ease-in-out infinite;
@@ -2080,7 +2080,7 @@ footer p + p {
 
 @keyframes rocketHover {
     0%, 100% { margin-top: 0; }
-    50% { margin-top: -3px; }
+    50% { margin-top: -4px; }
 }
 
 .rocket-goal {
@@ -2088,7 +2088,7 @@ footer p + p {
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 15px;
+    font-size: 24px;
 }
 
 /* ===== Catch-an-atom easter egg ===== */
