@@ -2047,11 +2047,7 @@ footer p + p {
 @keyframes hqBlink { 50% { opacity: 0; } }
 
 @media (max-width: 600px) {
-    .hero-question { font-size: 15px; margin: 4px 0 10px; min-height: 2.6em; }
-    .rocket-track { height: 52px; }
-    .rocket-track::before { right: 40px; }
-    .rocket { font-size: 44px; }
-    .rocket-goal { font-size: 32px; }  /* room for 2 lines so the hero doesn't jump */
+    .hero-question { font-size: 15px; margin: 4px 0 10px; min-height: 2.6em; }  /* room for 2 lines so the hero doesn't jump */
 }
 
 /* ===== Rocket countdown (deadline banner) ===== */
@@ -2103,6 +2099,14 @@ footer p + p {
     top: 50%;
     transform: translateY(-50%);
     font-size: 44px;
+}
+
+/* Phones: smaller rocket (must come after the base rocket rules to win) */
+@media (max-width: 600px) {
+    .rocket-track { height: 52px; }
+    .rocket-track::before { right: 40px; }
+    .rocket { font-size: 44px; }
+    .rocket-goal { font-size: 32px; }
 }
 
 /* ===== Catch-an-atom easter egg ===== */
