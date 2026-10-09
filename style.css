@@ -1559,13 +1559,13 @@ footer p + p {
 
 /* Particle shapes */
 .atom {
-    background: rgba(156,197,212,0.4);
-    box-shadow: 0 0 0 3px rgba(156,197,212,0.12), 0 0 0 7px rgba(156,197,212,0.05);
+    background: rgba(156,197,212,0.55);
+    box-shadow: 0 0 0 3px rgba(156,197,212,0.2), 0 0 0 7px rgba(156,197,212,0.08);
 }
 
 .molecule {
-    background: rgba(255,255,255,0.3);
-    box-shadow: 14px -6px 0 rgba(255,255,255,0.2), 8px 12px 0 rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.45);
+    box-shadow: 14px -6px 0 rgba(255,255,255,0.32), 8px 12px 0 rgba(255,255,255,0.25);
 }
 
 .molecule::before {
@@ -1573,7 +1573,7 @@ footer p + p {
     position: absolute;
     top: 3px; left: 3px;
     width: 12px; height: 1px;
-    background: rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.2);
     transform: rotate(-25deg);
     transform-origin: left center;
 }
@@ -1583,7 +1583,7 @@ footer p + p {
     position: absolute;
     top: 3px; left: 3px;
     width: 10px; height: 1px;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.17);
     transform: rotate(65deg);
     transform-origin: left center;
 }
@@ -1593,7 +1593,7 @@ footer p + p {
     width: 14px;
     height: 14px;
     background: transparent;
-    border: 1.5px solid rgba(255,255,255,0.2);
+    border: 1.5px solid rgba(255,255,255,0.35);
     border-radius: 2px;
     transform: rotate(30deg);
 }
@@ -1646,10 +1646,19 @@ footer p + p {
 }
 
 @keyframes floatC {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.3; }
-    25% { transform: translate(18px, -12px) rotate(60deg); opacity: 0.6; }
-    50% { transform: translate(-8px, -28px) rotate(180deg); opacity: 0.4; }
-    75% { transform: translate(12px, 8px) rotate(300deg); opacity: 0.5; }
+    0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.45; }
+    25% { transform: translate(18px, -12px) rotate(60deg); opacity: 0.75; }
+    50% { transform: translate(-8px, -28px) rotate(180deg); opacity: 0.55; }
+    75% { transform: translate(12px, 8px) rotate(300deg); opacity: 0.65; }
+}
+
+/* Wider drift path used by the generated particles (script.js addHeroParticles) */
+@keyframes floatD {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    20% { transform: translate(40px, -25px) rotate(70deg); }
+    45% { transform: translate(-30px, -55px) rotate(160deg); }
+    70% { transform: translate(35px, -30px) rotate(250deg); }
+    85% { transform: translate(-15px, 10px) rotate(320deg); }
 }
 
 /* Large Erlenmeyer flask behind form header */

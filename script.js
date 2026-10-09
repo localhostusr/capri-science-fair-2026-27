@@ -98,6 +98,45 @@ function updateTubeMeter() {
     meter.classList.toggle('tube-full', pct === 100);
 }
 
+// ===== Hero particles: 3x the floaters, each at its own speed (1 = lazy drift, 10 = quick) =====
+const EXTRA_PARTICLES = 54;          // 27 in the HTML + 54 here = 81 total
+const SPEED_SLOWEST_S = 30;          // speed 1 → one loop every 30s
+const SPEED_FASTEST_S = 4;           // speed 10 → one loop every 4s
+
+function particleDuration(speed) {
+    return SPEED_SLOWEST_S - (speed - 1) * (SPEED_SLOWEST_S - SPEED_FASTEST_S) / 9;
+}
+
+function addHeroParticles() {
+    const box = document.querySelector('.science-particles');
+    if (!box || REDUCED_MOTION) return;
+    const shapes = ['atom', 'atom', 'molecule', 'hexagon'];
+    const paths = ['floatA', 'floatB', 'floatC', 'floatD', 'floatD'];
+    const rand = (a, b) => a + Math.random() * (b - a);
+
+    for (let i = 0; i < EXTRA_PARTICLES; i++) {
+        const p = document.createElement('div');
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        p.className = 'particle ' + shape;
+        if (shape !== 'hexagon') {
+            const size = Math.round(rand(3, 13));
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+        }
+        p.style.top = rand(2, 92) + '%';
+        p.style.left = rand(1, 97) + '%';
+        box.appendChild(p);
+    }
+
+    // Give every floater (original + new) its own speed from 1 to 10, starting mid-path
+    box.querySelectorAll('.particle').forEach(p => {
+        const speed = 1 + Math.floor(Math.random() * 10);
+        const dur = particleDuration(speed);
+        const path = paths[Math.floor(Math.random() * paths.length)];
+        p.style.animation = path + ' ' + dur.toFixed(1) + 's ease-in-out ' + (-rand(0, dur)).toFixed(1) + 's infinite' + (Math.random() < 0.5 ? ' reverse' : '');
+    });
+}
+
 // ===== Countdown to the Fair (not a deadline — just excitement) =====
 function updateDeadlineDisplay() {
     // No hard deadline to display — banner is now a static reminder
@@ -609,6 +648,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('deadline-banner').style.display = 'none';
         document.getElementById('form-coming-soon').style.display = '';
     }
+
+    // Hero floaters
+    addHeroParticles();
 
     // Test-tube progress meter
     var signupForm = document.getElementById('signup-form');
