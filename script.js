@@ -73,7 +73,7 @@ function updateTubeMeter() {
     const pct = required.length ? Math.round((done / required.length) * 100) : 0;
 
     const liquid = document.getElementById('tube-liquid');
-    if (liquid) liquid.setAttribute('width', String(2 * pct)); // tube interior is 200 units wide
+    if (liquid) liquid.style.width = pct + '%';
 
     const flask = document.getElementById('flask-liquid');
     if (flask) flask.style.transform = 'translateY(' + (-FLASK_RISE_PX * pct / 100) + 'px)';
@@ -81,13 +81,19 @@ function updateTubeMeter() {
     const label = document.getElementById('tube-label');
     const isEs = currentLang === 'es';
     if (label) {
-        label.textContent = pct === 100
-            ? (isEs ? '¡Listo para despegar! 🚀' : 'Ready to launch! 🚀')
-            : (isEs ? 'Experimento ' + pct + '% completo' : 'Experiment ' + pct + '% complete');
+        // Long label on wide screens; on phones CSS hides the .tube-long parts so the tube gets the room
+        const parts = pct === 100
+            ? [[isEs ? '¡Listo' : 'Ready', ''], [isEs ? ' para despegar' : ' to launch', 'tube-long'], ['! 🚀', '']]
+            : [[isEs ? 'Experimento ' : 'Experiment ', 'tube-long'], [pct + '%', ''], [isEs ? ' completo' : ' complete', 'tube-long']];
+        label.replaceChildren(...parts.map(([text, cls]) => {
+            const s = document.createElement('span');
+            if (cls) s.className = cls;
+            s.textContent = text;
+            return s;
+        }));
     }
 
     meter.setAttribute('aria-valuenow', String(pct));
-    meter.style.setProperty('--bubble-run', Math.max(20, 2 * pct - 20) + 'px');
     meter.classList.toggle('tube-active', pct > 0 && pct < 100);
     meter.classList.toggle('tube-full', pct === 100);
 }
