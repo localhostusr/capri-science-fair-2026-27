@@ -249,6 +249,16 @@ body {
     animation: logoDanceRight 7s ease-in-out infinite;
 }
 
+/* Invisible stand-in where the PTA logo used to be, so the title stays centered */
+.hero-logo-link.hero-logo-spacer {
+    visibility: hidden;
+    animation: none;
+}
+
+@media (max-width: 900px) {
+    .hero-logo-spacer { display: none !important; }
+}
+
 @keyframes logoDance {
     0%, 100% { transform: rotate(0deg) translateY(0); }
     25% { transform: rotate(-2deg) translateY(-4px); }
