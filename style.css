@@ -2001,8 +2001,158 @@ footer p + p {
     .flask-bg { width: 320px; height: 290px; top: -71px; }
     .tube-label { font-size: 13px; }
     .tube-label .tube-long { display: none; }   /* "38%" instead of "Experiment 38% complete" */
+    .tube-label .tube-next {                    /* keep the hint short so the tube keeps its room */
+        display: inline-block;
+        max-width: 110px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: bottom;
+    }
     .tube-meter { gap: 12px; padding: 8px 12px; }
 }
+
+/* ===== Mystery question ticker (hero) ===== */
+.hero-question {
+    position: relative;
+    z-index: 1;
+    min-height: 1.6em;
+    margin: 6px 0 14px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.92);
+    letter-spacing: 0.01em;
+}
+
+.hq-caret {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 3px;
+    vertical-align: -0.12em;
+    background: rgba(255, 255, 255, 0.85);
+    animation: hqBlink 1s steps(1) infinite;
+}
+
+@keyframes hqBlink { 50% { opacity: 0; } }
+
+@media (max-width: 600px) {
+    .hero-question { font-size: 15px; margin: 4px 0 10px; min-height: 2.6em; }  /* room for 2 lines so the hero doesn't jump */
+}
+
+/* ===== Rocket countdown (deadline banner) ===== */
+.rocket-track {
+    position: relative;
+    display: block;
+    max-width: 420px;
+    height: 22px;
+    margin: 8px auto 0;
+}
+
+.rocket-track::before {          /* dotted flight path */
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 18px;
+    top: 50%;
+    border-top: 2px dotted rgba(255, 255, 255, 0.55);
+}
+
+.rocket-trail {                  /* glowing trail behind the rocket */
+    position: absolute;
+    left: 0;
+    top: calc(50% - 2px);
+    height: 4px;
+    width: 0;
+    border-radius: 2px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 230, 150, 0.9));
+}
+
+.rocket {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    font-size: 18px;
+    line-height: 1;
+    transform: translate(-50%, -50%) rotate(45deg);   /* emoji points up-right; tilt to point right */
+    animation: rocketHover 1.6s ease-in-out infinite;
+}
+
+@keyframes rocketHover {
+    0%, 100% { margin-top: 0; }
+    50% { margin-top: -3px; }
+}
+
+.rocket-goal {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+}
+
+/* ===== Catch-an-atom easter egg ===== */
+.science-particles .particle.atom {
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.science-particles .particle.caught {
+    opacity: 0 !important;
+    transform: scale(2.2) !important;
+}
+
+.atom-pop {
+    position: fixed;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    z-index: 300;
+}
+
+.atom-pop span {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    margin: -2.5px 0 0 -2.5px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 6px #9cc5d4;
+    animation: atomPop 0.6s ease-out forwards;
+}
+
+@keyframes atomPop {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0.3); opacity: 0; }
+}
+
+.atom-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    z-index: 300;
+    max-width: min(92vw, 520px);
+    padding: 10px 18px;
+    border-radius: 2px;
+    background: #1a1a1a;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    transform: translate(-50%, 20px);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.atom-toast.show { opacity: 1; transform: translate(-50%, 0); }
+.atom-toast.atom-toast-big { background: var(--primary); font-size: 16px; padding: 14px 22px; }
+
+/* Make the tube meter feel tappable (tapping jumps to the next missing field) */
+.tube-meter { cursor: pointer; }
+.tube-next { font-weight: 500; opacity: 0.75; }
+.tube-meter.tube-full { cursor: default; }
 
 /* ===== Volcano eruption on submit ===== */
 .volcano-layer {
@@ -2081,7 +2231,9 @@ footer p + p {
 
     .hero-logo-link,
     .tube-bubble,
-    .tube-meter.tube-full {
+    .tube-meter.tube-full,
+    .rocket,
+    .hq-caret {
         animation: none !important;
     }
 
