@@ -15,10 +15,11 @@
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/png" href="logo.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
 <body>
 
@@ -128,6 +129,11 @@
                 <div class="event" data-en="🔬 Science Fair, 5–7 PM, MPR" data-es="🔬 Feria de Ciencias, 5–7 PM, MPR">🔬 Science Fair, 5–7 PM, MPR</div>
             </div>
         </div>
+    </div>
+
+    <!-- Share the fair (Web Share API, falls back to copying the link) -->
+    <div class="sidebar-share">
+        <button type="button" class="share-btn" data-share data-en="📣 Know a young scientist? Share the fair" data-es="📣 ¿Conoces a un joven científico? Comparte la feria">📣 Know a young scientist? Share the fair</button>
     </div>
 
     <!-- Fair-night schedule (Thu Nov 19) -->
@@ -475,6 +481,9 @@
             </div>
 
             <div class="success-actions no-print">
+                <button type="button" class="action-btn secondary" data-share>
+                    <span data-en="📣 Tell a friend" data-es="📣 Cuéntale a un amigo">📣 Tell a friend</span>
+                </button>
                 <button type="button" class="action-btn primary" id="add-to-calendar-btn">
                     <span data-en="📅 Add to Calendar" data-es="📅 Agregar al Calendario">📅 Add to Calendar</span>
                 </button>
@@ -491,6 +500,12 @@
                     <span data-en="📊 Live Dashboard" data-es="📊 Panel en Vivo">📊 Live Dashboard</span>
                 </a>
             </div>
+        </div>
+
+        <!-- Shown when an unfinished entry was restored from this device (script.js restoreDraft) -->
+        <div class="draft-banner" id="draft-banner" hidden>
+            <span data-en="✏️ Welcome back! We filled in your unfinished entry (saved only on this device)." data-es="✏️ ¡Bienvenido de nuevo! Llenamos tu inscripción sin terminar (guardada solo en este dispositivo).">✏️ Welcome back! We filled in your unfinished entry (saved only on this device).</span>
+            <button type="button" class="draft-reset" id="draft-reset" data-en="Start over" data-es="Empezar de nuevo">Start over</button>
         </div>
 
         <form id="signup-form" novalidate>
@@ -513,7 +528,7 @@
             </div>
 
             <!-- Student Info -->
-            <fieldset data-aos="fade-up">
+            <fieldset class="reveal">
                 <legend data-en="Student Information" data-es="Información del Estudiante">Student Information</legend>
 
                 <div class="form-group">
@@ -549,7 +564,7 @@
             </fieldset>
 
             <!-- Group Project -->
-            <fieldset data-aos="fade-up">
+            <fieldset class="reveal">
                 <legend data-en="Project Details" data-es="Detalles del Proyecto">Project Details</legend>
                 <small data-en="Each student may participate in one project. Students can work alone or in groups of up to three on one project."
                        data-es="Cada estudiante puede participar en un solo proyecto. Los estudiantes pueden trabajar solos o en grupos de hasta tres en un proyecto.">
@@ -649,7 +664,7 @@
             </fieldset>
 
             <!-- Parent Info -->
-            <fieldset data-aos="fade-up">
+            <fieldset class="reveal">
                 <legend data-en="Parent / Guardian Information" data-es="Información del Padre / Tutor">Parent / Guardian Information</legend>
 
                 <div class="form-group">
@@ -675,7 +690,7 @@
             </fieldset>
 
             <!-- Needs -->
-            <fieldset data-aos="fade-up">
+            <fieldset class="reveal">
                 <legend data-en="Day-Of Details" data-es="Detalles del Día">Day-Of Details</legend>
 
                 <div class="form-group">
@@ -826,11 +841,8 @@
     <p data-en="Science in Life! 🔬" data-es="¡La Ciencia en la Vida! 🔬">Science in Life! 🔬</p>
 </footer>
 
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script src="script.js"></script>
 <script>
-// AOS scroll animations
-AOS.init({ duration: 600, once: true, offset: 50, disable: REDUCED_MOTION });
 
 // Hero entrance sequence
 (function() {

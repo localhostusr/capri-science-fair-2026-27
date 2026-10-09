@@ -42,7 +42,15 @@ function setup() {
 // ===== Web App Entry Point =====
 function doPost(e) {
     try {
-        const data = JSON.parse(e.postData.contents);
+        const data = cleanSignup(JSON.parse(e.postData.contents));
+
+        // Basic server-side checks (the form checks these too)
+        if (!data.studentName || !data.parentName || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.parentEmail)) {
+            return ContentService.createTextOutput(JSON.stringify({
+                status: 'error',
+                message: 'Missing or invalid required fields'
+            })).setMimeType(ContentService.MimeType.JSON);
+        }
 
         // Check deadline
         if (new Date() > DEADLINE) {
@@ -85,7 +93,9 @@ function doPost(e) {
             data.needPower,
             data.specialNeeds || '',
             data.language || 'en',
-            'pending'
+            'pending',
+            data.hasSafetyConsiderations || 'no',   // R: Special materials?
+            data.safetyDetails || ''                // S: Special materials details
         ]);
 
         // Confirmation email DISABLED to avoid exposing admin's personal email
@@ -473,6 +483,53 @@ function notifyAdmins(count) {
             Logger.log('Could not notify ' + email);
         }
     });
+}
+
+// ===== Input cleanup: trim and cap every field (mirrors the form's maxlength) =====
+const FIELD_LIMITS = {
+    studentName: 80, grade: 4, teacher: 60, isGroup: 3, groupMembers: 2000,
+    projectTitle: 120, projectDescription: 1000, category: 40,
+    hasSafetyConsiderations: 3, safetyDetails: 500,
+    parentName: 80, parentEmail: 120, parentPhone: 30,
+    needBoard: 3, needPower: 3, specialNeeds: 500, language: 2
+};
+
+function cleanSignup(raw) {
+    const out = {};
+    Object.keys(FIELD_LIMITS).forEach(k => {
+        let v = raw && raw[k] != null ? String(raw[k]).trim() : '';
+        // A leading = + - @ would be treated as a formula by Sheets; neutralize it
+        if (/^[=+\-@]/.test(v) && k !== 'groupMembers') v = "'" + v;
+        out[k] = v.slice(0, FIELD_LIMITS[k]);
+    });
+    return out;
+}
+
+// ===== Privacy: delete all sign-up data after the fair =====
+// The sign-up page promises "All sign-up data will be deleted within 30 days after the event."
+// Fair: Thu Nov 19, 2026. Purge on/after Dec 19, 2026.
+// ONE-TIME SETUP (Chris): in the Apps Script editor, pick installPurgeTrigger in the function
+// dropdown and click Run. It adds a daily check that clears the data once that date arrives.
+const PURGE_ON = new Date('2026-12-19T06:00:00');
+
+function purgeAfterFair() {
+    if (new Date() < PURGE_ON) return;  // never before the promised date
+    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    ['Sign-Ups 2026-27', 'Visits'].forEach(name => {
+        const sh = ss.getSheetByName(name);
+        if (sh && sh.getLastRow() > 1) sh.deleteRows(2, sh.getLastRow() - 1);  // keep the header row
+    });
+    // Done: remove the trigger so it doesn't keep running
+    ScriptApp.getProjectTriggers()
+        .filter(t => t.getHandlerFunction() === 'purgeAfterFair')
+        .forEach(t => ScriptApp.deleteTrigger(t));
+}
+
+function installPurgeTrigger() {
+    ScriptApp.getProjectTriggers()
+        .filter(t => t.getHandlerFunction() === 'purgeAfterFair')
+        .forEach(t => ScriptApp.deleteTrigger(t));
+    ScriptApp.newTrigger('purgeAfterFair').timeBased().everyDays(1).atHour(6).create();
 }
 
 // ===== Helpers =====

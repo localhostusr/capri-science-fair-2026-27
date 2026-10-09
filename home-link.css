@@ -51,3 +51,8 @@
 @media print {
     .home-bar { display: none !important; }
 }
+
+/* Smooth page-to-page transitions (cross-document View Transitions) */
+@media (prefers-reduced-motion: no-preference) {
+    @view-transition { navigation: auto; }
+}

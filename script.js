@@ -125,6 +125,112 @@ function updateTubeMeter() {
     meter.classList.toggle('tube-full', pct === 100);
 }
 
+// ===== Draft autosave: an unfinished entry survives closing the tab (this device only) =====
+const DRAFT_KEY = 'csf-draft-v1';
+const DRAFT_MAX_AGE_MS = 3 * 24 * 60 * 60 * 1000;   // forget drafts after 3 days (shared office computers)
+const DRAFT_RADIOS = ['isGroup', 'hasSafety', 'needBoard', 'needPower'];
+let draftTimer = null;
+
+function readDraft() {
+    try {
+        const d = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
+        if (!d || Date.now() - d.savedAt > DRAFT_MAX_AGE_MS) return null;
+        return d;
+    } catch (e) { return null; }
+}
+
+function clearDraft() {
+    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+}
+
+function saveDraft() {
+    const form = document.getElementById('signup-form');
+    if (!form) return;
+    const fields = {};
+    form.querySelectorAll('input[id], select[id], textarea[id]').forEach(el => {
+        if (el.type === 'checkbox' || el.type === 'radio' || el.id.startsWith('gm')) return;  // consent is re-checked on purpose
+        if (el.value) fields[el.id] = el.value;
+    });
+    const radios = {};
+    DRAFT_RADIOS.forEach(name => {
+        const r = form.querySelector('input[name="' + name + '"]:checked');
+        if (r) radios[name] = r.value;
+    });
+    const members = [...document.querySelectorAll('.group-member-row')].map(row => {
+        const m = {};
+        row.querySelectorAll('input, select').forEach(i => { m[i.name.replace(/^gm\d+_/, '')] = i.value; });
+        return m;
+    });
+    const hasContent = Object.keys(fields).length > 0;
+    try {
+        if (hasContent) localStorage.setItem(DRAFT_KEY, JSON.stringify({ savedAt: Date.now(), fields, radios, members }));
+        else clearDraft();
+    } catch (e) {}
+}
+
+function scheduleDraftSave() {
+    clearTimeout(draftTimer);
+    draftTimer = setTimeout(saveDraft, 400);
+}
+
+function restoreDraft() {
+    const d = readDraft();
+    const form = document.getElementById('signup-form');
+    if (!d || !form || form.style.display === 'none') return;
+
+    Object.entries(d.radios || {}).forEach(([name, value]) => {
+        const r = form.querySelector('input[name="' + name + '"][value="' + value + '"]');
+        if (r) { r.checked = true; r.dispatchEvent(new Event('change', { bubbles: true })); }
+    });
+    Object.entries(d.fields || {}).forEach(([id, value]) => {
+        const el = document.getElementById(id);
+        if (el) el.value = value;
+    });
+    if (d.radios && d.radios.isGroup === 'yes') {
+        const members = d.members || [];
+        while (document.querySelectorAll('.group-member-row').length < members.length) addGroupMember();
+        document.querySelectorAll('.group-member-row').forEach((row, i) => {
+            const m = members[i] || {};
+            row.querySelectorAll('input, select').forEach(inp => {
+                const key = inp.name.replace(/^gm\d+_/, '');
+                if (m[key]) inp.value = m[key];
+            });
+        });
+    }
+    updateTubeMeter();
+    const banner = document.getElementById('draft-banner');
+    if (banner) banner.hidden = false;
+}
+
+function resetDraft() {
+    clearDraft();
+    location.reload();
+}
+
+// ===== Share the fair: native share sheet on phones, copy-link fallback elsewhere =====
+const SHARE_URL = 'https://localhostusr.github.io/capri-science-fair-2026-27/';
+
+async function shareFair() {
+    const isEs = currentLang === 'es';
+    const data = {
+        title: isEs ? 'Feria de Ciencias de Capri 2026-27' : 'Capri Science Fair 2026-27',
+        text: isEs
+            ? '¡Participa en la Feria de Ciencias de Capri! Jueves 19 de noviembre, 5–7 PM en el MPR. Grados K–6.'
+            : 'Enter the Capri Science Fair! Thursday, November 19, 5–7 PM in the MPR. Grades K–6.',
+        url: SHARE_URL
+    };
+    if (navigator.share) {
+        try { await navigator.share(data); } catch (e) { /* user cancelled */ }
+        return;
+    }
+    try {
+        await navigator.clipboard.writeText(SHARE_URL);
+        showAtomToast(isEs ? '🔗 ¡Enlace copiado! Pégalo en un mensaje.' : '🔗 Link copied! Paste it into a message.');
+    } catch (e) {
+        showAtomToast(SHARE_URL);
+    }
+}
+
 // ===== Hero particles: 3x the floaters, each at its own speed (1 = lazy drift, 10 = quick) =====
 const EXTRA_PARTICLES = 54;          // 27 in the HTML + 54 here = 81 total (desktop)
 const EXTRA_PARTICLES_PHONE = 18;    // 27 + 18 = 45 on small screens, where the header is much smaller
@@ -642,6 +748,7 @@ function eruptThen(callback, data) {
 }
 
 function showSuccess(data) {
+    clearDraft();
     document.getElementById('signup-form').style.display = 'none';
     document.getElementById('deadline-banner').style.display = 'none';
     document.getElementById('form-header').style.display = 'none';
@@ -827,6 +934,19 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('signup-form').style.display = 'none';
         document.getElementById('deadline-banner').style.display = 'none';
         document.getElementById('form-coming-soon').style.display = '';
+    }
+
+    // Share buttons
+    document.querySelectorAll('[data-share]').forEach(function(b) { b.addEventListener('click', shareFair); });
+
+    // Draft autosave
+    var draftForm = document.getElementById('signup-form');
+    if (draftForm && CONFIG.BACKEND_LIVE) {
+        setTimeout(restoreDraft, 0);  // after the group/safety toggles below are wired up
+        draftForm.addEventListener('input', scheduleDraftSave);
+        draftForm.addEventListener('change', scheduleDraftSave);
+        var resetBtn = document.getElementById('draft-reset');
+        if (resetBtn) resetBtn.addEventListener('click', resetDraft);
     }
 
     // Hero floaters, mystery questions, catch-an-atom
