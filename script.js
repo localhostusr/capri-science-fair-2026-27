@@ -1190,9 +1190,36 @@ function afterScroll(destY, maxWait) {
     });
 }
 
+// Laser on/off, remembered per device. The toggle under Student Name shows once the laser has had its moment.
+let stopLaser = null;
+function laserOff() {
+    try { return localStorage.getItem('csf-laser-off') === '1'; } catch (e) { return false; }
+}
+function showLaserToggle() {
+    const box = document.getElementById('laser-toggle');
+    if (!box || REDUCED_MOTION) return;
+    const off = laserOff();
+    box.querySelectorAll('[data-laser]').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.laser === 'off') === off)));
+    box.hidden = false;
+}
+function setupLaserToggle() {
+    const box = document.getElementById('laser-toggle');
+    if (!box) return;
+    if (laserOff()) showLaserToggle();   // so it can be switched back on
+    box.addEventListener('click', e => {
+        const btn = e.target.closest('[data-laser]');
+        if (!btn) return;
+        const off = btn.dataset.laser === 'off';
+        try { localStorage.setItem('csf-laser-off', off ? '1' : '0'); } catch (err) {}
+        if (off && stopLaser) stopLaser();
+        showLaserToggle();
+    });
+}
+
 // Red laser from a small laser pen: lands at the start of the field, then sweeps left to right
 // while the placeholder ("First and Last Name") types itself out one letter behind the dot
 function laserTo(target) {
+    if (laserOff()) { target.focus({ preventScroll: true }); return; }   // they asked for no laser
     target.classList.add('laser-target');
     target.addEventListener('input', () => target.classList.remove('laser-target'), { once: true });
     target.focus({ preventScroll: true });
@@ -1226,7 +1253,10 @@ function laserTo(target) {
         if (svg) svg.remove();
         setPlaceholder(full);
         setTimeout(() => target.classList.remove('laser-target'), 600);
+        if (stopLaser === finish) stopLaser = null;
     };
+    stopLaser = finish;
+    showLaserToggle();
 
     try {
         const r = target.getBoundingClientRect();
@@ -1346,6 +1376,7 @@ function markSignupsClosed() {
 }
 
 function setupDoors() {
+    setupLaserToggle();
     const enter = document.getElementById('choose-enter');
     const explore = document.getElementById('choose-explore');
     const cta = document.getElementById('hub-cta');

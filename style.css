@@ -2779,3 +2779,26 @@ body.signups-closed .hub-cta { display: none; }
 .stats-embed iframe { display: block; width: 100%; height: 900px; border: 0; }
 .stats-full-link { margin: 10px 0 0; text-align: right; font-size: 0.9rem; }
 .stats-full-link a { color: var(--primary); font-weight: 600; }
+
+/* Laser on/off toggle under Student Name */
+.laser-toggle {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 8px;
+}
+.laser-toggle button {
+    padding: 4px 10px;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--text-light);
+    font: inherit;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.laser-toggle button:hover { border-color: var(--primary); color: var(--primary); }
+.laser-toggle button[aria-pressed="true"] { border-color: #ff2a2a; background: rgba(255, 42, 42, 0.07); color: var(--text); font-weight: 600; }
+.laser-toggle button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
