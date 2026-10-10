@@ -490,7 +490,8 @@
     <style>
         /* Embedded in the main page's Live Stats tab: no page chrome, transparent background */
         html.embed .home-bar, html.embed header, html.embed footer { display: none; }
-        html.embed body { background: transparent; min-height: 0; }
+        html.embed body { background: transparent; min-height: 0; display: flow-root; }   /* flow-root: the last card's margin counts toward the height the main page measures */
+        html.embed { overflow: hidden; }   /* the frame is sized to fit, so never show an inner scrollbar */
         html.embed .container { padding-top: 0; padding-bottom: 0; }
     </style>
 </head>
