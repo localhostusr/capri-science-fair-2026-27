@@ -493,6 +493,12 @@
         html.embed body { background: transparent; min-height: 0; display: flow-root; }   /* flow-root: the last card's margin counts toward the height the main page measures */
         html.embed { overflow: hidden; }   /* the frame is sized to fit, so never show an inner scrollbar */
         html.embed .container { padding-top: 0; padding-bottom: 0; }
+        html.embed .lang-toggle { display: none; }   /* the main page's toggle drives the language */
+        .lang-toggle { position: fixed; top: 8px; right: 12px; z-index: 100; display: flex; background: #fff; border: 1px solid #1a1a1a; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .lang-btn { padding: 8px 18px; border: none; background: transparent; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a1a; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; }
+        .lang-btn.active { background: var(--secondary-dark); color: #fff; }
+        .lang-btn:not(.active):hover { background: #eee; }
+        @media (max-width: 600px) { .lang-toggle { top: 6px; right: 8px; } .lang-btn { padding: 7px 12px; font-size: 12px; } }
     </style>
 </head>
 <body>
@@ -505,31 +511,117 @@
     </a>
 </nav>
 
+<div class="lang-toggle" role="group" aria-label="Language / Idioma">
+    <button id="btn-en" class="lang-btn active" aria-pressed="true" lang="en" onclick="dashSetLang('en')">English</button>
+    <button id="btn-es" class="lang-btn" aria-pressed="false" lang="es" onclick="dashSetLang('es')">Español</button>
+</div>
+
 <header>
     <div class="header-inner">
         <div>
-            <h1>🔬 Science Fair Dashboard</h1>
-            <p class="subtitle">Capri Elementary 2026-27 — "Science in Life!"</p>
+            <h1 data-i18n="title">🔬 Science Fair Dashboard</h1>
+            <p class="subtitle" data-i18n="subtitle">Capri Elementary 2026-27 — "Science in Life!"</p>
         </div>
         <div class="header-meta">
-            <button class="refresh-btn" onclick="loadStats()">↻ Refresh</button>
-            <div class="updated-at" style="margin-top:8px;" id="updated-at">Loading...</div>
+            <button class="refresh-btn" onclick="loadStats()" data-i18n="refresh">↻ Refresh</button>
+            <div class="updated-at" style="margin-top:8px;" id="updated-at" data-i18n="loadingShort">Loading...</div>
         </div>
     </div>
 </header>
 
 <div class="container">
     <div id="dashboard-content">
-        <div class="loading">Loading sign-up data...</div>
+        <div class="loading" data-i18n="loading">Loading sign-up data...</div>
     </div>
 </div>
 
 <footer>
-    Aggregated, anonymized stats only. No personal information is shown on this dashboard.<br>
+    <span data-i18n="footer">Aggregated, anonymized stats only. No personal information is shown on this dashboard.</span><br>
     <a href="index.html">← Main Page · Página Principal</a>
 </footer>
 
 <script>
+// ===== English / Spanish (follows the site-wide csf-lang choice) =====
+const I18N = {
+    en: {
+        title: '🔬 Science Fair Dashboard',
+        subtitle: 'Capri Elementary 2026-27 — "Science in Life!"',
+        refresh: '↻ Refresh',
+        loading: 'Loading sign-up data...',
+        loadingShort: 'Loading...',
+        updated: 'Updated ',
+        error: 'Could not load stats: ',
+        footer: 'Aggregated, anonymized stats only. No personal information is shown on this dashboard.',
+        nudgeTitle: 'Curious where your project could fit in?',
+        nudge: 'Every grade and every topic is welcome. The grids below show where the early sign-ups are gathering — but your project could light up any cell. Pick a topic that excites you, and bring your science!',
+        byGrade: 'By Grade',
+        byGradeSub: 'Cells brighten as more sign-ups arrive in each grade',
+        byTopic: 'By Project Topic',
+        byTopicSub: 'Cells brighten as more sign-ups arrive in each topic area',
+        grade: 'Grade ',
+        legend: ['none', 'a few', 'some', 'lots', 'very popular'],
+        intensity: ['No sign-ups yet', 'A few sign-ups', 'Some sign-ups', 'Lots of sign-ups', 'Very popular'],
+        categories: {
+            sports: 'Sports & Movement', food: 'Food & Cooking', nature: 'Nature & Animals', music: 'Music & Sound',
+            games: 'Games, Toys & Lego', rides: 'Rides & Motion', space: 'Space & Weather', health: 'Body & Health',
+            engineering: 'Building & Engineering', other: 'Other', uncategorized: 'No category'
+        }
+    },
+    es: {
+        title: '🔬 Tablero de la Feria de Ciencias',
+        subtitle: 'Capri Elementary 2026-27 — "¡La Ciencia en la Vida!"',
+        refresh: '↻ Actualizar',
+        loading: 'Cargando inscripciones...',
+        loadingShort: 'Cargando...',
+        updated: 'Actualizado ',
+        error: 'No se pudieron cargar las estadísticas: ',
+        footer: 'Solo estadísticas totales y anónimas. Este tablero no muestra información personal.',
+        nudgeTitle: '¿Dónde podría encajar tu proyecto?',
+        nudge: 'Todos los grados y todos los temas son bienvenidos. Las cuadrículas muestran dónde se están juntando las primeras inscripciones, pero tu proyecto puede iluminar cualquier casilla. ¡Elige un tema que te emocione y trae tu ciencia!',
+        byGrade: 'Por Grado',
+        byGradeSub: 'Las casillas se iluminan a medida que llegan inscripciones en cada grado',
+        byTopic: 'Por Tema del Proyecto',
+        byTopicSub: 'Las casillas se iluminan a medida que llegan inscripciones en cada tema',
+        grade: 'Grado ',
+        legend: ['ninguno', 'pocos', 'algunos', 'muchos', 'muy popular'],
+        intensity: ['Aún no hay inscripciones', 'Pocas inscripciones', 'Algunas inscripciones', 'Muchas inscripciones', 'Muy popular'],
+        categories: {
+            sports: 'Deportes y Movimiento', food: 'Comida y Cocina', nature: 'Naturaleza y Animales', music: 'Música y Sonido',
+            games: 'Juegos, Juguetes y Lego', rides: 'Atracciones y Movimiento', space: 'Espacio y Clima', health: 'Cuerpo y Salud',
+            engineering: 'Construcción e Ingeniería', other: 'Otro', uncategorized: 'Sin categoría'
+        }
+    }
+};
+let dashLang = 'en';
+let lastStats = null;
+let lastError = null;
+const T = () => I18N[dashLang];
+
+function dashSetLang(lang, remember) {
+    dashLang = lang === 'es' ? 'es' : 'en';
+    document.documentElement.lang = dashLang;
+    ['en', 'es'].forEach(l => {
+        const b = document.getElementById('btn-' + l);
+        b.classList.toggle('active', l === dashLang);
+        b.setAttribute('aria-pressed', String(l === dashLang));
+    });
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = T()[el.dataset.i18n]; });
+    if (remember !== false && !document.documentElement.classList.contains('embed')) {
+        try { localStorage.setItem('csf-lang', dashLang); } catch (e) {}
+    }
+    if (lastStats) renderDashboard(lastStats);
+    else if (lastError) showError(lastError);
+}
+(function initLang() {
+    let saved = null;
+    try { saved = localStorage.getItem('csf-lang'); } catch (e) {}
+    const browserEs = (navigator.language || '').toLowerCase().startsWith('es');
+    dashLang = (saved === 'es' || (!saved && browserEs)) ? 'es' : 'en';
+    document.addEventListener('DOMContentLoaded', () => dashSetLang(dashLang, false));
+    // Another tab (or the main page around the embed) switched language
+    window.addEventListener('storage', e => { if (e.key === 'csf-lang' && e.newValue && e.newValue !== dashLang) dashSetLang(e.newValue, false); });
+})();
+
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwRAR60DTotOBdDuemXk3xDd8nd05sr6XYBIvPyojZQS0gYKQaMPZeiz0P3s0vS0y4/exec';
 
 // Visit tracking ping — counts each browser as unique once
@@ -567,20 +659,6 @@ const CATEGORY_COLORS = {
     'engineering': '#6a9aad',
     'other': '#94a3b8',
     'uncategorized': '#cbd5e1'
-};
-
-const CATEGORY_LABELS = {
-    'sports': 'Sports & Movement',
-    'food': 'Food & Cooking',
-    'nature': 'Nature & Animals',
-    'music': 'Music & Sound',
-    'games': 'Games, Toys & Lego',
-    'rides': 'Rides & Motion',
-    'space': 'Space & Weather',
-    'health': 'Body & Health',
-    'engineering': 'Building & Engineering',
-    'other': 'Other',
-    'uncategorized': 'No category'
 };
 
 // Normalize category keys — the sheet may have full display text ("food & cooking")
@@ -621,18 +699,28 @@ function normalizeCategories(byCategory) {
 
 async function loadStats() {
     const content = document.getElementById('dashboard-content');
-    content.innerHTML = '<div class="loading">Loading sign-up data...</div>';
+    if (!lastStats) content.innerHTML = '<div class="loading">' + T().loading + '</div>';
 
     try {
         const response = await fetch(APPS_SCRIPT_URL + '?action=stats');
         if (!response.ok) throw new Error('HTTP ' + response.status);
         const stats = await response.json();
         stats.byCategory = normalizeCategories(stats.byCategory || {});
+        lastStats = stats;
+        lastError = null;
         renderDashboard(stats);
     } catch (err) {
         console.error(err);
-        content.innerHTML = '<div class="error">Could not load stats: ' + err.message + '</div>';
+        lastError = err.message;
+        if (!lastStats) showError(err.message);
     }
+}
+
+function showError(msg) {
+    const box = document.createElement('div');
+    box.className = 'error';
+    box.textContent = T().error + msg;
+    document.getElementById('dashboard-content').replaceChildren(box);
 }
 
 // Always-visible baseline lists — every grade and category shows even with 0 entries
@@ -641,40 +729,31 @@ const ALL_CATEGORIES = ['sports', 'food', 'nature', 'music', 'games', 'rides', '
 
 function renderDashboard(stats) {
     const updatedAt = stats.updatedAt ? new Date(stats.updatedAt) : new Date();
-    document.getElementById('updated-at').textContent = 'Updated ' + updatedAt.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    document.getElementById('updated-at').textContent = T().updated + updatedAt.toLocaleTimeString(dashLang === 'es' ? 'es-US' : 'en-US', {hour: '2-digit', minute: '2-digit'});
 
+    const t = T();
+    const legendHtml = '<div class="intensity-legend">' + INTENSITY_DOTS.map((d, b) =>
+        `<span><span class="dots"${b === 0 ? ' style="color:#cbd5e1;"' : ''}>${d}</span> ${t.legend[b]}</span>`).join('') + '</div>';
     const content = document.getElementById('dashboard-content');
     content.innerHTML = `
         <div class="nudge-banner">
-            <strong>Curious where your project could fit in?</strong>
-            Every grade and every topic is welcome. The grids below show where the early sign-ups are gathering — but your project could light up any cell. Pick a topic that excites you, and bring your science!
+            <strong>${t.nudgeTitle}</strong>
+            ${t.nudge}
         </div>
 
         <div class="charts-grid">
             <div class="chart-card wide">
-                <h2>By Grade</h2>
-                <p class="chart-sub">Cells brighten as more sign-ups arrive in each grade</p>
+                <h2>${t.byGrade}</h2>
+                <p class="chart-sub">${t.byGradeSub}</p>
                 <div class="heatmap-grid" id="grade-heatmap"></div>
-                <div class="intensity-legend">
-                    <span><span class="dots" style="color:#cbd5e1;">○○○○</span> none</span>
-                    <span><span class="dots">●○○○</span> a few</span>
-                    <span><span class="dots">●●○○</span> some</span>
-                    <span><span class="dots">●●●○</span> lots</span>
-                    <span><span class="dots">●●●●</span> very popular</span>
-                </div>
+                ${legendHtml}
             </div>
 
             <div class="chart-card wide">
-                <h2>By Project Topic</h2>
-                <p class="chart-sub">Cells brighten as more sign-ups arrive in each topic area</p>
+                <h2>${t.byTopic}</h2>
+                <p class="chart-sub">${t.byTopicSub}</p>
                 <div class="heatmap-grid heatmap-categories" id="category-heatmap"></div>
-                <div class="intensity-legend">
-                    <span><span class="dots" style="color:#cbd5e1;">○○○○</span> none</span>
-                    <span><span class="dots">●○○○</span> a few</span>
-                    <span><span class="dots">●●○○</span> some</span>
-                    <span><span class="dots">●●●○</span> lots</span>
-                    <span><span class="dots">●●●●</span> very popular</span>
-                </div>
+                ${legendHtml}
             </div>
         </div>
     `;
@@ -693,7 +772,6 @@ function intensityBucket(count, max) {
     return 1;                     // faint
 }
 
-const INTENSITY_LABELS = ['No sign-ups yet', 'A few sign-ups', 'Some sign-ups', 'Lots of sign-ups', 'Very popular'];
 const INTENSITY_DOTS   = ['○○○○', '●○○○', '●●○○', '●●●○', '●●●●'];
 
 function renderHeatmaps(stats) {
@@ -708,8 +786,8 @@ function renderHeatmaps(stats) {
             ? 'background: #f1f5f9; color: #94a3b8; border-color: #e2e8f0;'
             : `background: rgba(232,97,26,${intensity}); color: ${intensity > 0.55 ? '#fff' : '#1a1a1a'}; border-color: rgba(232,97,26,${Math.min(1, intensity + 0.2)});`;
         return `
-            <div class="heatmap-cell" style="${bg}" title="${INTENSITY_LABELS[bucket]}">
-                <div class="heatmap-cell-label">${g === 'K' ? 'K' : 'Grade ' + g}</div>
+            <div class="heatmap-cell" style="${bg}" title="${T().intensity[bucket]}">
+                <div class="heatmap-cell-label">${g === 'K' ? 'K' : T().grade + g}</div>
                 <div class="heatmap-cell-dots">${INTENSITY_DOTS[bucket]}</div>
             </div>
         `;
@@ -727,8 +805,8 @@ function renderHeatmaps(stats) {
             ? 'background: #f1f5f9; color: #94a3b8; border-color: #e2e8f0;'
             : `background: ${hexToRgba(baseColor, intensity)}; color: ${intensity > 0.55 ? '#fff' : '#1a1a1a'}; border-color: ${baseColor};`;
         return `
-            <div class="heatmap-cell" style="${bg}" title="${INTENSITY_LABELS[bucket]}">
-                <div class="heatmap-cell-label">${CATEGORY_LABELS[c] || c}</div>
+            <div class="heatmap-cell" style="${bg}" title="${T().intensity[bucket]}">
+                <div class="heatmap-cell-label">${T().categories[c] || c}</div>
                 <div class="heatmap-cell-dots">${INTENSITY_DOTS[bucket]}</div>
             </div>
         `;

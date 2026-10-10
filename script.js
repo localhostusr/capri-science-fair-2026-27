@@ -59,6 +59,9 @@ function setLang(lang) {
     // Re-label the test-tube meter and countdown in the new language
     updateTubeMeter();
     if (document.getElementById('countdown')) updateCountdown();
+    if (refreshHeroQuestion) refreshHeroQuestion();
+    // The embedded Live Stats dashboard follows the page language
+    try { const f = document.getElementById('stats-frame'); if (f && f.contentWindow && f.contentWindow.dashSetLang) f.contentWindow.dashSetLang(lang); } catch (e) {}
 }
 
 // ===== Test-Tube Progress Meter (display only — never blocks submit) =====
@@ -348,6 +351,8 @@ const HERO_QUESTIONS = [
 const HQ_TYPE_MS = 45;
 const HQ_HOLD_MS = 2600;
 
+let refreshHeroQuestion = null;
+
 function startQuestionTicker() {
     const el = document.getElementById('hq-text');
     if (!el) return;
@@ -355,6 +360,9 @@ function startQuestionTicker() {
     if (!REDUCED_MOTION) HERO_QUESTIONS.splice(5, 0, ['What happens if you catch 5 atoms? ⚛️', '¿Qué pasa si atrapas 5 átomos? ⚛️']);
     let i = Math.floor(Math.random() * HERO_QUESTIONS.length);
     const text = () => HERO_QUESTIONS[i][currentLang === 'es' ? 1 : 0];
+    let holding = REDUCED_MOTION;
+    // Language switch: show the current question in the new language right away
+    refreshHeroQuestion = () => { if (holding) el.textContent = text(); };
 
     if (REDUCED_MOTION) {
         // No typing animation: just swap the question every few seconds
@@ -364,13 +372,16 @@ function startQuestionTicker() {
     }
 
     const typeNext = () => {
-        const q = text();
+        let q = text();
         let n = 0;
         const typer = setInterval(() => {
+            q = text();  // keeps typing in the new language if it changes mid-question
             el.textContent = q.slice(0, ++n);
             if (n >= q.length) {
                 clearInterval(typer);
+                holding = true;
                 setTimeout(() => {
+                    holding = false;
                     const eraser = setInterval(() => {
                         el.textContent = el.textContent.slice(0, -1);
                         if (!el.textContent) {
@@ -1118,7 +1129,7 @@ function loadStatsFrame() {
             const doc = frame.contentDocument;
             const fit = () => { frame.style.height = Math.ceil(doc.body.getBoundingClientRect().height) + 'px'; };   // body, not <html>: <html> is never shorter than the frame
             fit();
-            new ResizeObserver(fit).observe(doc.body);
+            new frame.contentWindow.ResizeObserver(fit).observe(doc.body);   // the frame's own observer: one from this page misses changes inside the frame
         } catch (e) { /* keeps its CSS height */ }
     });
     frame.src = frame.dataset.src;
