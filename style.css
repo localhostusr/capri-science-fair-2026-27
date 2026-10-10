@@ -2747,6 +2747,7 @@ body.signups-closed .hub-cta { display: none; }
     .door-text small { font-size: 0.92rem; }
 
     .explore-hub { padding: 12px 16px 40px; }
+
     .hub-head h2 { font-size: 1.45rem; }
     .hub-sub { font-size: 0.98rem; }
 
@@ -2781,13 +2782,16 @@ body.signups-closed .hub-cta { display: none; }
 .stats-full-link a { color: var(--primary); font-weight: 600; }
 
 /* Laser on/off toggle under Student Name */
+/* Sits on the right of the "Student Information" title row, above its orange line */
+fieldset.has-laser-toggle { position: relative; }
 .laser-toggle {
+    position: absolute;
+    top: -64px;     /* up past the legend's 24px margin and line, centered on the title text */
+    right: 32px;    /* the fieldset's side padding, so it ends where the line ends */
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
     gap: 6px;
-    margin-top: 8px;
 }
+.laser-toggle[hidden] { display: none; }
 .laser-toggle button {
     padding: 4px 10px;
     border: 1px solid var(--border-light);
@@ -2802,3 +2806,10 @@ body.signups-closed .hub-cta { display: none; }
 .laser-toggle button:hover { border-color: var(--primary); color: var(--primary); }
 .laser-toggle button[aria-pressed="true"] { border-color: #ff2a2a; background: rgba(255, 42, 42, 0.07); color: var(--text); font-weight: 600; }
 .laser-toggle button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+@media (max-width: 700px) {
+    /* no room beside the title on phones: just the 🔴 / 😎 (the words stay for screen readers) */
+    .laser-toggle { right: 20px; gap: 4px; }
+    .laser-toggle button { padding: 1px 6px; font-size: 0.9rem; }
+    fieldset.has-laser-toggle > legend { letter-spacing: 0.04em; }   /* room for the longer Spanish title */
+    .laser-toggle .lt-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}

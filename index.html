@@ -540,8 +540,12 @@
             </div>
 
             <!-- Student Info -->
-            <fieldset class="reveal">
+            <fieldset class="reveal has-laser-toggle">
                 <legend data-en="Student Information" data-es="Información del Estudiante">Student Information</legend>
+                <div class="laser-toggle" id="laser-toggle" role="group" aria-label="Laser pointer / Puntero láser" hidden>
+                    <button type="button" data-laser="on" aria-pressed="true" title="I love lasers" data-en="🔴 &lt;span class=&quot;lt-text&quot;&gt;I love lasers&lt;/span&gt;" data-es="🔴 &lt;span class=&quot;lt-text&quot;&gt;Me encantan los láseres&lt;/span&gt;">🔴 <span class="lt-text">I love lasers</span></button>
+                    <button type="button" data-laser="off" aria-pressed="false" title="Enough with the laser pointer" data-en="😎 &lt;span class=&quot;lt-text&quot;&gt;Enough with the laser pointer&lt;/span&gt;" data-es="😎 &lt;span class=&quot;lt-text&quot;&gt;Ya basta de puntero láser&lt;/span&gt;">😎 <span class="lt-text">Enough with the laser pointer</span></button>
+                </div>
 
                 <div class="form-group">
                     <label for="student-name" data-en="Student Name *" data-es="Nombre del Estudiante *">Student Name *</label>
@@ -549,10 +553,6 @@
                            data-en-placeholder="First and Last Name"
                            data-es-placeholder="Nombre y Apellido"
                            placeholder="First and Last Name">
-                    <div class="laser-toggle" id="laser-toggle" role="group" aria-label="Laser pointer / Puntero láser" hidden>
-                        <button type="button" data-laser="on" aria-pressed="true" data-en="🔴 I love lasers" data-es="🔴 Me encantan los láseres">🔴 I love lasers</button>
-                        <button type="button" data-laser="off" aria-pressed="false" data-en="😎 Enough with the laser pointer" data-es="😎 Ya basta de puntero láser">😎 Enough with the laser pointer</button>
-                    </div>
                 </div>
 
                 <div class="form-row">
