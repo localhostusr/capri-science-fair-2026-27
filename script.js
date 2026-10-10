@@ -1219,17 +1219,14 @@ function laserTo(target) {
         return true;
     };
     let svg = null, raf = 0, done = false;
-    const onScroll = () => { if (Math.abs(window.scrollY - startY) > 30) finish(); };   // a fixed beam must not drift off its field
     const finish = () => {
         if (done) return;
         done = true;
         cancelAnimationFrame(raf);
         if (svg) svg.remove();
-        window.removeEventListener('scroll', onScroll);
         setPlaceholder(full);
         setTimeout(() => target.classList.remove('laser-target'), 600);
     };
-    const startY = window.scrollY;
 
     try {
         const r = target.getBoundingClientRect();
@@ -1256,6 +1253,7 @@ function laserTo(target) {
         svg.innerHTML =
             '<defs><filter id="laser-glow" x="-50%" y="-50%" width="200%" height="200%">' +
             '<feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>' +
+            '<g class="laser-rig">' +
             '<g class="laser-pen" opacity="0" transform="translate(' + start.x + ',' + start.y + ') rotate(' + angle + ')">' +
             '<rect x="-46" y="-6" width="40" height="12" rx="3" fill="#2b2b2b"/>' +
             '<rect x="-40" y="-6" width="6" height="12" fill="#9cc5d4"/>' +
@@ -1263,14 +1261,14 @@ function laserTo(target) {
             '<circle cx="1" cy="0" r="2.6" fill="#ff2a2a" filter="url(#laser-glow)"/></g>' +
             '<line class="laser-beam" x1="' + start.x + '" y1="' + start.y + '" x2="' + start.x + '" y2="' + start.y + '"' +
             ' stroke="#ff2a2a" stroke-width="2.2" stroke-linecap="round" filter="url(#laser-glow)"/>' +
-            '<circle class="laser-dot" cx="' + textX + '" cy="' + y + '" r="5" fill="#ff2a2a" filter="url(#laser-glow)" opacity="0"/>';
+            '<circle class="laser-dot" cx="' + textX + '" cy="' + y + '" r="5" fill="#ff2a2a" filter="url(#laser-glow)" opacity="0"/></g>';
         document.body.appendChild(svg);
-        window.addEventListener('scroll', onScroll, { passive: true });
         setPlaceholder('');
 
         const pen = svg.querySelector('.laser-pen');
         const beam = svg.querySelector('.laser-beam');
         const dot = svg.querySelector('.laser-dot');
+        const rig = svg.querySelector('.laser-rig');
         // timeline (ms): pen fades in, beam reaches the field, dot sweeps the text, rests, everything fades
         const PEN = 200, AIM = 350, SWEEP = Math.min(1400, Math.max(700, sweepText.length * 60)), REST = 550, FADE = 350;
         const t0 = performance.now();
@@ -1279,6 +1277,9 @@ function laserTo(target) {
         const frame = now => {
             if (done) return;
             const t = now - t0;
+            // the whole rig rides along with the field, so a late or extra scroll never strands the beam
+            const rNow = target.getBoundingClientRect();
+            rig.setAttribute('transform', 'translate(' + (rNow.left - r.left) + ',' + (rNow.top - r.top) + ')');
             pen.setAttribute('opacity', Math.min(1, t / PEN));
             let x = textX, tipX = start.x, tipY = start.y;
             if (t > PEN) {
