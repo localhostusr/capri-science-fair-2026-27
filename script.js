@@ -1158,7 +1158,10 @@ function setView(view) {
         if (view === 'explore') logHubVisit();
     }
     if (document.startViewTransition && !REDUCED_MOTION && document.visibilityState === 'visible') {
-        return document.startViewTransition(apply).updateCallbackDone.catch(() => {});
+        const t = document.startViewTransition(apply);
+        t.ready.catch(() => {});      // skipped animation (e.g. the window was resized mid-way): the view still switches
+        t.finished.catch(() => {});
+        return t.updateCallbackDone.catch(() => {});
     }
     apply();
     return Promise.resolve();
