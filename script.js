@@ -303,6 +303,7 @@ function updateCountdown() {
             if (banner) banner.style.display = 'none';
             if (header) header.style.display = 'none';
             if (closed) closed.style.display = 'block';
+            markSignupsClosed();
         }
     }
 
@@ -773,7 +774,9 @@ function showSuccess(data) {
     }
 
     document.getElementById('success-message').style.display = 'block';
-    document.getElementById('success-message').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setView('joined').then(() => {
+        document.getElementById('success-message').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
 }
 
 function populateConfirmation(d) {
@@ -929,8 +932,322 @@ function markLocalSubmission(email) {
     sessionStorage.setItem('scienceFairSubmissions', JSON.stringify(submitted));
 }
 
+// ===== Two doors + Explore hub =====
+// Milestones in the same order as the sidebar's Important Dates list
+const HUB_START = new Date('2026-09-30T00:00:00');   // site launch: the ribbon starts here
+const HUB_MILESTONES = [
+    new Date('2026-10-22T23:59:00'),   // First Approval
+    new Date('2026-11-12T23:55:00'),   // Final Approval, sign-ups close
+    new Date('2026-11-19T19:00:00')    // Fair night
+];
+let hubStatsLoaded = false;
+
+function setBilingual(el, en, es) {
+    if (!el) return;
+    el.setAttribute('data-en', en);
+    el.setAttribute('data-es', es);
+    el.innerHTML = currentLang === 'es' ? es : en;
+}
+
+// Copy a sidebar/form node into the hub: no duplicate IDs, and h2s become h3s under the hub's h2
+function cloneForHub(node) {
+    const copy = node.cloneNode(true);
+    copy.removeAttribute('id');
+    copy.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+    copy.querySelectorAll('h2').forEach(h => {
+        const h3 = document.createElement('h3');
+        [...h.attributes].forEach(a => h3.setAttribute(a.name, a.value));
+        h3.innerHTML = h.innerHTML;
+        h.replaceWith(h3);
+    });
+    return copy;
+}
+
+function mountClones(mountId, nodes) {
+    const mount = document.getElementById(mountId);
+    if (!mount) return;
+    nodes.forEach(n => { if (n) mount.appendChild(cloneForHub(n)); });
+}
+
+// Runs first on load, before share buttons and language are wired, so the clones get both
+function buildHub() {
+    if (!document.getElementById('explore')) return;
+    const schedules = document.querySelectorAll('.sidebar .sidebar-schedule');
+    const cards = document.querySelectorAll('.sidebar .info-card');
+    const guides = document.querySelectorAll('.sidebar .sidebar-guide');
+    mountClones('hub-dates', [schedules[0]]);
+    mountClones('hub-night', [schedules[1]]);
+    mountClones('hub-share', [document.querySelector('.sidebar .sidebar-share')]);
+    mountClones('hub-fair-cards', [cards[0], cards[2]]);
+    mountClones('hub-plan-cards', [cards[1]]);
+    mountClones('hub-plan-links', [guides[0], guides[1]]);
+    mountClones('hub-ideas-links', [guides[2]]);
+    mountClones('hub-stats-links', [guides[3]]);
+    mountClones('hub-donate', [document.querySelector('#signup-form .donate-strip')]);
+
+    // Ribbon extras: rocket marker and a "Next up" badge (positions set in updateHubRibbon)
+    const timeline = document.querySelector('#hub-dates .timeline');
+    if (timeline) {
+        const marker = document.createElement('div');
+        marker.className = 'hub-rocket';
+        marker.setAttribute('aria-hidden', 'true');
+        marker.innerHTML = '<span class="hub-rocket-label" data-en="You are here" data-es="Estás aquí">You are here</span><span class="hub-rocket-icon">🚀</span>';
+        timeline.appendChild(marker);
+    }
+}
+
+function updateHubRibbon() {
+    const timeline = document.querySelector('#hub-dates .timeline');
+    if (!timeline) return;
+    const items = [...timeline.querySelectorAll('.timeline-item')];
+    const now = new Date();
+    const nextIdx = HUB_MILESTONES.findIndex(d => now <= d);   // -1 once the fair is over
+    items.forEach((item, i) => {
+        item.classList.toggle('done', nextIdx === -1 || i < nextIdx);
+        item.classList.toggle('next', i === nextIdx);
+        let badge = item.querySelector('.next-badge');
+        if (i === nextIdx && !badge) {
+            badge = document.createElement('span');
+            badge.className = 'next-badge';
+            setBilingual(badge, 'Next up', 'Lo siguiente');
+            item.appendChild(badge);
+        } else if (i !== nextIdx && badge) {
+            badge.remove();
+        }
+    });
+    // Three equal columns: milestone dots sit at 1/6, 3/6 and 5/6 of the width
+    let pos;
+    if (nextIdx === -1) {
+        pos = 5 / 6;
+    } else {
+        const from = nextIdx === 0 ? HUB_START : HUB_MILESTONES[nextIdx - 1];
+        const frac = Math.min(1, Math.max(0, (now - from) / (HUB_MILESTONES[nextIdx] - from)));
+        const startPos = nextIdx === 0 ? 0 : (2 * nextIdx - 1) / 6;
+        const endPos = (2 * nextIdx + 1) / 6;
+        pos = startPos + (endPos - startPos) * frac;
+    }
+    timeline.style.setProperty('--progress', (pos * 100).toFixed(1) + '%');
+}
+
+// Live sign-up count, shown only once it's encouraging (5+ students)
+async function loadHubStats() {
+    if (hubStatsLoaded || !CONFIG.APPS_SCRIPT_URL || !CONFIG.BACKEND_LIVE) return;
+    hubStatsLoaded = true;
+    try {
+        const res = await fetch(CONFIG.APPS_SCRIPT_URL + '?action=stats');
+        const stats = await res.json();
+        const n = Math.floor(Number(stats.students || stats.total) || 0);
+        if (n < 5) return;
+        const el = document.getElementById('live-count');
+        setBilingual(el,
+            '<strong>' + n + '</strong> young scientists have signed up so far',
+            '<strong>' + n + '</strong> jóvenes científicos ya se inscribieron');
+        el.hidden = false;
+    } catch (e) { /* stats are a bonus; the dashboard link still works */ }
+}
+
+function setupHubTabs() {
+    const tabs = [...document.querySelectorAll('.hub-tablist [role="tab"]')];
+    if (!tabs.length) return;
+    function select(tab, moveFocus) {
+        tabs.forEach(t => {
+            const on = t === tab;
+            t.setAttribute('aria-selected', String(on));
+            t.tabIndex = on ? 0 : -1;
+            document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+        });
+        if (moveFocus) tab.focus();
+        try { localStorage.setItem('csf-tab', tab.id); } catch (e) {}
+    }
+    tabs.forEach((tab, i) => {
+        tab.addEventListener('click', () => select(tab, false));
+        tab.addEventListener('keydown', e => {
+            const n = tabs.length;
+            const j = { ArrowRight: (i + 1) % n, ArrowLeft: (i - 1 + n) % n, Home: 0, End: n - 1 }[e.key];
+            if (j === undefined) return;
+            e.preventDefault();
+            select(tabs[j], true);
+        });
+    });
+    let saved = null;
+    try { saved = localStorage.getItem('csf-tab'); } catch (e) {}
+    select(tabs.find(t => t.id === saved) || tabs[0], false);
+}
+
+function logHubVisit() {
+    if (!CONFIG.APPS_SCRIPT_URL) return;
+    try {
+        if (sessionStorage.getItem('csf-hub-logged')) return;
+        sessionStorage.setItem('csf-hub-logged', '1');
+        const sid = localStorage.getItem('csf-sid') || 'none';
+        fetch(CONFIG.APPS_SCRIPT_URL + '?action=visit&sid=' + encodeURIComponent(sid) + '&page=explore', { mode: 'no-cors' });
+    } catch (e) {}
+}
+
+// 'form' = sidebar + sign-up, 'explore' = hub only, 'joined' = confirmation with the hub below it
+function setView(view) {
+    const body = document.body;
+    if (view === 'joined') {
+        setBilingual(document.getElementById('explore-title'),
+            'While you wait for project approval, explore the fair',
+            'Mientras esperas la aprobación de tu proyecto, explora la feria');
+        setBilingual(document.getElementById('hub-cta'),
+            'Signing up another student? →', '¿Vas a inscribir a otro estudiante? →');
+    }
+    const apply = () => {
+        body.classList.toggle('view-explore', view === 'explore');
+        body.classList.toggle('view-joined', view === 'joined');
+        document.getElementById('explore').hidden = view === 'form';
+        const door = document.getElementById('choose-explore');
+        if (view === 'explore') door.setAttribute('aria-current', 'page');
+        else door.removeAttribute('aria-current');
+    };
+    if (view !== 'form') {
+        updateHubRibbon();
+        loadHubStats();
+        if (view === 'explore') logHubVisit();
+    }
+    if (document.startViewTransition && !REDUCED_MOTION && document.visibilityState === 'visible') {
+        return document.startViewTransition(apply).updateCallbackDone.catch(() => {});
+    }
+    apply();
+    return Promise.resolve();
+}
+
+function routeFromHash() {
+    if (document.body.classList.contains('view-joined')) return;   // never hide a fresh confirmation
+    setView(location.hash === '#explore' ? 'explore' : 'form');
+}
+
+// Resolve once smooth scrolling has settled: the page hasn't moved for ~150ms (or maxWait passes)
+function afterScroll(maxWait) {
+    return new Promise(resolve => {
+        const started = performance.now();
+        let lastY = window.scrollY;
+        let stillSince = started;
+        (function check(now) {
+            if (window.scrollY !== lastY) { lastY = window.scrollY; stillSince = now; }
+            if (now - stillSince > 150 || now - started > maxWait) return resolve();
+            requestAnimationFrame(check);
+        })(started);
+    });
+}
+
+// Red laser beam from a small laser pen to the start of a field, then a pulsing dot and focus
+function laserTo(target) {
+    target.classList.add('laser-target');
+    setTimeout(() => target.classList.remove('laser-target'), 2600);
+    target.addEventListener('input', () => target.classList.remove('laser-target'), { once: true });
+    target.focus({ preventScroll: true });
+
+    if (REDUCED_MOTION || document.hidden) {   // no motion wanted, or animations paused: a static tag instead
+        const label = document.querySelector('label[for="' + target.id + '"]');
+        if (label && !label.querySelector('.start-here-tag')) {
+            const tag = document.createElement('span');
+            tag.className = 'start-here-tag';
+            setBilingual(tag, 'Start here 👉', 'Empieza aquí 👉');
+            label.appendChild(tag);
+            setTimeout(() => tag.remove(), 3000);
+        }
+        return;
+    }
+
+    try {
+        const r = target.getBoundingClientRect();
+        const end = { x: r.left + Math.min(28, r.width / 4), y: r.top + r.height / 2 };
+        const start = {
+            x: Math.min(window.innerWidth - 40, r.left + r.width * 0.62),
+            y: Math.max(24, r.top - 120)
+        };
+        const angle = Math.atan2(end.y - start.y, end.x - start.x) * 180 / Math.PI;
+        const len = Math.hypot(end.x - start.x, end.y - start.y);
+        const NS = 'http://www.w3.org/2000/svg';
+        const svg = document.createElementNS(NS, 'svg');
+        svg.setAttribute('class', 'laser-overlay');
+        svg.setAttribute('aria-hidden', 'true');
+        svg.innerHTML =
+            '<defs><filter id="laser-glow" x="-50%" y="-50%" width="200%" height="200%">' +
+            '<feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>' +
+            '<g class="laser-pen" transform="translate(' + start.x + ',' + start.y + ') rotate(' + angle + ')">' +
+            '<rect x="-46" y="-6" width="40" height="12" rx="3" fill="#2b2b2b"/>' +
+            '<rect x="-40" y="-6" width="6" height="12" fill="#9cc5d4"/>' +
+            '<rect x="-7" y="-4" width="7" height="8" rx="1" fill="#777"/>' +
+            '<circle cx="1" cy="0" r="2.6" fill="#ff2a2a" filter="url(#laser-glow)"/></g>' +
+            '<line class="laser-beam" x1="' + start.x + '" y1="' + start.y + '" x2="' + end.x + '" y2="' + end.y + '"' +
+            ' stroke="#ff2a2a" stroke-width="2.2" stroke-linecap="round" filter="url(#laser-glow)"' +
+            ' stroke-dasharray="' + len + '" stroke-dashoffset="' + len + '"/>' +
+            '<circle class="laser-dot" cx="' + end.x + '" cy="' + end.y + '" r="5" fill="#ff2a2a" filter="url(#laser-glow)" opacity="0"/>';
+        document.body.appendChild(svg);
+
+        const startY = window.scrollY;
+        const onScroll = () => { if (Math.abs(window.scrollY - startY) > 30) remove(); };   // a fixed beam must not drift off its field
+        const remove = () => { svg.remove(); window.removeEventListener('scroll', onScroll); };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        const pen = svg.querySelector('.laser-pen');
+        const beam = svg.querySelector('.laser-beam');
+        const dot = svg.querySelector('.laser-dot');
+        pen.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, fill: 'forwards' });
+        beam.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], { duration: 450, delay: 200, easing: 'ease-out', fill: 'forwards' });
+        dot.animate([{ opacity: 0, r: 2 }, { opacity: 1, r: 6 }, { opacity: 0.7, r: 4 }, { opacity: 1, r: 6 }, { opacity: 0.7, r: 4 }],
+            { duration: 1200, delay: 650, fill: 'forwards' });
+        svg.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, delay: 1900, fill: 'forwards' })
+            .finished.then(remove).catch(remove);
+    } catch (e) { /* decoration only; focus already moved */ }
+}
+
+// "Enter" door and hub button: show the form, glide to Student Name, point the laser at it
+async function goToSignup(e) {
+    const form = document.getElementById('signup-form');
+    const target = document.getElementById('student-name');
+    if (!form || !target || form.style.display === 'none') return;   // closed/coming soon: plain #signup jump
+    e.preventDefault();
+    if (location.hash !== '#signup') history.pushState(null, '', '#signup');
+    await setView('form');
+    target.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'center' });
+    if (!REDUCED_MOTION) await afterScroll(1500);
+    laserTo(target);
+}
+
+async function goToExplore(e) {
+    e.preventDefault();
+    if (location.hash !== '#explore') history.pushState(null, '', '#explore');
+    await setView('explore');
+    document.getElementById('explore').scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'start' });
+}
+
+// Sign-ups not open (or closed): drop the Enter door, the Explore door becomes the main one
+function markSignupsClosed() {
+    if (document.body.classList.contains('signups-closed')) return;
+    document.body.classList.add('signups-closed');
+    setBilingual(document.getElementById('explore-door-title'), 'Explore the Fair', 'Explora la Feria');
+    setBilingual(document.getElementById('explore-door-sub'), 'Dates, schedule, ideas &amp; help →', 'Fechas, horario, ideas y ayuda →');
+}
+
+function setupDoors() {
+    const enter = document.getElementById('choose-enter');
+    const explore = document.getElementById('choose-explore');
+    const cta = document.getElementById('hub-cta');
+    if (enter) enter.addEventListener('click', goToSignup);
+    if (explore) explore.addEventListener('click', goToExplore);
+    if (cta) cta.addEventListener('click', function(e) {
+        if (document.body.classList.contains('view-joined')) {
+            // Fresh, empty form for the next student
+            e.preventDefault();
+            clearDraft();
+            location.replace(location.pathname + '#signup');
+            location.reload();
+            return;
+        }
+        goToSignup(e);
+    });
+    window.addEventListener('popstate', routeFromHash);   // Back/Forward and hash links (fires for both)
+    setupHubTabs();
+    if (location.hash === '#explore') setView('explore');
+}
+
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', function() {
+    buildHub();   // first: clones need the share and language wiring below
     updateDeadlineDisplay();
     updateCountdown();
     setInterval(updateCountdown, 60000); // Update every minute
@@ -940,6 +1257,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('signup-form').style.display = 'none';
         document.getElementById('deadline-banner').style.display = 'none';
         document.getElementById('form-coming-soon').style.display = '';
+        markSignupsClosed();
     }
 
     // Share buttons
@@ -954,6 +1272,9 @@ document.addEventListener('DOMContentLoaded', function() {
         var resetBtn = document.getElementById('draft-reset');
         if (resetBtn) resetBtn.addEventListener('click', resetDraft);
     }
+
+    // Two doors, Explore hub tabs, #explore routing
+    setupDoors();
 
     // Hero floaters, mystery questions, catch-an-atom
     addHeroParticles();
