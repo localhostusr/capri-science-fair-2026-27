@@ -351,6 +351,8 @@ const HQ_HOLD_MS = 2600;
 function startQuestionTicker() {
     const el = document.getElementById('hq-text');
     if (!el) return;
+    // Easter-egg hint, slipped in mid-rotation (catching is off under reduced motion, so no hint there)
+    if (!REDUCED_MOTION) HERO_QUESTIONS.splice(5, 0, ['What happens if you catch 5 atoms? ⚛️', '¿Qué pasa si atrapas 5 átomos? ⚛️']);
     let i = Math.floor(Math.random() * HERO_QUESTIONS.length);
     const text = () => HERO_QUESTIONS[i][currentLang === 'es' ? 1 : 0];
 
@@ -429,6 +431,39 @@ function popSpark(x, y) {
 function setupAtomCatch() {
     const hero = document.querySelector('.hero');
     if (!hero || REDUCED_MOTION) return;
+    const atoms = () => hero.querySelectorAll('.science-particles .particle.atom:not(.caught)');
+
+    // Hints, never a label: now and then one atom "winks", and on desktop the cursor
+    // turns into a crosshair (and the atom glows) when it drifts near one
+    setInterval(() => {
+        if (document.hidden || window.scrollY > hero.offsetHeight) return;
+        const list = [...atoms()];
+        const a = list[Math.floor(Math.random() * list.length)];
+        if (!a) return;
+        a.classList.add('wink');
+        setTimeout(() => a.classList.remove('wink'), 1100);
+    }, 9000 + Math.random() * 4000);
+    let near = null;
+    hero.addEventListener('pointermove', e => {
+        if (e.pointerType !== 'mouse') return;
+        let best = null, bestD = CATCH_RADIUS_PX;
+        atoms().forEach(p => {
+            const r = p.getBoundingClientRect();
+            const d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+            if (d < bestD) { bestD = d; best = p; }
+        });
+        if (best === near) return;
+        if (near) near.classList.remove('near');
+        near = best;
+        if (near) near.classList.add('near');
+        hero.classList.toggle('atom-aim', !!near);
+    });
+    hero.addEventListener('pointerleave', () => {
+        if (near) near.classList.remove('near');
+        near = null;
+        hero.classList.remove('atom-aim');
+    });
+
     hero.addEventListener('pointerdown', e => {
         if (e.target.closest('a, button')) return;  // never steal clicks from logos or links
         let best = null, bestD = CATCH_RADIUS_PX;
@@ -941,6 +976,7 @@ const HUB_MILESTONES = [
     new Date('2026-11-19T19:00:00')    // Fair night
 ];
 let hubStatsLoaded = false;
+let hubSelectTab = null;   // set by setupHubTabs; Explore always opens on the first tab
 
 function setBilingual(el, en, es) {
     if (!el) return;
@@ -982,7 +1018,6 @@ function buildHub() {
     mountClones('hub-plan-cards', [cards[1]]);
     mountClones('hub-plan-links', [guides[0], guides[1]]);
     mountClones('hub-ideas-links', [guides[2]]);
-    mountClones('hub-stats-links', [guides[3]]);
     mountClones('hub-donate', [document.querySelector('#signup-form .donate-strip')]);
 
     // Ribbon extras: rocket marker and a "Next up" badge (positions set in updateHubRibbon)
@@ -1057,8 +1092,9 @@ function setupHubTabs() {
             document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
         });
         if (moveFocus) tab.focus();
-        try { localStorage.setItem('csf-tab', tab.id); } catch (e) {}
+        if (tab.id === 'tab-stats') loadStatsFrame();
     }
+    hubSelectTab = select;
     tabs.forEach((tab, i) => {
         tab.addEventListener('click', () => select(tab, false));
         tab.addEventListener('keydown', e => {
@@ -1069,9 +1105,23 @@ function setupHubTabs() {
             select(tabs[j], true);
         });
     });
-    let saved = null;
-    try { saved = localStorage.getItem('csf-tab'); } catch (e) {}
-    select(tabs.find(t => t.id === saved) || tabs[0], false);
+    select(tabs[0], false);
+}
+
+// Live Stats tab: the dashboard in a compact embedded mode, loaded the first time the tab opens.
+// Same origin, so the frame can grow to its content's height (no inner scrollbar).
+function loadStatsFrame() {
+    const frame = document.getElementById('stats-frame');
+    if (!frame || frame.src) return;
+    frame.addEventListener('load', () => {
+        try {
+            const doc = frame.contentDocument;
+            const fit = () => { frame.style.height = Math.ceil(doc.body.getBoundingClientRect().height) + 'px'; };   // body, not <html>: <html> is never shorter than the frame
+            fit();
+            new ResizeObserver(fit).observe(doc.body);
+        } catch (e) { /* keeps its CSS height */ }
+    });
+    frame.src = frame.dataset.src;
 }
 
 function logHubVisit() {
@@ -1119,28 +1169,36 @@ function routeFromHash() {
     setView(location.hash === '#explore' ? 'explore' : 'form');
 }
 
-// Resolve once smooth scrolling has settled: the page hasn't moved for ~150ms (or maxWait passes)
-function afterScroll(maxWait) {
+// Resolve once smooth scrolling has arrived at destY (or settled: no movement for ~150ms after it
+// started moving), or when maxWait passes. Smooth scroll can take a moment to start, so stillness
+// alone isn't enough.
+function afterScroll(destY, maxWait) {
     return new Promise(resolve => {
         const started = performance.now();
-        let lastY = window.scrollY;
+        const fromY = window.scrollY;
+        let lastY = fromY;
         let stillSince = started;
         (function check(now) {
-            if (window.scrollY !== lastY) { lastY = window.scrollY; stillSince = now; }
-            if (now - stillSince > 150 || now - started > maxWait) return resolve();
+            const y = window.scrollY;
+            if (y !== lastY) { lastY = y; stillSince = now; }
+            const arrived = Math.abs(y - destY) < 2;
+            const moved = Math.abs(y - fromY) > 2;
+            if ((arrived || moved) && now - stillSince > (arrived ? 60 : 150)) return resolve();
+            if (now - started > maxWait) return resolve();
             requestAnimationFrame(check);
         })(started);
     });
 }
 
-// Red laser beam from a small laser pen to the start of a field, then a pulsing dot and focus
+// Red laser from a small laser pen: lands at the start of the field, then sweeps left to right
+// while the placeholder ("First and Last Name") types itself out one letter behind the dot
 function laserTo(target) {
     target.classList.add('laser-target');
-    setTimeout(() => target.classList.remove('laser-target'), 2600);
     target.addEventListener('input', () => target.classList.remove('laser-target'), { once: true });
     target.focus({ preventScroll: true });
 
     if (REDUCED_MOTION || document.hidden) {   // no motion wanted, or animations paused: a static tag instead
+        setTimeout(() => target.classList.remove('laser-target'), 2600);
         const label = document.querySelector('label[for="' + target.id + '"]');
         if (label && !label.querySelector('.start-here-tag')) {
             const tag = document.createElement('span');
@@ -1152,50 +1210,106 @@ function laserTo(target) {
         return;
     }
 
+    const full = target.placeholder;
+    const typing = !target.value;   // a restored draft already fills the field: just sweep across its text
+    let lastSet = full;
+    const setPlaceholder = text => {
+        if (!typing || target.placeholder !== lastSet) return false;   // language switched mid-sweep: leave the new text alone
+        target.placeholder = lastSet = text;
+        return true;
+    };
+    let svg = null, raf = 0, done = false;
+    const onScroll = () => { if (Math.abs(window.scrollY - startY) > 30) finish(); };   // a fixed beam must not drift off its field
+    const finish = () => {
+        if (done) return;
+        done = true;
+        cancelAnimationFrame(raf);
+        if (svg) svg.remove();
+        window.removeEventListener('scroll', onScroll);
+        setPlaceholder(full);
+        setTimeout(() => target.classList.remove('laser-target'), 600);
+    };
+    const startY = window.scrollY;
+
     try {
         const r = target.getBoundingClientRect();
-        const end = { x: r.left + Math.min(28, r.width / 4), y: r.top + r.height / 2 };
+        const cs = getComputedStyle(target);
+        const ctx = document.createElement('canvas').getContext('2d');
+        ctx.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+        const textX = r.left + parseFloat(cs.borderLeftWidth) + parseFloat(cs.paddingLeft);
+        const maxW = r.right - parseFloat(cs.paddingRight) - textX;
+        // right edge of each letter, so a letter appears the moment the dot passes it
+        const edges = [];
+        const sweepText = typing ? full : target.value;
+        for (let i = 1; i <= sweepText.length; i++) edges.push(Math.min(maxW, ctx.measureText(sweepText.slice(0, i)).width));
+        const sweepW = edges.length ? edges[edges.length - 1] : 0;
+        const y = r.top + r.height / 2;
         const start = {
             x: Math.min(window.innerWidth - 40, r.left + r.width * 0.62),
             y: Math.max(24, r.top - 120)
         };
-        const angle = Math.atan2(end.y - start.y, end.x - start.x) * 180 / Math.PI;
-        const len = Math.hypot(end.x - start.x, end.y - start.y);
+        const angle = Math.atan2(y - start.y, textX - start.x) * 180 / Math.PI;
         const NS = 'http://www.w3.org/2000/svg';
-        const svg = document.createElementNS(NS, 'svg');
+        svg = document.createElementNS(NS, 'svg');
         svg.setAttribute('class', 'laser-overlay');
         svg.setAttribute('aria-hidden', 'true');
         svg.innerHTML =
             '<defs><filter id="laser-glow" x="-50%" y="-50%" width="200%" height="200%">' +
             '<feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>' +
-            '<g class="laser-pen" transform="translate(' + start.x + ',' + start.y + ') rotate(' + angle + ')">' +
+            '<g class="laser-pen" opacity="0" transform="translate(' + start.x + ',' + start.y + ') rotate(' + angle + ')">' +
             '<rect x="-46" y="-6" width="40" height="12" rx="3" fill="#2b2b2b"/>' +
             '<rect x="-40" y="-6" width="6" height="12" fill="#9cc5d4"/>' +
             '<rect x="-7" y="-4" width="7" height="8" rx="1" fill="#777"/>' +
             '<circle cx="1" cy="0" r="2.6" fill="#ff2a2a" filter="url(#laser-glow)"/></g>' +
-            '<line class="laser-beam" x1="' + start.x + '" y1="' + start.y + '" x2="' + end.x + '" y2="' + end.y + '"' +
-            ' stroke="#ff2a2a" stroke-width="2.2" stroke-linecap="round" filter="url(#laser-glow)"' +
-            ' stroke-dasharray="' + len + '" stroke-dashoffset="' + len + '"/>' +
-            '<circle class="laser-dot" cx="' + end.x + '" cy="' + end.y + '" r="5" fill="#ff2a2a" filter="url(#laser-glow)" opacity="0"/>';
+            '<line class="laser-beam" x1="' + start.x + '" y1="' + start.y + '" x2="' + start.x + '" y2="' + start.y + '"' +
+            ' stroke="#ff2a2a" stroke-width="2.2" stroke-linecap="round" filter="url(#laser-glow)"/>' +
+            '<circle class="laser-dot" cx="' + textX + '" cy="' + y + '" r="5" fill="#ff2a2a" filter="url(#laser-glow)" opacity="0"/>';
         document.body.appendChild(svg);
-
-        const startY = window.scrollY;
-        const onScroll = () => { if (Math.abs(window.scrollY - startY) > 30) remove(); };   // a fixed beam must not drift off its field
-        const remove = () => { svg.remove(); window.removeEventListener('scroll', onScroll); };
         window.addEventListener('scroll', onScroll, { passive: true });
+        setPlaceholder('');
+
         const pen = svg.querySelector('.laser-pen');
         const beam = svg.querySelector('.laser-beam');
         const dot = svg.querySelector('.laser-dot');
-        pen.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, fill: 'forwards' });
-        beam.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], { duration: 450, delay: 200, easing: 'ease-out', fill: 'forwards' });
-        dot.animate([{ opacity: 0, r: 2 }, { opacity: 1, r: 6 }, { opacity: 0.7, r: 4 }, { opacity: 1, r: 6 }, { opacity: 0.7, r: 4 }],
-            { duration: 1200, delay: 650, fill: 'forwards' });
-        svg.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, delay: 1900, fill: 'forwards' })
-            .finished.then(remove).catch(remove);
-    } catch (e) { /* decoration only; focus already moved */ }
+        // timeline (ms): pen fades in, beam reaches the field, dot sweeps the text, rests, everything fades
+        const PEN = 200, AIM = 350, SWEEP = Math.min(1400, Math.max(700, sweepText.length * 60)), REST = 550, FADE = 350;
+        const t0 = performance.now();
+        const ease = t => 1 - Math.pow(1 - t, 3);
+        let shown = 0;
+        const frame = now => {
+            if (done) return;
+            const t = now - t0;
+            pen.setAttribute('opacity', Math.min(1, t / PEN));
+            let x = textX, tipX = start.x, tipY = start.y;
+            if (t > PEN) {
+                const k = ease(Math.min(1, (t - PEN) / AIM));
+                tipX = start.x + (textX - start.x) * k;
+                tipY = start.y + (y - start.y) * k;
+            }
+            if (t > PEN + AIM) {
+                const k = Math.min(1, (t - PEN - AIM) / SWEEP);
+                x = textX + sweepW * k;
+                tipX = x; tipY = y;
+                dot.setAttribute('opacity', 1);
+                dot.setAttribute('cx', x);
+                dot.setAttribute('r', 5 + Math.sin(t / 60));
+                let n = shown;
+                while (n < edges.length && textX + edges[n] <= x + 0.5) n++;
+                if (n !== shown) shown = setPlaceholder(full.slice(0, n)) ? n : edges.length;   // stop typing if the language changed
+            }
+            beam.setAttribute('x2', tipX);
+            beam.setAttribute('y2', tipY);
+            const end = PEN + AIM + SWEEP + REST;
+            if (t > end) svg.style.opacity = Math.max(0, 1 - (t - end) / FADE);
+            if (t > end + FADE) return finish();
+            raf = requestAnimationFrame(frame);
+        };
+        raf = requestAnimationFrame(frame);
+    } catch (e) { finish(); /* decoration only; focus already moved */ }
 }
 
-// "Enter" door and hub button: show the form, glide to Student Name, point the laser at it
+// "Enter" door and hub button: show the form, put the "Enter the Science Fair!" heading at the top
+// (nudged down only if Student Name would be cut off), then sweep the laser across the field
 async function goToSignup(e) {
     const form = document.getElementById('signup-form');
     const target = document.getElementById('student-name');
@@ -1203,13 +1317,20 @@ async function goToSignup(e) {
     e.preventDefault();
     if (location.hash !== '#signup') history.pushState(null, '', '#signup');
     await setView('form');
-    target.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'center' });
-    if (!REDUCED_MOTION) await afterScroll(1500);
+    const header = document.getElementById('form-header');
+    let top = (header || target).getBoundingClientRect().top + window.scrollY - 8;
+    const fieldBottom = target.getBoundingClientRect().bottom + window.scrollY;
+    if (fieldBottom - top > window.innerHeight - 40) top = fieldBottom - window.innerHeight + 40;
+    top = Math.max(0, Math.min(top, document.documentElement.scrollHeight - window.innerHeight));
+    window.scrollTo({ top, behavior: REDUCED_MOTION ? 'auto' : 'smooth' });
+    if (!REDUCED_MOTION) await afterScroll(top, 1800);
     laserTo(target);
 }
 
 async function goToExplore(e) {
     e.preventDefault();
+    const first = document.querySelector('.hub-tablist [role="tab"]');
+    if (hubSelectTab && first) hubSelectTab(first, false);
     if (location.hash !== '#explore') history.pushState(null, '', '#explore');
     await setView('explore');
     document.getElementById('explore').scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'start' });

@@ -240,7 +240,7 @@
         /* Charts — lab control panel cards */
         .charts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
             gap: 24px;
             margin-bottom: 32px;
         }
@@ -380,6 +380,14 @@
                 grid-template-columns: repeat(4, 1fr);
             }
         }
+        /* Phones (and the narrow embed in the main page's Live Stats tab): no sideways overflow */
+        @media (max-width: 520px) {
+            .container { padding-left: 14px; padding-right: 14px; }
+            .chart-card { padding: 18px 14px 20px; }
+            .heatmap-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .heatmap-grid.heatmap-categories { grid-template-columns: repeat(2, 1fr); }
+            .heatmap-cell { padding: 12px 6px; }
+        }
 
         /* Friendly nudge banner */
         .nudge-banner {
@@ -478,6 +486,13 @@
         }
     </style>
     <link rel="stylesheet" href="home-link.css">
+    <script>if (/[?&]embed=1\b/.test(location.search)) document.documentElement.classList.add('embed');</script>
+    <style>
+        /* Embedded in the main page's Live Stats tab: no page chrome, transparent background */
+        html.embed .home-bar, html.embed header, html.embed footer { display: none; }
+        html.embed body { background: transparent; min-height: 0; }
+        html.embed .container { padding-top: 0; padding-bottom: 0; }
+    </style>
 </head>
 <body>
 
@@ -523,7 +538,7 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwRAR60DTotOBdD
         sid = 'sid-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
         localStorage.setItem('csf-sid', sid);
     }
-    fetch(APPS_SCRIPT_URL + '?action=visit&sid=' + encodeURIComponent(sid) + '&page=dashboard', { mode: 'no-cors' });
+    fetch(APPS_SCRIPT_URL + '?action=visit&sid=' + encodeURIComponent(sid) + '&page=' + (document.documentElement.classList.contains('embed') ? 'dashboard-embed' : 'dashboard'), { mode: 'no-cors' });
 })();
 
 const PALETTE = {
