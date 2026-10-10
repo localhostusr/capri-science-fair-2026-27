@@ -286,6 +286,8 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
+        .idea-card { scroll-margin-top: 72px; }
+        .idea-card:target { outline: 3px solid #e8611a; outline-offset: 4px; }
         .idea-card h3 {
             font-family: 'Outfit', sans-serif;
             font-size: 0.85rem;
@@ -503,7 +505,7 @@
         <h2 data-en="💡 Project Idea Starters" data-es="💡 Ideas para Empezar tu Proyecto">💡 Project Idea Starters</h2>
         <p class="section-sub" data-en="What do you enjoy most? Pick your favorite thing, find the science in it, and make it your own." data-es="¿Qué es lo que más te gusta? Elige tu cosa favorita, encuentra la ciencia en ella y hazla tuya.">What do you enjoy most? Pick your favorite thing, find the science in it, and make it your own.</p>
         <div class="idea-grid">
-            <div class="idea-card">
+            <div class="idea-card" id="idea-sports">
                 <h3 data-en="⚽ Sports &amp; Movement" data-es="⚽ Deportes y Movimiento">⚽ Sports &amp; Movement</h3>
                 <ul>
                     <li data-en="Does a cold basketball bounce lower than a warm one?" data-es="¿Rebota menos un balón de básquetbol frío que uno caliente?">Does a cold basketball bounce lower than a warm one?</li>
@@ -512,7 +514,7 @@
                     <li data-en="Why does a curveball curve?" data-es="¿Por qué se curva una bola curva?">Why does a curveball curve?</li>
                 </ul>
             </div>
-            <div class="idea-card">
+            <div class="idea-card" id="idea-food">
                 <h3 data-en="🍳 Food &amp; Cooking" data-es="🍳 Comida y Cocina">🍳 Food &amp; Cooking</h3>
                 <ul>
                     <li data-en="What makes popcorn pop — and which brand pops best?" data-es="¿Qué hace que las palomitas exploten y qué marca explota mejor?">What makes popcorn pop — and which brand pops best?</li>
@@ -521,7 +523,7 @@
                     <li data-en="Does salt make ice melt faster?" data-es="¿La sal hace que el hielo se derrita más rápido?">Does salt make ice melt faster?</li>
                 </ul>
             </div>
-            <div class="idea-card">
+            <div class="idea-card" id="idea-nature">
                 <h3 data-en="🌿 Nature &amp; Animals" data-es="🌿 Naturaleza y Animales">🌿 Nature &amp; Animals</h3>
                 <ul>
                     <li data-en="Do ants prefer sugar or protein?" data-es="¿Las hormigas prefieren azúcar o proteína?">Do ants prefer sugar or protein?</li>
@@ -530,7 +532,7 @@
                     <li data-en="What&#x27;s living in a drop of pond water?" data-es="¿Qué vive en una gota de agua de estanque?">What&#x27;s living in a drop of pond water?</li>
                 </ul>
             </div>
-            <div class="idea-card">
+            <div class="idea-card" id="idea-music">
                 <h3 data-en="🎵 Music &amp; Sound" data-es="🎵 Música y Sonido">🎵 Music &amp; Sound</h3>
                 <ul>
                     <li data-en="Do plants grow faster with music?" data-es="¿Crecen más rápido las plantas con música?">Do plants grow faster with music?</li>
@@ -539,7 +541,7 @@
                     <li data-en="Does music change your heart rate?" data-es="¿La música cambia tu ritmo cardíaco?">Does music change your heart rate?</li>
                 </ul>
             </div>
-            <div class="idea-card">
+            <div class="idea-card" id="idea-games">
                 <h3 data-en="🧱 Games, Toys &amp; Lego" data-es="🧱 Juegos, Juguetes y Lego">🧱 Games, Toys &amp; Lego</h3>
                 <ul>
                     <li data-en="Can a Lego bridge hold a backpack?" data-es="¿Puede un puente de Lego sostener una mochila?">Can a Lego bridge hold a backpack?</li>
@@ -548,7 +550,7 @@
                     <li data-en="Is a dice roll really random? Roll it 100 times!" data-es="¿Es realmente al azar un dado? ¡Lánzalo 100 veces!">Is a dice roll really random? Roll it 100 times!</li>
                 </ul>
             </div>
-            <div class="idea-card">
+            <div class="idea-card" id="idea-rides">
                 <h3 data-en="🎢 Rides &amp; Motion" data-es="🎢 Atracciones y Movimiento">🎢 Rides &amp; Motion</h3>
                 <ul>
                     <li data-en="Why do roller coasters make your stomach drop?" data-es="¿Por qué las montañas rusas te dan cosquillas en la panza?">Why do roller coasters make your stomach drop?</li>
@@ -557,7 +559,7 @@
                     <li data-en="How does a parachute&#x27;s size change how fast it falls?" data-es="¿Cómo cambia la velocidad de caída según el tamaño del paracaídas?">How does a parachute&#x27;s size change how fast it falls?</li>
                 </ul>
             </div>
-            <div class="idea-card">
+            <div class="idea-card" id="idea-space">
                 <h3 data-en="🚀 Space &amp; Weather" data-es="🚀 Espacio y Clima">🚀 Space &amp; Weather</h3>
                 <ul>
                     <li data-en="Can you predict tomorrow&#x27;s weather by looking at clouds?" data-es="¿Puedes predecir el clima de mañana mirando las nubes?">Can you predict tomorrow&#x27;s weather by looking at clouds?</li>
@@ -566,7 +568,7 @@
                     <li data-en="Which color absorbs the most heat from the sun?" data-es="¿Qué color absorbe más calor del sol?">Which color absorbs the most heat from the sun?</li>
                 </ul>
             </div>
-            <div class="idea-card">
+            <div class="idea-card" id="idea-health">
                 <h3 data-en="🫀 Body &amp; Health" data-es="🫀 Cuerpo y Salud">🫀 Body &amp; Health</h3>
                 <ul>
                     <li data-en="Does hand sanitizer work better than soap?" data-es="¿El desinfectante de manos funciona mejor que el jabón?">Does hand sanitizer work better than soap?</li>
@@ -575,7 +577,7 @@
                     <li data-en="Does exercise change how fast your heart recovers?" data-es="¿El ejercicio cambia qué tan rápido se recupera tu corazón?">Does exercise change how fast your heart recovers?</li>
                 </ul>
             </div>
-            <div class="idea-card">
+            <div class="idea-card" id="idea-engineering">
                 <h3 data-en="🏗️ Building &amp; Engineering" data-es="🏗️ Construcción e Ingeniería">🏗️ Building &amp; Engineering</h3>
                 <ul>
                     <li data-en="What bridge design holds the most weight?" data-es="¿Qué diseño de puente sostiene más peso?">What bridge design holds the most weight?</li>
@@ -584,7 +586,7 @@
                     <li data-en="Can you build a solar oven that melts chocolate?" data-es="¿Puedes construir un horno solar que derrita chocolate?">Can you build a solar oven that melts chocolate?</li>
                 </ul>
             </div>
-            <div class="idea-card">
+            <div class="idea-card" id="idea-other">
                 <h3 data-en="✨ Something Else" data-es="✨ Otra Cosa">✨ Something Else</h3>
                 <ul>
                     <li data-en="Which material keeps an ice cube frozen the longest?" data-es="¿Qué material mantiene un cubo de hielo congelado por más tiempo?">Which material keeps an ice cube frozen the longest?</li>

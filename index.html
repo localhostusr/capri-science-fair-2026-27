@@ -106,6 +106,27 @@
     </div>
 </header>
 
+<!-- Two doors: sign up now, or look around first (script.js setView / laserTo) -->
+<nav class="path-chooser" id="path-chooser" aria-labelledby="chooser-title">
+    <h2 id="chooser-title" class="visually-hidden" data-en="Get started" data-es="Empieza">Get started</h2>
+    <div class="door-row">
+        <a href="#signup" class="door door-enter" id="choose-enter">
+            <span class="door-icon" aria-hidden="true"><span>🔬</span></span>
+            <span class="door-text">
+                <strong data-en="Enter the Science Fair" data-es="Participa en la Feria de Ciencias">Enter the Science Fair</strong>
+                <small data-en="I have a project idea →" data-es="Tengo una idea de proyecto →">I have a project idea →</small>
+            </span>
+        </a>
+        <a href="#explore" class="door door-explore" id="choose-explore">
+            <span class="door-icon" aria-hidden="true"><span>🔭</span></span>
+            <span class="door-text">
+                <strong id="explore-door-title" data-en="Just Curious? Explore the Fair" data-es="¿Solo Curioso? Explora la Feria">Just Curious? Explore the Fair</strong>
+                <small id="explore-door-sub" data-en="Explore the fair first →" data-es="Explora la feria primero →">Explore the fair first →</small>
+            </span>
+        </a>
+    </div>
+</nav>
+
 <!-- Main Content: Sidebar + Form -->
 <div class="page-layout">
     <div class="content-grid">
@@ -490,15 +511,6 @@
                 <button type="button" class="action-btn secondary" onclick="window.print()">
                     <span data-en="🖨️ Print / Save as PDF" data-es="🖨️ Imprimir / Guardar como PDF">🖨️ Print / Save as PDF</span>
                 </button>
-                <a href="guide.html" class="action-btn secondary">
-                    <span data-en="📘 Open Quick Start Guide" data-es="📘 Abrir Guía de Inicio Rápido">📘 Open Quick Start Guide</span>
-                </a>
-                <a href="inspiration.html" class="action-btn secondary">
-                    <span data-en="💡 Get Inspired" data-es="💡 Inspírate">💡 Get Inspired</span>
-                </a>
-                <a href="dashboard.html" class="action-btn secondary">
-                    <span data-en="📊 Live Dashboard" data-es="📊 Panel en Vivo">📊 Live Dashboard</span>
-                </a>
             </div>
         </div>
 
@@ -528,8 +540,12 @@
             </div>
 
             <!-- Student Info -->
-            <fieldset class="reveal">
+            <fieldset class="reveal has-laser-toggle">
                 <legend data-en="Student Information" data-es="Información del Estudiante">Student Information</legend>
+                <div class="laser-toggle" id="laser-toggle" role="group" aria-label="Laser pointer / Puntero láser" hidden>
+                    <button type="button" data-laser="on" aria-pressed="true" title="I love lasers" data-en="🔴 &lt;span class=&quot;lt-text&quot;&gt;I love lasers&lt;/span&gt;" data-es="🔴 &lt;span class=&quot;lt-text&quot;&gt;Me encantan los láseres&lt;/span&gt;">🔴 <span class="lt-text">I love lasers</span></button>
+                    <button type="button" data-laser="off" aria-pressed="false" title="Enough with the laser pointer" data-en="😎 &lt;span class=&quot;lt-text&quot;&gt;Enough with the laser pointer&lt;/span&gt;" data-es="😎 &lt;span class=&quot;lt-text&quot;&gt;Ya basta de puntero láser&lt;/span&gt;">😎 <span class="lt-text">Enough with the laser pointer</span></button>
+                </div>
 
                 <div class="form-group">
                     <label for="student-name" data-en="Student Name *" data-es="Nombre del Estudiante *">Student Name *</label>
@@ -829,6 +845,95 @@
 
     </div>
 </div>
+
+<!-- Explore hub: shown at /#explore and under the confirmation after signing up.
+     Dates, schedule, cards, links and donate chips are cloned from the sidebar/form by script.js (buildHub),
+     so edit those originals and the hub follows. -->
+<section id="explore" class="explore-hub" aria-labelledby="explore-title" hidden>
+    <div class="hub-inner">
+        <header class="hub-head">
+            <p class="hub-kicker" aria-hidden="true">🔭</p>
+            <h2 id="explore-title" data-en="Explore the Fair" data-es="Explora la Feria">Explore the Fair</h2>
+            <p class="hub-sub" data-en="Everything about the fair in one place: key dates, the fair-night schedule, project help, ideas and live stats."
+               data-es="Todo sobre la feria en un solo lugar: fechas clave, el horario de la noche de la feria, ayuda con proyectos, ideas y estadísticas en vivo.">
+                Everything about the fair in one place: key dates, the fair-night schedule, project help, ideas and live stats.
+            </p>
+        </header>
+
+        <div class="hub-band hub-dates" id="hub-dates"></div>
+        <div class="hub-band hub-night" id="hub-night"></div>
+        <div class="hub-share" id="hub-share"></div>
+
+        <div class="hub-tabs">
+            <div class="hub-tablist" role="tablist" aria-labelledby="explore-title">
+                <button type="button" class="hub-tab" role="tab" id="tab-fair" aria-controls="panel-fair" aria-selected="true">
+                    <span aria-hidden="true">🎪</span> <span data-en="The Fair" data-es="La Feria">The Fair</span>
+                </button>
+                <button type="button" class="hub-tab" role="tab" id="tab-plan" aria-controls="panel-plan" aria-selected="false" tabindex="-1">
+                    <span aria-hidden="true">🔬</span> <span data-en="Plan a Project" data-es="Planea un Proyecto">Plan a Project</span>
+                </button>
+                <button type="button" class="hub-tab" role="tab" id="tab-ideas" aria-controls="panel-ideas" aria-selected="false" tabindex="-1">
+                    <span aria-hidden="true">💡</span> <span data-en="Get Ideas" data-es="Ideas">Get Ideas</span>
+                </button>
+                <button type="button" class="hub-tab" role="tab" id="tab-stats" aria-controls="panel-stats" aria-selected="false" tabindex="-1">
+                    <span aria-hidden="true">📊</span> <span data-en="Live Stats" data-es="Estadísticas">Live Stats</span>
+                </button>
+            </div>
+
+            <div class="hub-panel" role="tabpanel" id="panel-fair" aria-labelledby="tab-fair" tabindex="0">
+                <div class="hub-cards" id="hub-fair-cards"></div>
+            </div>
+
+            <div class="hub-panel" role="tabpanel" id="panel-plan" aria-labelledby="tab-plan" tabindex="0" hidden>
+                <div class="hub-cards hub-plan-top">
+                    <div id="hub-plan-cards"></div>
+                    <div class="quick-facts">
+                        <h3 data-en="Quick facts" data-es="Datos rápidos">Quick facts</h3>
+                        <ul>
+                            <li data-en="Grades K–6 · work alone or in a group of up to 3" data-es="Grados K–6 · trabaja solo o en un grupo de hasta 3">Grades K–6 · work alone or in a group of up to 3</li>
+                            <li data-en="Any topic you love: find the science in it" data-es="Cualquier tema que te guste: encuentra la ciencia en él">Any topic you love: find the science in it</li>
+                            <li data-en="Tri-fold boards: a limited number in the front office" data-es="Tableros trípticos: hay una cantidad limitada en la oficina">Tri-fold boards: a limited number in the front office</li>
+                            <li data-en="Fair night: set up 3–5 PM, fair 5–7 PM in the MPR" data-es="Noche de la feria: montaje 3–5 PM, feria 5–7 PM en el MPR">Fair night: set up 3–5 PM, fair 5–7 PM in the MPR</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="hub-links" id="hub-plan-links"></div>
+            </div>
+
+            <div class="hub-panel" role="tabpanel" id="panel-ideas" aria-labelledby="tab-ideas" tabindex="0" hidden>
+                <p class="hub-panel-intro" data-en="Pick what you love. Each topic has starter ideas to try." data-es="Elige lo que te gusta. Cada tema tiene ideas para empezar.">Pick what you love. Each topic has starter ideas to try.</p>
+                <div class="cat-chips">
+                    <a class="cat-chip" href="inspiration.html#idea-sports" data-en="⚽ Sports &amp; Movement" data-es="⚽ Deportes y Movimiento">⚽ Sports &amp; Movement</a>
+                    <a class="cat-chip" href="inspiration.html#idea-food" data-en="🍳 Food &amp; Cooking" data-es="🍳 Comida y Cocina">🍳 Food &amp; Cooking</a>
+                    <a class="cat-chip" href="inspiration.html#idea-nature" data-en="🌿 Nature &amp; Animals" data-es="🌿 Naturaleza y Animales">🌿 Nature &amp; Animals</a>
+                    <a class="cat-chip" href="inspiration.html#idea-music" data-en="🎵 Music &amp; Sound" data-es="🎵 Música y Sonido">🎵 Music &amp; Sound</a>
+                    <a class="cat-chip" href="inspiration.html#idea-games" data-en="🧱 Games, Toys &amp; Lego" data-es="🧱 Juegos, Juguetes y Lego">🧱 Games, Toys &amp; Lego</a>
+                    <a class="cat-chip" href="inspiration.html#idea-rides" data-en="🎢 Rides &amp; Motion" data-es="🎢 Atracciones y Movimiento">🎢 Rides &amp; Motion</a>
+                    <a class="cat-chip" href="inspiration.html#idea-space" data-en="🚀 Space &amp; Weather" data-es="🚀 Espacio y Clima">🚀 Space &amp; Weather</a>
+                    <a class="cat-chip" href="inspiration.html#idea-health" data-en="🫀 Body &amp; Health" data-es="🫀 Cuerpo y Salud">🫀 Body &amp; Health</a>
+                    <a class="cat-chip" href="inspiration.html#idea-engineering" data-en="🏗️ Building &amp; Engineering" data-es="🏗️ Construcción e Ingeniería">🏗️ Building &amp; Engineering</a>
+                    <a class="cat-chip" href="inspiration.html#idea-other" data-en="✨ Something Else" data-es="✨ Otra Cosa">✨ Something Else</a>
+                </div>
+                <div class="hub-links" id="hub-ideas-links"></div>
+            </div>
+
+            <div class="hub-panel" role="tabpanel" id="panel-stats" aria-labelledby="tab-stats" tabindex="0" hidden>
+                <p class="live-count" id="live-count" hidden></p>
+                <p class="hub-panel-intro" data-en="See how many projects are signed up, by grade and by topic. Updated live." data-es="Mira cuántos proyectos hay inscritos, por grado y por tema. Actualizado en vivo.">See how many projects are signed up, by grade and by topic. Updated live.</p>
+                <div class="stats-embed">
+                    <iframe id="stats-frame" data-src="dashboard.html?embed=1" title="Live sign-up stats / Estadísticas de inscripción en vivo" loading="lazy"></iframe>
+                </div>
+                <p class="stats-full-link"><a href="dashboard.html" target="_blank" rel="noopener" data-en="Open the full dashboard ↗" data-es="Abrir el tablero completo ↗">Open the full dashboard ↗</a></p>
+            </div>
+        </div>
+
+        <div class="hub-cta">
+            <a href="#signup" class="hub-cta-btn" id="hub-cta" data-en="Ready? Enter the Science Fair →" data-es="¿Listo? Participa en la Feria de Ciencias →">Ready? Enter the Science Fair →</a>
+        </div>
+
+        <div class="hub-donate" id="hub-donate"></div>
+    </div>
+</section>
 
 <!-- Sine wave before footer -->
 <svg class="footer-wave" viewBox="0 0 1200 16" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
