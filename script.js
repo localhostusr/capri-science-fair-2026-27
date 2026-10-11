@@ -1204,7 +1204,7 @@ function afterScroll(destY, maxWait) {
     });
 }
 
-// Laser on/off, remembered per device. The toggle under Student Name shows once the laser has had its moment.
+// Laser on/off, remembered per device. The toggle on the "Student Information" row shows once the laser has had its moment.
 let stopLaser = null;
 function laserOff() {
     try { return localStorage.getItem('csf-laser-off') === '1'; } catch (e) { return false; }
@@ -1226,6 +1226,7 @@ function setupLaserToggle() {
         const off = btn.dataset.laser === 'off';
         try { localStorage.setItem('csf-laser-off', off ? '1' : '0'); } catch (err) {}
         if (off && stopLaser) stopLaser();
+        if (off && stopTypingLaser) stopTypingLaser();
         showLaserToggle();
     });
 }
@@ -1353,6 +1354,126 @@ function laserTo(target) {
     } catch (e) { finish(); /* decoration only; focus already moved */ }
 }
 
+// Typing laser: while lasers are on, a red dot rides the text cursor in every text box of the form,
+// with a beam from a small laser pen hovering above the field. It fades after a short pause in typing.
+const TYPE_LASER_IDLE_MS = 1400;
+let caretMirror = null;
+
+// Where the text cursor is on screen: copy the field's text box into a hidden twin and measure a marker
+function caretPoint(el) {
+    const cs = getComputedStyle(el);
+    const isArea = el.tagName === 'TEXTAREA';
+    if (!caretMirror) {
+        caretMirror = document.createElement('div');
+        caretMirror.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(caretMirror);
+    }
+    const m = caretMirror.style;
+    m.cssText = 'position:absolute;visibility:hidden;top:0;left:-9999px;overflow:hidden;';
+    ['boxSizing', 'width', 'height', 'fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'letterSpacing', 'lineHeight',
+     'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'borderTopWidth', 'borderRightWidth', 'borderBottomWidth',
+     'borderLeftWidth', 'textTransform', 'textIndent', 'tabSize', 'wordSpacing'].forEach(k => { m[k] = cs[k]; });
+    m.borderStyle = 'solid';
+    m.whiteSpace = isArea ? 'pre-wrap' : 'pre';
+    m.overflowWrap = isArea ? 'break-word' : 'normal';
+    let pos = null;
+    try { pos = el.selectionEnd; } catch (e) {}   // email fields don't expose the cursor: use the end of the text
+    if (pos == null) pos = el.value.length;
+    caretMirror.textContent = el.value.slice(0, pos);
+    const mark = document.createElement('span');
+    mark.textContent = '​';
+    caretMirror.appendChild(mark);
+    const r = el.getBoundingClientRect();
+    const lineH = mark.offsetHeight || parseFloat(cs.fontSize) * 1.2;
+    let x = r.left + mark.offsetLeft - el.scrollLeft;
+    let y = r.top + mark.offsetTop - el.scrollTop + lineH / 2;
+    // keep the dot inside the box (long text scrolls inside the field)
+    const padL = parseFloat(cs.borderLeftWidth) + parseFloat(cs.paddingLeft);
+    const padR = parseFloat(cs.borderRightWidth) + parseFloat(cs.paddingRight);
+    x = Math.max(r.left + padL, Math.min(r.right - padR, x));
+    y = Math.max(r.top + 4, Math.min(r.bottom - 4, y));
+    return { x: x + 2, y, r };
+}
+
+function setupTypingLaser() {
+    const form = document.getElementById('signup-form');
+    if (!form || REDUCED_MOTION) return;
+    const isText = el => el && (el.tagName === 'TEXTAREA' ||
+        (el.tagName === 'INPUT' && /^(text|email|tel|search|url|number)$/.test(el.type)));
+    const NS = 'http://www.w3.org/2000/svg';
+    let svg = null, pen, beam, dot, field = null, raf = 0, idleTimer = 0, shownAt = 0, fading = false, penX = null, penY = null;
+
+    const build = () => {
+        svg = document.createElementNS(NS, 'svg');
+        svg.setAttribute('class', 'laser-overlay typing-laser');
+        svg.setAttribute('aria-hidden', 'true');
+        svg.innerHTML =
+            '<defs><filter id="laser-glow-t" x="-50%" y="-50%" width="200%" height="200%">' +
+            '<feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>' +
+            '<g class="laser-pen">' +
+            '<rect x="-46" y="-6" width="40" height="12" rx="3" fill="#2b2b2b"/>' +
+            '<rect x="-40" y="-6" width="6" height="12" fill="#9cc5d4"/>' +
+            '<rect x="-7" y="-4" width="7" height="8" rx="1" fill="#777"/>' +
+            '<circle cx="1" cy="0" r="2.6" fill="#ff2a2a" filter="url(#laser-glow-t)"/></g>' +
+            '<line stroke="#ff2a2a" stroke-width="2" stroke-linecap="round" filter="url(#laser-glow-t)"/>' +
+            '<circle r="4.5" fill="#ff2a2a" filter="url(#laser-glow-t)"/>';
+        pen = svg.querySelector('.laser-pen');
+        beam = svg.querySelector('line');
+        dot = svg.querySelector('circle[r="4.5"]');
+        document.body.appendChild(svg);
+    };
+
+    const hide = () => {
+        cancelAnimationFrame(raf);
+        raf = 0;
+        clearTimeout(idleTimer);
+        if (svg) { svg.remove(); svg = null; }
+        penX = penY = null;
+    };
+
+    const draw = now => {
+        raf = 0;
+        if (!svg || !field || !document.contains(field)) return hide();
+        const c = caretPoint(field);
+        // pen glides along just above and right of the cursor, aiming down at it (and rides along while scrolling)
+        const gx = Math.min(window.innerWidth - 44, c.x + 56);   // room for the pen body on narrow screens
+        const gy = Math.max(16, Math.min(c.y, c.r.top + 12) - 46);
+        if (penX == null) { penX = gx; penY = gy; }
+        penX += (gx - penX) * 0.25;
+        penY += (gy - penY) * 0.25;
+        const px = penX, py = penY;
+        const angle = Math.atan2(c.y - py, c.x - px) * 180 / Math.PI;
+        pen.setAttribute('transform', 'translate(' + px + ',' + py + ') rotate(' + angle + ')');
+        beam.setAttribute('x1', px); beam.setAttribute('y1', py);
+        beam.setAttribute('x2', c.x); beam.setAttribute('y2', c.y);
+        dot.setAttribute('cx', c.x); dot.setAttribute('cy', c.y);
+        dot.setAttribute('r', 4.5 + Math.sin(now / 70) * 0.8);
+        const t = now - shownAt;
+        svg.style.opacity = fading ? Math.max(0, 1 - t / 300) : Math.min(1, t / 120);
+        if (fading && t > 300) return hide();
+        raf = requestAnimationFrame(draw);
+    };
+
+    const track = el => {
+        if (laserOff() || !isText(el) || document.activeElement !== el) return;
+        if (stopLaser) stopLaser();   // the welcome sweep hands over to the typing laser
+        if (field !== el || !svg || fading) { fading = false; shownAt = performance.now(); }
+        if (field !== el) penX = penY = null;   // new field: pen starts right above it
+        field = el;
+        if (!svg) build();
+        if (!raf) raf = requestAnimationFrame(draw);
+        showLaserToggle();
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => { fading = true; shownAt = performance.now(); }, TYPE_LASER_IDLE_MS);
+    };
+
+    form.addEventListener('input', e => track(e.target));
+    form.addEventListener('keyup', e => { if (/^(Arrow|Home|End)/.test(e.key)) track(e.target); });
+    form.addEventListener('focusout', () => setTimeout(() => { if (!isText(document.activeElement)) hide(); }, 0));
+    stopTypingLaser = hide;
+}
+let stopTypingLaser = null;
+
 // "Enter" door and hub button: show the form, put the "Enter the Science Fair!" heading at the top
 // (nudged down only if Student Name would be cut off), then sweep the laser across the field
 async function goToSignup(e) {
@@ -1391,6 +1512,7 @@ function markSignupsClosed() {
 
 function setupDoors() {
     setupLaserToggle();
+    setupTypingLaser();
     const enter = document.getElementById('choose-enter');
     const explore = document.getElementById('choose-explore');
     const cta = document.getElementById('hub-cta');
