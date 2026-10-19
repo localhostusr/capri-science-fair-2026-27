@@ -201,3 +201,4 @@ html, body {
 }
 html[lang="es"] .top h1 { font-size: 45pt; }
 html[lang="es"] .hero h2 { font-size: 30pt; }
+.signup a { color: inherit; text-decoration: none; }
