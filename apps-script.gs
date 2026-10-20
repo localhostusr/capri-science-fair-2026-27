@@ -145,7 +145,8 @@ function doGet(e) {
         try {
             recordVisit({
                 sid: params.sid || '',
-                page: params.page || 'unknown'
+                page: params.page || 'unknown',
+                src: params.src || ''
             });
         } catch (err) { /* silent */ }
         return jsonOut({ ok: true });
@@ -244,16 +245,26 @@ function getVisitsSheet() {
     let sheet = ss.getSheetByName('Visits');
     if (!sheet) {
         sheet = ss.insertSheet('Visits');
-        sheet.getRange(1, 1, 1, 3).setValues([['Timestamp','SessionID','Page']]);
-        sheet.getRange(1, 1, 1, 3).setFontWeight('bold').setBackground('#1a6b3c').setFontColor('white');
+        sheet.getRange(1, 1, 1, 4).setValues([['Timestamp','SessionID','Page','Source']]);
+        sheet.getRange(1, 1, 1, 4).setFontWeight('bold').setBackground('#1a6b3c').setFontColor('white');
         sheet.setFrozenRows(1);
+    } else if (!sheet.getRange(1, 4).getValue()) {
+        // Visits sheet predates source tracking (added 2026-10-20)
+        sheet.getRange(1, 4).setValue('Source').setFontWeight('bold').setBackground('#1a6b3c').setFontColor('white');
     }
     return sheet;
 }
 
+// Channel label only (e.g. "email", "whatsapp", "www.google.com", "direct"): letters,
+// digits, dots and dashes, never starting with a symbol, so it can't act as a formula.
+function cleanSource(src) {
+    const s = String(src || '').toLowerCase().replace(/[^a-z0-9.\-]/g, '').replace(/^[^a-z0-9]+/, '').slice(0, 60);
+    return s || 'direct';
+}
+
 function recordVisit(v) {
     const sheet = getVisitsSheet();
-    sheet.appendRow([new Date(), v.sid, v.page]);
+    sheet.appendRow([new Date(), v.sid, v.page, cleanSource(v.src)]);
 }
 
 // ===== Organizer Stats — deeper analytics =====
@@ -283,19 +294,24 @@ function getOrganizerStats() {
         uniqueVisitors: 0,
         firstSeenToday: 0,
         firstSeenLast7Days: 0,
-        firstSeenByDay: {}
+        firstSeenByDay: {},
+        bySource: {}  // unique visitors by how their first visit arrived
     };
 
     if (vLast >= 2) {
-        const visits = visitsSheet.getRange(2, 1, vLast - 1, 3).getValues();
+        const visits = visitsSheet.getRange(2, 1, vLast - 1, 4).getValues();
         const firstSeen = {}; // sid -> earliest timestamp
+        const firstSource = {}; // sid -> source of that earliest visit
         visits.forEach(row => {
             const ts = row[0];
             const sid = String(row[1] || '');
             if (!sid) return;
             const d = (ts instanceof Date) ? ts : new Date(ts);
             if (isNaN(d.getTime())) return;
-            if (!firstSeen[sid] || d < firstSeen[sid]) firstSeen[sid] = d;
+            if (!firstSeen[sid] || d < firstSeen[sid]) {
+                firstSeen[sid] = d;
+                firstSource[sid] = String(row[3] || '') || 'not tracked yet';
+            }
         });
 
         const now = new Date();
@@ -305,6 +321,7 @@ function getOrganizerStats() {
         Object.keys(firstSeen).forEach(sid => {
             const d = firstSeen[sid];
             visitMetrics.uniqueVisitors++;
+            visitMetrics.bySource[firstSource[sid]] = (visitMetrics.bySource[firstSource[sid]] || 0) + 1;
             const dayKey = Utilities.formatDate(d, Session.getScriptTimeZone(), 'yyyy-MM-dd');
             visitMetrics.firstSeenByDay[dayKey] = (visitMetrics.firstSeenByDay[dayKey] || 0) + 1;
             if (dayKey === todayStr) visitMetrics.firstSeenToday++;

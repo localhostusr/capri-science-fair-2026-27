@@ -19,8 +19,30 @@ const CONFIG = {
         sid = 'sid-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
         localStorage.setItem('csf-sid', sid);
     }
-    fetch(CONFIG.APPS_SCRIPT_URL + '?action=visit&sid=' + encodeURIComponent(sid) + '&page=signup', { mode: 'no-cors' });
+    fetch(CONFIG.APPS_SCRIPT_URL + '?action=visit&sid=' + encodeURIComponent(sid) + '&page=signup&src=' + encodeURIComponent(visitSource()), { mode: 'no-cors' });
 })();
+
+// How this visit arrived: a ?src= tag on the link (email, whatsapp, ...), else the
+// referring site's domain, else "direct" (QR scans, typed URLs, most chat apps).
+// The tag is removed from the address bar so a shared link doesn't carry it along.
+function visitSource() {
+    let src = 'direct';
+    try {
+        const url = new URL(location.href);
+        const tag = (url.searchParams.get('src') || '').toLowerCase();
+        if (/^[a-z0-9-]{1,24}$/.test(tag)) {
+            src = tag;
+        } else if (document.referrer) {
+            const host = new URL(document.referrer).hostname;
+            if (host && host !== location.hostname) src = host;
+        }
+        if (url.searchParams.has('src')) {
+            url.searchParams.delete('src');
+            history.replaceState(history.state, '', url.pathname + url.search + url.hash);
+        }
+    } catch (e) {}
+    return src;
+}
 
 // ===== Language Toggle =====
 let currentLang = 'en';

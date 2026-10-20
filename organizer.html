@@ -434,6 +434,18 @@ async function loadStats() {
     }
 }
 
+// One card per source, most visitors first. "direct" is mostly QR scans and typed links;
+// tagged links (?src=email, ?src=whatsapp, ...) show up under their tag.
+function sourceCards(bySource) {
+    const names = { 'direct': 'QR code / typed link', 'not tracked yet': 'Before Oct 20' };
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+    const rows = Object.entries(bySource || {}).sort((a, b) => b[1] - a[1]);
+    if (!rows.length) return '<div class="kpi"><div class="kpi-label">No visits yet</div><div class="kpi-value">0</div></div>';
+    return rows.map(([src, n]) =>
+        `<div class="kpi"><div class="kpi-label">${esc(names[src] || src)}</div><div class="kpi-value">${n}</div><div class="kpi-sub">unique visitors</div></div>`
+    ).join('');
+}
+
 function renderOrganizer(data) {
     const updatedAt = new Date(data.updatedAt);
     document.getElementById('updated-at').textContent = 'Updated ' + updatedAt.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
@@ -482,6 +494,11 @@ function renderOrganizer(data) {
             <div class="kpi cyan"><div class="kpi-label">Unique Visitors</div><div class="kpi-value">${visits.uniqueVisitors || 0}</div><div class="kpi-sub">distinct browsers, ever</div></div>
             <div class="kpi"><div class="kpi-label">New Today</div><div class="kpi-value">${visits.firstSeenToday || 0}</div><div class="kpi-sub">first-time visits today</div></div>
             <div class="kpi green"><div class="kpi-label">New This Week</div><div class="kpi-value">${visits.firstSeenLast7Days || 0}</div><div class="kpi-sub">first-time visits, 7 days</div></div>
+        </div>
+
+        <div class="section-header">How Visitors Found the Site <span class="pill">first visit per browser</span></div>
+        <div class="kpi-grid">
+            ${sourceCards(visits.bySource)}
         </div>
 
         <div class="section-header">Recommendations <span class="pill">action items</span></div>
