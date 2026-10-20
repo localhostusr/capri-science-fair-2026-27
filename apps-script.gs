@@ -144,7 +144,7 @@ function doGet(e) {
     if (action === 'visit') {
         try {
             recordVisit({
-                sid: params.sid || '',
+                sid: params.vid || params.sid || '',  // "vid": Google rejects a "sid" parameter with a 400
                 page: params.page || 'unknown',
                 src: params.src || ''
             });
