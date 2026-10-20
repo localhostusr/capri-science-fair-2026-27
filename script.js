@@ -927,7 +927,7 @@ function downloadCalendar(d) {
         '6:30-7:00 PM — SD Lab Rats show in the MPR\\n' +
         '7:00-7:30 PM — Teardown\\n\\n' +
         'Quick Start Guide: https://localhostusr.github.io/capri-science-fair-2026-27/guide.html\\n\\n' +
-        'Questions? Kris Thomson, krisdthomson@gmail.com';
+        'Questions? Kris Thomson, krisdthomson@gmail.com, or STEM teacher Aliza Holmes, Aliza.Holmes@eusd.net';
 
     var ics = [
         'BEGIN:VCALENDAR',
