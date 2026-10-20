@@ -631,7 +631,7 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwRAR60DTotOBdD
         sid = 'sid-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
         localStorage.setItem('csf-sid', sid);
     }
-    fetch(APPS_SCRIPT_URL + '?action=visit&sid=' + encodeURIComponent(sid) + '&page=' + (document.documentElement.classList.contains('embed') ? 'dashboard-embed' : 'dashboard'), { mode: 'no-cors' });
+    fetch(APPS_SCRIPT_URL + '?action=visit&vid=' + encodeURIComponent(sid) + '&page=' + (document.documentElement.classList.contains('embed') ? 'dashboard-embed' : 'dashboard'), { mode: 'no-cors' });
 })();
 
 const PALETTE = {

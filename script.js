@@ -19,7 +19,7 @@ const CONFIG = {
         sid = 'sid-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
         localStorage.setItem('csf-sid', sid);
     }
-    fetch(CONFIG.APPS_SCRIPT_URL + '?action=visit&sid=' + encodeURIComponent(sid) + '&page=signup&src=' + encodeURIComponent(visitSource()), { mode: 'no-cors' });
+    fetch(CONFIG.APPS_SCRIPT_URL + '?action=visit&vid=' + encodeURIComponent(sid) + '&page=signup&src=' + encodeURIComponent(visitSource()), { mode: 'no-cors' });
 })();
 
 // How this visit arrived: a ?src= tag on the link (email, whatsapp, ...), else the
@@ -1168,7 +1168,7 @@ function logHubVisit() {
         if (sessionStorage.getItem('csf-hub-logged')) return;
         sessionStorage.setItem('csf-hub-logged', '1');
         const sid = localStorage.getItem('csf-sid') || 'none';
-        fetch(CONFIG.APPS_SCRIPT_URL + '?action=visit&sid=' + encodeURIComponent(sid) + '&page=explore', { mode: 'no-cors' });
+        fetch(CONFIG.APPS_SCRIPT_URL + '?action=visit&vid=' + encodeURIComponent(sid) + '&page=explore', { mode: 'no-cors' });
     } catch (e) {}
 }
 
