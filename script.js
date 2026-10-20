@@ -44,6 +44,11 @@ function setLang(lang) {
         el.placeholder = el.getAttribute('data-' + lang + '-placeholder') || el.getAttribute('data-en-placeholder');
     });
 
+    // Point links at the matching-language file (Science Fair Packet)
+    document.querySelectorAll('[data-en-href]').forEach(el => {
+        el.href = el.getAttribute('data-' + lang + '-href') || el.getAttribute('data-en-href');
+    });
+
     // Update select options
     document.querySelectorAll('option[data-en]').forEach(el => {
         el.textContent = el.getAttribute('data-' + lang) || el.getAttribute('data-en');

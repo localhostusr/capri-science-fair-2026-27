@@ -739,9 +739,9 @@
         <span>&#128438;</span>
         <span data-en="Print / Save as PDF" data-es="Imprimir / Guardar como PDF">Print / Save as PDF</span>
     </button>
-    <a href="packet/Capri-Science-Fair-Packet-2026-27-EN.pdf" target="_blank" rel="noopener" class="toolbar-btn">
+    <a href="packet/Capri-Science-Fair-Packet-2026-27-EN.pdf" data-en-href="packet/Capri-Science-Fair-Packet-2026-27-EN.pdf" data-es-href="packet/Capri-Science-Fair-Packet-2026-27-ES.pdf" target="_blank" rel="noopener" class="toolbar-btn">
         <span>&#128196;</span>
-        <span data-en="Science Fair Packet (PDF)" data-es="Paquete de la Feria (PDF, en inglés)">Science Fair Packet (PDF)</span>
+        <span data-en="Science Fair Packet (PDF)" data-es="Paquete de la Feria (PDF)">Science Fair Packet (PDF)</span>
     </a>
     <a href="index.html" class="toolbar-btn primary-btn">
         <span>&#9998;</span>
@@ -1099,6 +1099,10 @@ function setLang(lang) {
 
     document.querySelectorAll('[data-en]').forEach(function(el) {
         el.innerHTML = el.getAttribute('data-' + lang) || el.getAttribute('data-en');
+    });
+
+    document.querySelectorAll('[data-en-href]').forEach(function(el) {
+        el.href = el.getAttribute('data-' + lang + '-href') || el.getAttribute('data-en-href');
     });
 
     document.documentElement.lang = lang;
