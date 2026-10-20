@@ -44,6 +44,11 @@ function setLang(lang) {
         el.placeholder = el.getAttribute('data-' + lang + '-placeholder') || el.getAttribute('data-en-placeholder');
     });
 
+    // Point links at the matching-language file (Science Fair Packet)
+    document.querySelectorAll('[data-en-href]').forEach(el => {
+        el.href = el.getAttribute('data-' + lang + '-href') || el.getAttribute('data-en-href');
+    });
+
     // Update select options
     document.querySelectorAll('option[data-en]').forEach(el => {
         el.textContent = el.getAttribute('data-' + lang) || el.getAttribute('data-en');
@@ -927,7 +932,7 @@ function downloadCalendar(d) {
         '6:30-7:00 PM — SD Lab Rats show in the MPR\\n' +
         '7:00-7:30 PM — Teardown\\n\\n' +
         'Quick Start Guide: https://localhostusr.github.io/capri-science-fair-2026-27/guide.html\\n\\n' +
-        'Questions? Kris Thomson, krisdthomson@gmail.com';
+        'Questions? Kris Thomson, krisdthomson@gmail.com, or STEM teacher Aliza Holmes, Aliza.Holmes@eusd.net';
 
     var ics = [
         'BEGIN:VCALENDAR',
